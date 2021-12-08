@@ -1,0 +1,24 @@
+{
+"compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "allowJs": true,
+    "checkJs": false,
+    "removeComments": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist"
+},
+"exclude": [
+    "node_modules", 
+    "news-portal"
+],
+"include": [
+    "src/**/*", 
+    "modules.d.ts"
+]
+}
