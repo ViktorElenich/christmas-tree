@@ -1,0 +1,28 @@
+.main {
+  height: 100vh;
+  background-image: url(../../../assets/bg.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.main_wrapper {
+  padding: 0.5em;
+  margin: 0 auto;
+  height: 100%;
+  width: 90%;
+}
+.filter {
+  display: flex;
+  justify-content: space-between;
+  height: 33.3333333%;
+}
+.box {
+  background-color: rgb(24, 61, 66, 0.7);
+  margin-right: 2.5em;
+  width: 33.33333333%;
+  border-radius: 0.5em;
+}
+.box:last-child {
+  margin-right: 0;
+}

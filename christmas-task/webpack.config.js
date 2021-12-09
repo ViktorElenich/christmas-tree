@@ -17,6 +17,10 @@ const baseConfig = {
                 loader: 'ts-loader',
                 exclude: ['/node_modules/'],
             },
+            {
+                test: /.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset/resource',
+            },
         ],
     },
     resolve: {
@@ -30,6 +34,7 @@ const baseConfig = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/index.html'),
             filename: 'index.html',
+            favicon: './src/assets/favicon.png',
         }),
         new CleanWebpackPlugin(),
     ],
