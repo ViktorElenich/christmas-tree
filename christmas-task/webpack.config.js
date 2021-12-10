@@ -1,48 +1,140 @@
+const fs = require('fs');
 const path = require('path');
-const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 
-const baseConfig = {
-    entry: path.resolve(__dirname, './src/index.ts'),
-    mode: 'development',
-    module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /.(ts|tsx)$/i,
-                loader: 'ts-loader',
-                exclude: ['/node_modules/'],
-            },
-            {
-                test: /.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-                type: 'asset/resource',
-            },
+const htmlFile = /^([-_\d\w]+).html$/i;
+const srcPath = path.resolve(__dirname, 'src');
+
+const devServer = (isDev) => !isDev ? {} : {
+    devServer: {
+        open: true,
+        port: 'auto',
+        static: {
+            directory: srcPath,
+            watch: true,
+        },
+    },
+};
+
+const getRelative = (absolutePath) => path.relative(srcPath, absolutePath);
+const makePath = (relativePath) => './' + relativePath.replace(/\\+/g, '/');
+
+const getPages = (dir, n) => {
+    const dirContent = fs.readdirSync(dir);
+    const pages = dirContent
+        .filter(f => htmlFile.test(f))
+        .reduce((res, f, i) => {
+            const name = path.basename(f, path.extname(f));
+            res.push({
+                name: `p${n += i}`,
+                dir: getRelative(dir),
+                html: makePath(getRelative(path.join(dir, f))),
+                script: dirContent.find(f => new RegExp(`^${name}\.(j|t)s$`, 'i').test(f)),
+                style: dirContent.find(f => new RegExp(`^${name}\.s(c|a)ss$`, 'i').test(f)),
+            });
+            return res;
+        }, [])
+        .concat(dirContent
+            .filter(f => fs.lstatSync(path.resolve(dir, f)).isDirectory())
+            .reduce((res, f) => [...res, ...getPages(path.resolve(dir, f), n + 1)], [])
+        );
+
+    return pages;
+};
+
+const getEntryPoints = (pages) => pages.reduce((entry, { name, dir, script, style }) => Object.assign(entry,
+    script ? { [name]: makePath(path.join(dir, script)) } : {},
+    style ? { [`${name}-styles`]: makePath(path.join(dir, style)) } : {},
+), {});
+
+const getHtmlPlugins = (pages) => pages.map(({ html, name, script, style }) => new HtmlWebpackPlugin({
+    template: html,
+    filename: html,
+    chunks: [script ? name : null, style ? `${name}-styles` : null].filter(c => !!c),
+
+}));
+
+module.exports = ({ development }) => {
+    const pages = getPages(srcPath, 1);
+    return {
+        mode: development ? 'development' : 'production',
+        devtool: development ? 'inline-source-map' : false,
+        entry: getEntryPoints(pages),
+        context: srcPath,
+        output: {
+            filename: 'js/[name].[contenthash].js',
+            path: path.resolve(__dirname, 'dist'),
+            assetModuleFilename: '[file]',
+
+        },
+        target: ['web', 'es6'],
+        module: {
+            rules: [
+                {
+                    test: /\.(?:ico|gif|png|jpg|jpeg|svg|webp)$/i,
+                    type: 'asset/resource',
+                },
+                {
+                    test: /\.(?:mp3|wav|ogg|mp4)$/i,
+                    type: 'asset/resource',
+                },
+                {
+                    test: /\.(woff(2)?|eot|ttf|otf)$/i,
+                    type: 'asset/resource',
+                },
+                {
+                    test: /\.css$/i,
+                    use: [{ loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } }, 'css-loader'],
+                },
+                {
+                    test: /\.s[ac]ss$/i,
+                    use: [{ loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' } }, 'style-loader', 'css-loader', 'sass-loader']
+                },
+                {
+                    test: /\.(ts|tsx)$/i,
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+                            // transpileOnly: true
+                        },
+                    },
+                    exclude: ['/node_modules/'],
+                },
+            ],
+        },
+        plugins: [
+            new MiniCssExtractPlugin({ filename: 'css/[name].[contenthash].css' }),
+            ...getHtmlPlugins(pages),
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: '**/*',
+                        context: srcPath,
+                        globOptions: {
+                            ignore: [
+                                '**/*.js',
+                                '**/*.ts',
+                                '**/*.scss',
+                                '**/*.sass',
+                                '**/*.html',
+                            ],
+                        },
+                        noErrorOnMissing: true,
+                        force: true,
+                    }
+                ],
+            }),
+            new CleanWebpackPlugin(),
+            new RemoveEmptyScriptsPlugin(),
+
         ],
-    },
-    resolve: {
-        extensions: ['.ts', '.js'],
-    },
-    output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, './dist'),
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html'),
-            filename: 'index.html',
-            favicon: './src/assets/favicon.png',
-        }),
-        new CleanWebpackPlugin(),
-    ],
-};
-
-module.exports = ({ mode }) => {
-    const isProductionMode = mode === 'prod';
-    const envConfig = isProductionMode ? require('./webpack.prod.config') : require('./webpack.dev.config');
-
-    return merge(baseConfig, envConfig);
-};
+        resolve: {
+            extensions: ['.js', '.ts', '.tsx'],
+        },
+        ...devServer(development)
+    };
+}
