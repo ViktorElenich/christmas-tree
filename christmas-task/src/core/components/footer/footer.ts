@@ -11,7 +11,8 @@ const Links = [
     {
         className: 'logo-rss',
         href: 'https://rs.school/js/',
-        target: '_blank'
+        target: '_blank',
+        text: ''
     }
 ]
 export class Footer extends Components {

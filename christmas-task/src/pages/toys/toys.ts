@@ -34,14 +34,13 @@ export class Toys extends Page {
         
         wrapperMain.append(cards);
 
-        Filter.forEach(div => { // филтры
+        const boxFilter = Filter.map(div => { // филтры
             const divHTML = document.createElement('div');
             divHTML.className = div.className;
             divHTML.id = div.id;
-
-            
             filterDiv.append(divHTML);
         })
+
         data.forEach(toys => {  // карточки игрушек
             const toy = document.createElement('div');
             const infoCard = document.createElement('h2'); // название шара
