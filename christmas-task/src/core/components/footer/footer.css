@@ -1,0 +1,26 @@
+.footer {
+  min-height: 70px;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  background-color: rgb(24, 61, 66);
+}
+.footer-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+.author {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+}
+.logo-rss {
+    width: 160px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(../../../assets/svg/rss.svg);
+}

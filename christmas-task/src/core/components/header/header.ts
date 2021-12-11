@@ -9,7 +9,7 @@ const Buttons = [
 
     },
     {
-        id: PageIds.ChoicePage,
+        id: PageIds.ToysPage,
         text: 'игрушки',
     },
     {
@@ -29,7 +29,7 @@ export class Header extends Components {
         const pageButtons = document.createElement('div');
         pageButtons.classList.add('navigation');
 
-        const wrapperHEader = document.createElement('div');
+        const wrapperHeader = document.createElement('div');
         const searchAndFavorites = document.createElement('div');
 
         const inputSearch = document.createElement('input');
@@ -42,9 +42,9 @@ export class Header extends Components {
         const favorites = document.createElement('div');
         favorites.classList.add('favorites');
         searchAndFavorites.classList.add('search_favorites');
-        wrapperHEader.classList.add('wrapper');
-        wrapperHEader.append(pageButtons);
-        wrapperHEader.append(searchAndFavorites);
+        wrapperHeader.classList.add('wrapper');
+        wrapperHeader.append(pageButtons);
+        wrapperHeader.append(searchAndFavorites);
         searchAndFavorites.append(inputSearch);
         searchAndFavorites.append(favorites);
 
@@ -55,7 +55,7 @@ export class Header extends Components {
             buttonHTML.classList.add('links');
             pageButtons.append(buttonHTML);
         });
-        this.container.append(wrapperHEader)
+        this.container.append(wrapperHeader)
 
     }
 

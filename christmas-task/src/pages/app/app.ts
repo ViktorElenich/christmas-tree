@@ -1,13 +1,13 @@
 import { Header } from "../../core/components/header/header";
-import { Main } from "../../core/components/main/main";
 import { Page } from "../../core/templates/pages";
-import { Choice } from "../choice/choice";
+import { Toys } from "../toys/toys";
 import { Game } from "../game/game";
 import { MainPage } from "../main/main";
+import { Footer } from "../../core/components/footer/footer";
 
 export const enum PageIds {
     MainPage = 'main-page',
-    ChoicePage = 'choice-page',
+    ToysPage = 'toys-page',
     GamePage = 'game-page',
 }
 
@@ -17,12 +17,12 @@ export class App {
     private static defaultPageId: string = 'current-page';
     private initialPage: MainPage;
     private header: Header;
-    private main: Main;
+    private footer: Footer;
 
     constructor() {
         this.initialPage = new MainPage('main-page');
         this.header = new Header('header', 'header');
-        this.main = new Main('main', 'main');
+        this.footer = new Footer('footer', 'footer');
     }
 
     static renderNewPage(idPage: string){
@@ -34,8 +34,8 @@ export class App {
 
         if(idPage === PageIds.MainPage){
             page = new MainPage(idPage);
-        } else if (idPage === PageIds.ChoicePage){
-            page = new Choice(idPage);
+        } else if (idPage === PageIds.ToysPage){
+            page = new Toys(idPage);
         } else if(idPage === PageIds.GamePage){
             page = new Game(idPage);
         }
@@ -56,8 +56,8 @@ export class App {
 
     run(){
         App.container.append(this.header.render());
-        App.container.append(this.main.render());
         App.renderNewPage('main-page');
+        App.container.append(this.footer.render());
         this.enableRouteChange();
     }
 }

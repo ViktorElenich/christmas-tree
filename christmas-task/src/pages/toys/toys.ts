@@ -1,6 +1,5 @@
-import './main.css';
-import data from "../../../data";
-import { Components } from "../../templates/components";
+import { Page } from "../../core/templates/pages";
+import data from "../../data";
 
 const Filter = [
     {
@@ -17,10 +16,10 @@ const Filter = [
     }
 ]
 
-export class Main extends Components {
+export class Toys extends Page {
 
-    constructor(tagName: string, className: string) {
-        super(tagName, className)
+    constructor(id: string) {
+        super(id)
     }
 
     renderWrapper(){
@@ -39,6 +38,8 @@ export class Main extends Components {
             const divHTML = document.createElement('div');
             divHTML.className = div.className;
             divHTML.id = div.id;
+
+            
             filterDiv.append(divHTML);
         })
         data.forEach(toys => {  // карточки игрушек
