@@ -20,8 +20,8 @@ const Buttons = [
 
 export class Header extends Components {
 
-    constructor(tagName: string, className: string) {
-        super(tagName, className)
+    constructor(tagName: string, className: string, id: string) {
+        super(tagName, className, id)
     }
 
     renderPageButtons(){

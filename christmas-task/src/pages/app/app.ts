@@ -4,6 +4,7 @@ import { Toys } from "../toys/toys";
 import { Game } from "../game/game";
 import { MainPage } from "../main/main";
 import { Footer } from "../../core/components/footer/footer";
+import { Main } from "../../core/components/main/main";
 
 export const enum PageIds {
     MainPage = 'main-page',
@@ -17,16 +18,19 @@ export class App {
     private static defaultPageId: string = 'current-page';
     private initialPage: MainPage;
     private header: Header;
+    private main: Main;
     private footer: Footer;
 
     constructor() {
         this.initialPage = new MainPage('main-page');
-        this.header = new Header('header', 'header');
-        this.footer = new Footer('footer', 'footer');
+        this.header = new Header('header', 'header', 'header');
+        this.main = new Main('main', 'main', 'main');
+        this.footer = new Footer('footer', 'footer', 'footer');
     }
 
     static renderNewPage(idPage: string){
         const currentPageHTML = document.querySelector(`#${App.defaultPageId}`);
+                
         if(currentPageHTML){
             currentPageHTML.remove();
         }
@@ -42,8 +46,9 @@ export class App {
 
         if(page){
             const pageHTML = page.render();
+            const mainDiv = document.getElementById('main');
             pageHTML.id = App.defaultPageId;
-            App.container.append(pageHTML);
+            mainDiv.append(pageHTML);
         }
     }
 
@@ -56,6 +61,7 @@ export class App {
 
     run(){
         App.container.append(this.header.render());
+        App.container.append(this.main.render());
         App.renderNewPage('main-page');
         App.container.append(this.footer.render());
         this.enableRouteChange();

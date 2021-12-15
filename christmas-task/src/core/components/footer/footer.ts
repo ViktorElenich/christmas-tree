@@ -17,8 +17,8 @@ const Links = [
 ]
 export class Footer extends Components {
 
-    constructor(tagName: string, className: string) {
-        super(tagName, className)
+    constructor(tagName: string, className: string, id: string) {
+        super(tagName, className, id)
     }
 
     renderAuthorDescription(){

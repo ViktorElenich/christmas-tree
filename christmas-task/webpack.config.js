@@ -62,6 +62,11 @@ module.exports = ({ development }) => {
     const pages = getPages(srcPath, 1);
     return {
         mode: development ? 'development' : 'production',
+        performance: {
+            hints: false,
+            maxEntrypointSize: 512000,
+            maxAssetSize: 512000
+        },
         devtool: development ? 'inline-source-map' : false,
         entry: getEntryPoints(pages),
         context: srcPath,

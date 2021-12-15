@@ -24,6 +24,7 @@ body {
   height: 300px;
 }
 .box {
+  padding: 15px;
   background-color: rgb(24, 61, 66, 0.7);
   margin-right: 2.5em;
   width: 33.33333333%;
@@ -31,6 +32,136 @@ body {
 }
 .box:last-child {
   margin-right: 0;
+}
+.filter-title {
+  height: 50px;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.shape,
+.color,
+.size {
+  display: flex;
+  align-items: center;
+}
+.shape button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+}
+.shape button:nth-child(1) {
+  background-image: url(./assets/svg/ball.svg);
+  margin-left: 15px;
+}
+.shape button:nth-child(2) {
+  background-image: url(./assets/svg/bell.svg);
+  margin-left: 15px;
+}
+.shape button:nth-child(3) {
+  background-image: url(./assets/svg/cone.svg);
+  margin-left: 15px;
+}
+.shape button:nth-child(4) {
+  background-image: url(./assets/svg/snowflake.svg);
+  margin-left: 15px;
+}
+.shape button:nth-child(5) {
+  background-image: url(./assets/svg/toy.svg);
+  margin-left: 15px;
+}
+.color button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #278d9f;
+  border-radius: 5px;
+  outline: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+.color button:nth-child(1) {
+  background-color: white;
+  margin-left: 15px;
+}
+.color button:nth-child(2) {
+  background-color: yellow;
+  margin-left: 15px;
+}
+.color button:nth-child(3) {
+  background-color: red;
+  margin-left: 15px;
+}
+.color button:nth-child(4) {
+  background-color: blue;
+  margin-left: 15px;
+}
+.color button:nth-child(5) {
+  background-color: green;
+  margin-left: 15px;
+}
+.size button {
+  width: 50px;
+  height: 50px;
+  margin-left: 15px;
+  background-image: url(./assets/svg/ball.svg);
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.size button:nth-child(2) {
+  background-size: 38px 38px;
+}
+.size button:nth-child(3) {
+  background-size: 32px 32px;
+}
+.favorite {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.input-favorite {
+  display: none;
+}
+.label-favorite {
+  position: relative;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #278d9f;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+.input-favorite:checked + .label-favorite {
+  background-color: #278d9f;
+  border-color: #278d9f;
+}
+.input-favorite:checked + .label-favorite::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+}
+.sort-select {
+  appearance: none;
+  border: 0;
+  outline: 0;
 }
 .cards {
   display: flex;
@@ -77,7 +208,7 @@ body {
 .size,
 .favorite {
   font-size: 18px;
-  margin: 0.5em 0;
+  margin: 0.6em 0;
 }
 .tape {
   position: absolute;
@@ -105,4 +236,3 @@ body {
   height: 0;
   width: 0;
 }
-
