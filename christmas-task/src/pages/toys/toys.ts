@@ -1,22 +1,21 @@
 import { Page } from "../../core/templates/pages";
 import data from "../../data";
-import noUiSlider from 'nouislider';
+import '../../nouislider/slider.css';
+import '../../nouislider/sliderCustom.css';
+import noUiSlider, { target } from 'nouislider';
 
 const FilterButtons = [
     {
         filter: 'шар',
         color: 'белый',
-        size: 'большой',
     },
     {
         filter: 'колокольчик',
         color: 'желтый',
-        size: 'средний',
     },
     {
         filter: 'шишка',
         color: 'красный',
-        size: 'малый',
     },
     {
         filter: 'снежинка',
@@ -75,7 +74,7 @@ export class Toys extends Page {
         wrapperMain.append(cards);
 
         const filterBox1 = document.createElement('div'); // див блок фильтрации 1
-        filterBox1.className = 'box box1';
+        filterBox1.className = 'box box-filters';
         filterBox1.id = 'box1';
         const box1Title = document.createElement('h3'); // заголовок
         box1Title.innerHTML = 'Фильтры по значению';
@@ -131,7 +130,7 @@ export class Toys extends Page {
         filterDiv.append(filterBox1);
 
         const filterBox2 = document.createElement('div'); // див блок фильтрации 2
-        filterBox2.className = 'box box2';
+        filterBox2.className = 'box box-range';
         filterBox2.id = 'box2';
         const box2Title = document.createElement('h3'); // заголовок
         box2Title.className = 'filter-title';
@@ -139,24 +138,90 @@ export class Toys extends Page {
         filterBox2.append(box2Title);
 
         const countBox = document.createElement('div');
-        countBox.className = 'count';
+        countBox.className = 'filter-quantity';
         countBox.innerHTML = 'Количество экземпляров: ';
+        const countContainer = document.createElement('div');
+        countContainer.className = 'container-for-filters';
+        countBox.appendChild(countContainer);
+        const countInputMin = document.createElement('input');
+        countInputMin.type = 'number';
+        countInputMin.className = 'min-quantity';
+        countInputMin.value = '1';
+        countInputMin.readOnly = true;
+        countContainer.appendChild(countInputMin);
+        const sliderQuantity = document.createElement('div') as HTMLDivElement;
+        sliderQuantity.id = 'slider-quantity';
+        sliderQuantity.className = 'slider-quantity';
+        countContainer.appendChild(sliderQuantity);
+        const countInputMax = document.createElement('input');
+        countInputMax.type = 'number';
+        countInputMax.className = 'max-quantity';
+        countInputMax.value = '12';
+        countInputMax.readOnly = true;
+        countContainer.appendChild(countInputMax);
+
+        function quantitySlider(): void {
+            
+            const slider = noUiSlider.create(<target>sliderQuantity, {
+            start: [1, 12],
+            connect: true,
+            step: 1,
+            range: {
+                min: [1],
+                max: [12],
+            },
+            });
+
+            const inputsQuantity = [countInputMin, countInputMax];
+            slider.on(
+            'update',
+            (values: (string | number)[], handle: number) => {
+                inputsQuantity[handle].value = String(Math.round(Number(values[handle])));
+            },
+            );
+        }
 
         const yearBox = document.createElement('div'); // фильтр по году
-        yearBox.className = 'year';
+        yearBox.className = 'filter-year';
         yearBox.innerHTML = 'Год приобретения: ';
         const sliderCount = document.createElement('div'); // слайдер
-        sliderCount.id = 'slider';
-        yearBox.append(sliderCount);
-        const slider = document.getElementById('#slider') as HTMLElement;
-        console.log(slider);
-        /* noUiSlider.create(range, {
-            range: {
-                'min': 1940,
-                'max': 2020
-            },
-            step: 10,
-        }) */
+        sliderCount.className = 'container-for-filters';
+        yearBox.appendChild(sliderCount);
+        const yearInputMin = document.createElement('input');
+        yearInputMin.type = 'number';
+        yearInputMin.className = 'min-year';
+        yearInputMin.value = '1940';
+        yearInputMin.readOnly = true;
+        sliderCount.appendChild(yearInputMin);
+        const sliderYear = document.createElement('div');
+        sliderYear.id = 'slider-year';
+        sliderYear.className = 'slider-year';
+        sliderCount.appendChild(sliderYear);
+        const yearInputMax = document.createElement('input');
+        yearInputMax.type = 'number';
+        yearInputMax.className = 'max-year';
+        yearInputMax.value = '2020';
+        yearInputMax.readOnly = true;
+        sliderCount.appendChild(yearInputMax);
+
+        function yearSlider() :void {
+        
+            const slider = noUiSlider.create(sliderYear, {
+              start: [1940, 2020],
+              connect: true,
+              step: 1,
+              range: {
+                min: [1940],
+                max: [2020],
+              },
+            });
+
+            const inputsYear = [yearInputMin, yearInputMax];
+        
+            slider.on('update', (values: (string | number)[], handle: number) => {
+              inputsYear[handle].value = String(Math.round(Number(values[handle])));
+            });
+        }
 
         filterBox2.append(countBox);
         filterBox2.append(yearBox);
@@ -164,7 +229,7 @@ export class Toys extends Page {
         filterDiv.append(filterBox2);
 
         const filterBox3 = document.createElement('div'); // див блок фильтрации 3
-        filterBox3.className = 'box box3';
+        filterBox3.className = 'box box-sort';
         filterBox3.id = 'box3';
         const box3Title = document.createElement('h3'); // заголовок
         box3Title.className = 'filter-title';
@@ -180,6 +245,12 @@ export class Toys extends Page {
             select.append(optionElement);
         })
         filterBox3.append(select);
+
+        const btnReset = document.createElement('button');
+        btnReset.className = 'reset';
+        btnReset.type = 'reset';
+        btnReset.innerHTML = 'Сброс фильтров';
+        filterBox3.append(btnReset);
 
         filterDiv.append(filterBox3);
 
@@ -242,12 +313,16 @@ export class Toys extends Page {
             toy.dataset.num = toys.num;
             cards.append(toy);
         })
-
+        
         this.container.append(wrapperMain);
+       
+        quantitySlider();
+        yearSlider();
     }
 
     render(){
         this.renderWrapper();
         return this.container;
+        
     }
 }
