@@ -35,12 +35,6 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 1rem 0;
 }
 
-.container-for-filters {
-  display: flex;
-  align-items: center;
-  margin: 0.4em 0;
-}
-
 .min-quantity,
 .max-quantity,
 .min-year,

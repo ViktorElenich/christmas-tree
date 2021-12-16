@@ -86,9 +86,12 @@ export class Toys extends Page {
         shapeBox.innerHTML = 'Форма: ';
         FilterButtons.forEach(btn =>{
             const btnShape = document.createElement('button');
+            btnShape.classList.add('btn-shape');
             btnShape.dataset.id = btn.filter;
             shapeBox.append(btnShape);
         })
+        
+
         const colorBox = document.createElement('div'); // фильтр по цвету
         colorBox.className = 'color';
         colorBox.innerHTML = 'Цвет: ';
@@ -161,7 +164,7 @@ export class Toys extends Page {
         countContainer.appendChild(countInputMax);
 
         function quantitySlider(): void {
-            
+
             const slider = noUiSlider.create(<target>sliderQuantity, {
             start: [1, 12],
             connect: true,
@@ -320,8 +323,15 @@ export class Toys extends Page {
         yearSlider();
     }
 
+    filterShape(){
+        const buttons = document.querySelectorAll('.btn-shape');
+        console.log(buttons);
+        
+    }
+
     render(){
         this.renderWrapper();
+        this.filterShape();
         return this.container;
         
     }
