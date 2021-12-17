@@ -2,7 +2,20 @@ import { Page } from "../../core/templates/pages";
 import data from "../../data";
 import '../../nouislider/slider.css';
 import '../../nouislider/sliderCustom.css';
-import noUiSlider, { target } from 'nouislider';
+import { quantitySlider } from "../../nouislider/slider-quantity";
+import { yearSlider } from "../../nouislider/slider-year";
+
+interface ToysDescription {
+    num: string,
+    count: string,
+    year: string,
+    shape: string,
+    name: string,
+    color: string,
+    size: string,
+    favorite: boolean
+}
+const filterShapes: string[] = [];
 
 const FilterButtons = [
     {
@@ -89,14 +102,15 @@ export class Toys extends Page {
             btnShape.classList.add('btn-shape');
             btnShape.dataset.id = btn.filter;
             shapeBox.append(btnShape);
+            btnShape.addEventListener('click', this.clickShape);
         })
         
-
         const colorBox = document.createElement('div'); // фильтр по цвету
         colorBox.className = 'color';
         colorBox.innerHTML = 'Цвет: ';
         FilterButtons.forEach(btn => {
             const btnColor = document.createElement('button');
+            btnColor.className = 'btn-color';
             btnColor.dataset.id = btn.color;
             colorBox.append(btnColor);
         })
@@ -105,6 +119,7 @@ export class Toys extends Page {
         sizeBox.innerHTML = 'Размер: ';
         SizeButtons.forEach(btn =>{
             const btnSize = document.createElement('button');
+            btnSize.className = 'btn-size';
             btnSize.dataset.id = btn.size;
             sizeBox.append(btnSize);
         })
@@ -123,7 +138,6 @@ export class Toys extends Page {
         favoriteLabel.setAttribute('for', 'check-favorite');
         favoriteLabel.className = 'label-favorite';
         favoriteCont.append(favoriteLabel);
-
 
         filterBox1.append(shapeBox);
         filterBox1.append(colorBox);
@@ -163,27 +177,6 @@ export class Toys extends Page {
         countInputMax.readOnly = true;
         countContainer.appendChild(countInputMax);
 
-        function quantitySlider(): void {
-
-            const slider = noUiSlider.create(<target>sliderQuantity, {
-            start: [1, 12],
-            connect: true,
-            step: 1,
-            range: {
-                min: [1],
-                max: [12],
-            },
-            });
-
-            const inputsQuantity = [countInputMin, countInputMax];
-            slider.on(
-            'update',
-            (values: (string | number)[], handle: number) => {
-                inputsQuantity[handle].value = String(Math.round(Number(values[handle])));
-            },
-            );
-        }
-
         const yearBox = document.createElement('div'); // фильтр по году
         yearBox.className = 'filter-year';
         yearBox.innerHTML = 'Год приобретения: ';
@@ -206,25 +199,6 @@ export class Toys extends Page {
         yearInputMax.value = '2020';
         yearInputMax.readOnly = true;
         sliderCount.appendChild(yearInputMax);
-
-        function yearSlider() :void {
-        
-            const slider = noUiSlider.create(sliderYear, {
-              start: [1940, 2020],
-              connect: true,
-              step: 1,
-              range: {
-                min: [1940],
-                max: [2020],
-              },
-            });
-
-            const inputsYear = [yearInputMin, yearInputMax];
-        
-            slider.on('update', (values: (string | number)[], handle: number) => {
-              inputsYear[handle].value = String(Math.round(Number(values[handle])));
-            });
-        }
 
         filterBox2.append(countBox);
         filterBox2.append(yearBox);
@@ -273,30 +247,37 @@ export class Toys extends Page {
 
             const count = document.createElement('p');
             count.classList.add('count');
-            count.innerHTML = `Количество: ${toys.count}`;
+            count.dataset.count = toys.count;
+            count.innerHTML = `Количество: <span>${toys.count}</span>`;
 
             const year = document.createElement('p');
             year.classList.add('year');
-            year.innerHTML = `Год: ${toys.year}`;
+            year.dataset.year = toys.year;
+            year.innerHTML = `Год: <span>${toys.year}</span>`;
 
             const shape = document.createElement('p');
             shape.classList.add('shape');
-            shape.innerHTML = `Форма: ${toys.shape}`;
+            shape.dataset.shape = toys.shape;
+            shape.innerHTML = `Форма: <span>${toys.shape}</span>`;
 
             const color = document.createElement('p');
             color.classList.add('color');
-            color.innerHTML = `Цвет: ${toys.color}`;
+            color.dataset.color = toys.color;
+            color.innerHTML = `Цвет: <span>${toys.color}</span>`;
 
             const size = document.createElement('p');
             size.classList.add('size');
-            size.innerHTML = `Размер: ${toys.size}`;
+            size.dataset.size = toys.size;
+            size.innerHTML = `Размер: <span>${toys.size}</span>`;
 
             const favorite = document.createElement('p');
             favorite.classList.add('favorite');
             if(toys.favorite === true){
-                favorite.innerHTML = `Любимая: Да`;
+                favorite.dataset.favorite = `${toys.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Да</span>`;
             } else {
-                favorite.innerHTML = `Любимая: Нет`;
+                favorite.dataset.favorite = `${toys.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Нет</span>`;
             }
             
             const tape = document.createElement('div');
@@ -318,21 +299,41 @@ export class Toys extends Page {
         })
         
         this.container.append(wrapperMain);
-       
-        quantitySlider();
-        yearSlider();
+        
     }
 
-    filterShape(){
-        const buttons = document.querySelectorAll('.btn-shape');
-        console.log(buttons);
-        
+    filterShape(items: ToysDescription[], shape: string[]): ToysDescription[]{
+        let shapeArr = items;
+        shapeArr = shapeArr.filter(item => {
+            if(shape.length > 0){
+                return shape.includes(item.shape)
+            }
+            console.log('shape', shape)
+            return true;
+        })
+        return shapeArr;
+    }
+
+    clickShape = (event: Event) => {
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const shape = target.dataset.id;
+        if(filterShapes.includes(shape)){
+            target.classList.remove('active');
+            filterShapes.splice(filterShapes.indexOf(shape), 1)
+        } else {
+            target.classList.add('active');
+            filterShapes.push(shape);
+        }
+
+        this.filterShape(data, filterShapes);
     }
 
     render(){
         this.renderWrapper();
-        this.filterShape();
         return this.container;
-        
+    }
+    afterRender(){
+        quantitySlider();
+        yearSlider();
     }
 }

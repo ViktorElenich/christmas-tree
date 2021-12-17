@@ -49,6 +49,7 @@ export class App {
             const mainDiv = document.getElementById('main');
             pageHTML.id = App.defaultPageId;
             mainDiv.append(pageHTML);
+            page.afterRender();
         }
     }
 
