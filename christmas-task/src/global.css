@@ -39,13 +39,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 2px;
 }
-.shape,
+.shape-container,
 .color,
 .size {
   display: flex;
   align-items: center;
 }
-.shape button {
+.shape-container button {
   width: 40px;
   height: 40px;
   border: none;
@@ -57,23 +57,23 @@ body {
   cursor: pointer;
   position: relative;
 }
-.shape button:nth-child(1) {
+.shape-container button:nth-child(1) {
   background-image: url(./assets/svg/ball.svg);
   margin-left: 15px;
 }
-.shape button:nth-child(2) {
+.shape-container button:nth-child(2) {
   background-image: url(./assets/svg/bell.svg);
   margin-left: 15px;
 }
-.shape button:nth-child(3) {
+.shape-container button:nth-child(3) {
   background-image: url(./assets/svg/cone.svg);
   margin-left: 15px;
 }
-.shape button:nth-child(4) {
+.shape-container button:nth-child(4) {
   background-image: url(./assets/svg/snowflake.svg);
   margin-left: 15px;
 }
-.shape button:nth-child(5) {
+.shape-container button:nth-child(5) {
   background-image: url(./assets/svg/toy.svg);
   margin-left: 15px;
 }

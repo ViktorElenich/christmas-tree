@@ -13,9 +13,9 @@ export function yearSlider() {
     },
   });
 
-  const inputYear0 = document.querySelector('.min-year') as HTMLInputElement;
-  const inputYear1 = document.querySelector('.max-year') as HTMLInputElement;
-  const inputsYear = [inputYear0, inputYear1];
+  const inputYearMin = document.querySelector('.min-year') as HTMLInputElement;
+  const inputYearMax = document.querySelector('.max-year') as HTMLInputElement;
+  const inputsYear = [inputYearMin, inputYearMax];
 
   slider.on('update', (values: (string | number)[], handle: number) => {
     inputsYear[handle].value = String(Math.round(Number(values[handle])));

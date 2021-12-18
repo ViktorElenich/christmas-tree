@@ -95,14 +95,13 @@ export class Toys extends Page {
         filterBox1.append(box1Title);
 
         const shapeBox = document.createElement('div'); // фильтрация по фигуре
-        shapeBox.className = 'shape';
+        shapeBox.className = 'shape-container';
         shapeBox.innerHTML = 'Форма: ';
         FilterButtons.forEach(btn =>{
             const btnShape = document.createElement('button');
             btnShape.classList.add('btn-shape');
             btnShape.dataset.id = btn.filter;
             shapeBox.append(btnShape);
-            btnShape.addEventListener('click', this.clickShape);
         })
         
         const colorBox = document.createElement('div'); // фильтр по цвету
@@ -294,7 +293,7 @@ export class Toys extends Page {
             cardDescCont.append(size);
             cardDescCont.append(favorite);
             toy.classList.add('toys');
-            toy.dataset.num = toys.num;
+            toy.dataset.id = toys.num;
             cards.append(toy);
         })
         
@@ -303,14 +302,17 @@ export class Toys extends Page {
     }
 
     filterShape(items: ToysDescription[], shape: string[]): ToysDescription[]{
+        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+        
         let shapeArr = items;
         shapeArr = shapeArr.filter(item => {
             if(shape.length > 0){
                 return shape.includes(item.shape)
             }
-            console.log('shape', shape)
             return true;
         })
+        this.removeCards(cards);
+        this.renderCards(shapeArr);
         return shapeArr;
     }
 
@@ -324,8 +326,84 @@ export class Toys extends Page {
             target.classList.add('active');
             filterShapes.push(shape);
         }
-
         this.filterShape(data, filterShapes);
+    }
+
+    renderCards(card: ToysDescription[]){
+        const cardsWrapper = document.querySelector('.cards');
+
+        card.forEach(cards =>{
+            const toy = document.createElement('div');
+            const infoCard = document.createElement('h2'); // название шара
+            infoCard.classList.add('toys-title');
+            infoCard.innerHTML = cards.name;
+
+            const imageCard = document.createElement('img'); // кратинка игрушки
+            imageCard.classList.add('toys-img');
+            imageCard.src = `assets/toys/${cards.num}.webp`;
+            imageCard.alt = 'toy';
+
+            const cardDescCont = document.createElement('div');  // контейнер описания игрушки
+            cardDescCont.classList.add('toys-description');
+
+            const count = document.createElement('p');
+            count.classList.add('count');
+            count.dataset.count = cards.count;
+            count.innerHTML = `Количество: <span>${cards.count}</span>`;
+
+            const year = document.createElement('p');
+            year.classList.add('year');
+            year.dataset.year = cards.year;
+            year.innerHTML = `Год: <span>${cards.year}</span>`;
+
+            const shape = document.createElement('p');
+            shape.classList.add('shape');
+            shape.dataset.shape = cards.shape;
+            shape.innerHTML = `Форма: <span>${cards.shape}</span>`;
+
+            const color = document.createElement('p');
+            color.classList.add('color');
+            color.dataset.color = cards.color;
+            color.innerHTML = `Цвет: <span>${cards.color}</span>`;
+
+            const size = document.createElement('p');
+            size.classList.add('size');
+            size.dataset.size = cards.size;
+            size.innerHTML = `Размер: <span>${cards.size}</span>`;
+
+            const favorite = document.createElement('p');
+            favorite.classList.add('favorite');
+            if(cards.favorite === true){
+                favorite.dataset.favorite = `${cards.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Да</span>`;
+            } else {
+                favorite.dataset.favorite = `${cards.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Нет</span>`;
+            }
+            const tape = document.createElement('div');
+            tape.classList.add('tape');
+            
+            toy.append(infoCard);
+            toy.append(imageCard);
+            toy.append(cardDescCont);
+            toy.append(tape);
+            cardDescCont.append(count);
+            cardDescCont.append(year);
+            cardDescCont.append(shape);
+            cardDescCont.append(color);
+            cardDescCont.append(size);
+            cardDescCont.append(favorite);
+            toy.classList.add('toys');
+            toy.dataset.id = cards.num;
+
+            cardsWrapper.append(toy);
+        })
+    }
+
+    removeCards(card: NodeListOf<HTMLDivElement>){
+        card.forEach(element =>{
+            element.remove();
+        })
     }
 
     render(){
@@ -335,5 +413,7 @@ export class Toys extends Page {
     afterRender(){
         quantitySlider();
         yearSlider();
+        const shapeCont = document.querySelector('.shape-container');
+        shapeCont?.addEventListener('click', this.clickShape);
     }
 }

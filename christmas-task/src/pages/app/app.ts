@@ -66,5 +66,10 @@ export class App {
         App.renderNewPage('main-page');
         App.container.append(this.footer.render());
         this.enableRouteChange();
+
+        window.location.replace("#main-page");
+        if (typeof window.history.replaceState == "function") {
+            history.replaceState({}, "", window.location.href.slice(0, 0));
+        }
     }
 }

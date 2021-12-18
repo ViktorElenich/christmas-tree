@@ -13,9 +13,9 @@ export function quantitySlider(){
     },
   });
 
-  const inputQuantity0 = document.querySelector('.min-quantity') as HTMLInputElement;
-  const inputQuantity1 = document.querySelector('.max-quantity') as HTMLInputElement;
-  const inputsQuantity = [inputQuantity0, inputQuantity1];
+  const inputQuantityMin = document.querySelector('.min-quantity') as HTMLInputElement;
+  const inputQuantityMax = document.querySelector('.max-quantity') as HTMLInputElement;
+  const inputsQuantity = [inputQuantityMin, inputQuantityMax];
 
   slider.on(
     'update',
