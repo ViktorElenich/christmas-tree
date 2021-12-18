@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400&family=Mountains+of+Christmas:wght@700&family=Pacifico&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -40,10 +41,11 @@ body {
   letter-spacing: 2px;
 }
 .shape-container,
-.color,
-.size {
+.color-container,
+.size-container {
   display: flex;
   align-items: center;
+  margin: 0.8em 0;
 }
 .shape-container button {
   width: 40px;
@@ -77,7 +79,7 @@ body {
   background-image: url(./assets/svg/toy.svg);
   margin-left: 15px;
 }
-.color button {
+.color-container button {
   width: 30px;
   height: 30px;
   border: 1px solid #278d9f;
@@ -87,27 +89,27 @@ body {
   cursor: pointer;
   position: relative;
 }
-.color button:nth-child(1) {
+.color-container button:nth-child(1) {
   background-color: white;
   margin-left: 15px;
 }
-.color button:nth-child(2) {
+.color-container button:nth-child(2) {
   background-color: yellow;
   margin-left: 15px;
 }
-.color button:nth-child(3) {
+.color-container button:nth-child(3) {
   background-color: red;
   margin-left: 15px;
 }
-.color button:nth-child(4) {
+.color-container button:nth-child(4) {
   background-color: blue;
   margin-left: 15px;
 }
-.color button:nth-child(5) {
+.color-container button:nth-child(5) {
   background-color: green;
   margin-left: 15px;
 }
-.size button {
+.size-container button {
   width: 50px;
   height: 50px;
   margin-left: 15px;
@@ -121,15 +123,15 @@ body {
   border: none;
   position: relative;
 }
-.size button:active,
-.color button:active,
-.shape button:active {
+.size-container button:active,
+.color-container button:active,
+.shape-container button:active {
   bottom: 1px;
 }
-.size button:nth-child(2) {
+.size-container button:nth-child(2) {
   background-size: 38px 38px;
 }
-.size button:nth-child(3) {
+.size-container button:nth-child(3) {
   background-size: 32px 32px;
 }
 .favorite {
@@ -272,10 +274,106 @@ body {
   height: 0;
   width: 0;
 }
-.hide {
-  display: none;
-}
 .active {
   filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(322deg)
     brightness(83%) contrast(88%);
+}
+.main-page {
+  min-width: 100%;
+  min-height: calc(100vh - 180px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main-page-ball {
+  position: absolute;
+  background-size: contain;
+  background-repeat: no-repeat;
+  animation: swing ease-in-out 1s infinite alternate;
+  transform-origin: center -140px;
+}
+.ball1 {
+  width: 300px;
+  height: 325px;
+  top: 150px;
+  left: 15%;
+  background-image: url(./assets/ball/1.webp);
+}
+.ball1::before {
+  content: "";
+  position: absolute;
+  background-color: #aaa;
+  top: -213px;
+  left: calc(50% - 20px);
+  width: 4px;
+  height: 220px;
+}
+.ball2 {
+  top: 100px;
+  left: 70%;
+  width: 200px;
+  height: 250px;
+  background-image: url(./assets/ball/2.webp);
+}
+.ball2::before {
+  content: "";
+  position: absolute;
+  background-color: #aaa;
+  width: 4px;
+  height: 200px;
+  top: -195px;
+  left: calc(50% - 1px);
+}
+.main-page-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 500px;
+  height: 250px;
+  border: 3px solid #278d9f;
+  border-radius: 15px;
+  background-color: rgba(31, 112, 127, 0.3);
+  backdrop-filter: blur(6px);
+  text-align: center;
+  font-size: 46px;
+  font-family: "Pacifico", cursive;
+  font-weight: bold;
+  flex-wrap: wrap;
+}
+.btn-main-page {
+  margin-top: 50px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  color: white;
+  width: 320px;
+  height: 60px;
+  border: 3px solid #278d9f;
+  background-color: rgba(31, 112, 127, 0.3);
+  backdrop-filter: blur(6px);
+  border-radius: 15px;
+  font-size: 26px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 150ms ease-in-out;
+  box-shadow: 0 0 40px 40px #1f707f4d inset, 0 0 0 0 #1f707f4d;
+}
+.btn-main-page:hover{
+  box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(-5deg);
+  }
 }

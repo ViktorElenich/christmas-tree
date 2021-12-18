@@ -15,7 +15,7 @@ interface ToysDescription {
     size: string,
     favorite: boolean
 }
-const filterShapes: string[] = [];
+
 
 const FilterButtons = [
     {
@@ -36,7 +36,7 @@ const FilterButtons = [
     },
     {
         filter: 'фигурка',
-        color: 'зеленый',
+        color: 'зелёный',
     }
 ]
 const SizeButtons = [
@@ -69,6 +69,7 @@ const Options = [
     }
 ]
 export class Toys extends Page {
+    filterShapes: string[] = [];
 
     constructor(id: string) {
         super(id)
@@ -105,7 +106,7 @@ export class Toys extends Page {
         })
         
         const colorBox = document.createElement('div'); // фильтр по цвету
-        colorBox.className = 'color';
+        colorBox.className = 'color-container';
         colorBox.innerHTML = 'Цвет: ';
         FilterButtons.forEach(btn => {
             const btnColor = document.createElement('button');
@@ -114,7 +115,7 @@ export class Toys extends Page {
             colorBox.append(btnColor);
         })
         const sizeBox = document.createElement('div'); // фильтр по размеру
-        sizeBox.className = 'size';
+        sizeBox.className = 'size-container';
         sizeBox.innerHTML = 'Размер: ';
         SizeButtons.forEach(btn =>{
             const btnSize = document.createElement('button');
@@ -308,7 +309,22 @@ export class Toys extends Page {
         shapeArr = shapeArr.filter(item => {
             if(shape.length > 0){
                 return shape.includes(item.shape)
-            }
+            }            
+            return true;
+        })
+        this.removeCards(cards);
+        this.renderCards(shapeArr);
+        return shapeArr;
+    }
+
+    filterColor(items: ToysDescription[], color: string[]): ToysDescription[]{
+        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+        
+        let shapeArr = items;
+        shapeArr = shapeArr.filter(item => {
+            if(color.length > 0){
+                return color.includes(item.color)
+            }            
             return true;
         })
         this.removeCards(cards);
@@ -319,14 +335,29 @@ export class Toys extends Page {
     clickShape = (event: Event) => {
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const shape = target.dataset.id;
-        if(filterShapes.includes(shape)){
+        if(this.filterShapes.includes(shape)){
             target.classList.remove('active');
-            filterShapes.splice(filterShapes.indexOf(shape), 1)
+            this.filterShapes.splice(this.filterShapes.indexOf(shape), 1)
         } else {
             target.classList.add('active');
-            filterShapes.push(shape);
+            this.filterShapes.push(shape);
+            console.log('array', this.filterShapes)
         }
-        this.filterShape(data, filterShapes);
+        this.filterShape(data, this.filterShapes);
+    }
+
+    clickColor = (event: Event) => {
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const color = target.dataset.id;
+        if(this.filterShapes.includes(color)){
+            target.classList.remove('active');
+            this.filterShapes.splice(this.filterShapes.indexOf(color), 1)
+        } else {
+            target.classList.add('active');
+            this.filterShapes.push(color);
+            console.log('array', this.filterShapes)
+        }
+        this.filterColor(data, this.filterShapes);
     }
 
     renderCards(card: ToysDescription[]){
@@ -415,5 +446,7 @@ export class Toys extends Page {
         yearSlider();
         const shapeCont = document.querySelector('.shape-container');
         shapeCont?.addEventListener('click', this.clickShape);
+        const colorCont = document.querySelector('.color-container');
+        colorCont?.addEventListener('click', this.clickColor);
     }
 }
