@@ -70,9 +70,14 @@ const Options = [
 ]
 export class Toys extends Page {
     filterShapes: string[] = [];
+    allArray: ToysDescription[] = [];
+    filterColors: string[] = [];
 
     constructor(id: string) {
         super(id)
+        this.filterShapes = [];
+        this.allArray = [];
+        this.filterColors = [];
     }
 
     renderWrapper(){
@@ -341,7 +346,7 @@ export class Toys extends Page {
         } else {
             target.classList.add('active');
             this.filterShapes.push(shape);
-            console.log('array', this.filterShapes)
+            //console.log('array', this.filterShapes)
         }
         this.filterShape(data, this.filterShapes);
     }
@@ -349,15 +354,25 @@ export class Toys extends Page {
     clickColor = (event: Event) => {
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const color = target.dataset.id;
-        if(this.filterShapes.includes(color)){
+        if(this.filterColors.includes(color)){
             target.classList.remove('active');
-            this.filterShapes.splice(this.filterShapes.indexOf(color), 1)
+            this.filterColors.splice(this.filterColors.indexOf(color), 1)
         } else {
             target.classList.add('active');
-            this.filterShapes.push(color);
-            console.log('array', this.filterShapes)
+            this.filterColors.push(color);
+            //console.log('array', this.filterColors)
         }
-        this.filterColor(data, this.filterShapes);
+        this.filterColor(data, this.filterColors);
+    }
+
+    allFilter(){
+        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+
+        this.allArray = this.filterShape(data, this.filterShapes);
+        //this.allArray = this.filterColor(this.allArray, this.filterColors);
+        console.log('allArray', this.allArray)
+        this.removeCards(cards);
+        this.renderCards(this.allArray);
     }
 
     renderCards(card: ToysDescription[]){
@@ -448,5 +463,6 @@ export class Toys extends Page {
         shapeCont?.addEventListener('click', this.clickShape);
         const colorCont = document.querySelector('.color-container');
         colorCont?.addEventListener('click', this.clickColor);
+        //this.allFilter();
     }
 }
