@@ -12,6 +12,9 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+.links-active{
+  border-bottom: 2px solid cyan;
+}
 .main_wrapper {
   padding: 0.5em;
   margin: 0 auto;
@@ -79,6 +82,10 @@ body {
   background-image: url(./assets/svg/toy.svg);
   margin-left: 15px;
 }
+.shape-container button.active {
+  filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(322deg)
+    brightness(83%) contrast(88%);
+}
 .color-container button {
   width: 30px;
   height: 30px;
@@ -109,6 +116,21 @@ body {
   background-color: green;
   margin-left: 15px;
 }
+.color-container button.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+}
+.color-container button.active:nth-child(1)::after {
+  border-color: #666;
+}
 .size-container button {
   width: 50px;
   height: 50px;
@@ -133,6 +155,10 @@ body {
 }
 .size-container button:nth-child(3) {
   background-size: 32px 32px;
+}
+.size-container button.active {
+  filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(322deg)
+    brightness(83%) contrast(88%);
 }
 .favorite {
   height: 50px;
@@ -222,6 +248,12 @@ body {
   padding-left: 10px;
   cursor: pointer;
 }
+.toys.active .tape{
+  background: #CBB77A;
+}
+.toys.active .tape::after{
+  border-left: 15px solid #CBB77A;
+}
 .toys-title {
   width: 100%;
   font-size: 20px;
@@ -273,10 +305,6 @@ body {
   position: absolute;
   height: 0;
   width: 0;
-}
-.active {
-  filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(322deg)
-    brightness(83%) contrast(88%);
 }
 .main-page {
   min-width: 100%;
@@ -363,9 +391,10 @@ body {
   cursor: pointer;
   text-decoration: none;
   transition: all 150ms ease-in-out;
+  transition: 0.5s;
   box-shadow: 0 0 40px 40px #1f707f4d inset, 0 0 0 0 #1f707f4d;
 }
-.btn-main-page:hover{
+.btn-main-page:hover {
   box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
 

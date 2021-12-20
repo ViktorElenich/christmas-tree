@@ -17,10 +17,10 @@ export function quantitySlider(){
   const inputQuantityMax = document.querySelector('.max-quantity') as HTMLInputElement;
   const inputsQuantity = [inputQuantityMin, inputQuantityMax];
 
-  slider.on(
-    'update',
-    (values: (string | number)[], handle: number) => {
+  slider.on('update', (values: (string | number)[], handle: number) => {
       inputsQuantity[handle].value = String(Math.round(Number(values[handle])));
+      const change = new Event('change');
+      inputsQuantity[handle].dispatchEvent(change);
     },
   );
 }

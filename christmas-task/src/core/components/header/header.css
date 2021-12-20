@@ -2,7 +2,7 @@
   min-height: 70px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  background-color: rgb(24,61,66);
+  background-color: rgb(24, 61, 66);
   position: relative;
   z-index: 2;
 }
@@ -36,11 +36,14 @@
   font-weight: bold;
 }
 .links:hover {
+  transition: 0.5s;
   color: cyan;
   font-size: 32px;
 }
-.links:focus {
-  border-bottom: 2px solid cyan;
+.links:nth-child(1):hover {
+  filter: invert(57%) sepia(100%) saturate(329%) hue-rotate(141deg)
+    brightness(89%) contrast(90%);
+  transition: 0.5s;
 }
 .search_favorites {
   width: calc(33.3333333%);
@@ -52,6 +55,7 @@
   padding: 1.2em;
   width: 25em;
   height: 2.2em;
+  color: white;
   border-radius: 0.8em;
   background: radial-gradient(
     118.88% 606.86% at 0% 0%,
@@ -79,9 +83,22 @@ input[type="search"] {
 }
 .favorites {
   background-image: url(../../../assets/svg/ball.svg);
-  background-size: 50px 100%;
+  background-size: 60px 100%;
   background-repeat: no-repeat;
-  width: 55px;
+  width: 60px;
   height: 100%;
   cursor: pointer;
+  margin-left: 1em;
+}
+.favorites span {
+  display: inline-block;
+  min-width: 49px;
+  height: 49px;
+  margin-top: 28px;
+  margin-left: 6px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 49px;
+  font-size: 22px;
+  background-color: #278d9f;
 }

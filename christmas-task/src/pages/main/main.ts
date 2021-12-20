@@ -7,6 +7,12 @@ export class MainPage extends Page {
     }
 
     renderWrapper(){
+        const linkMain = document.querySelector('.links:nth-child(1)');
+        const linkToys = document.querySelector('.links:nth-child(2)');
+        const linkGame = document.querySelector('.links:nth-child(3)');
+        linkToys.classList.remove('links-active');
+        linkGame.classList.remove('links-active');
+        linkMain.classList.add('links-active');
         const wrapperMain = document.createElement('div');
         wrapperMain.classList.add('main-page');
         wrapperMain.innerHTML = `

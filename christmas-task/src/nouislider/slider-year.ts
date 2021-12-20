@@ -19,5 +19,7 @@ export function yearSlider() {
 
   slider.on('update', (values: (string | number)[], handle: number) => {
     inputsYear[handle].value = String(Math.round(Number(values[handle])));
+    const change = new Event('change');
+    inputsYear[handle].dispatchEvent(change);
   });
 }

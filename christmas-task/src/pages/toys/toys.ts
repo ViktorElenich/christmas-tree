@@ -16,7 +16,6 @@ interface ToysDescription {
     favorite: boolean
 }
 
-
 const FilterButtons = [
     {
         filter: 'шар',
@@ -69,28 +68,270 @@ const Options = [
     }
 ]
 export class Toys extends Page {
-    filterShapes: string[] = [];
-    allArray: ToysDescription[] = [];
-    filterColors: string[] = [];
+    searchParams: { 
+        shapes: string[], 
+        colors: string[], 
+        sizes: string[], 
+        favorite: boolean[],
+        minQuantity: number,
+        maxQuantity: number,
+        minYear: number,
+        maxYear: number,
+        optionsValue: string,
+    };
+    chosen: string[];
 
     constructor(id: string) {
         super(id)
-        this.filterShapes = [];
-        this.allArray = [];
-        this.filterColors = [];
+        this.searchParams = { 
+            shapes: [],
+            colors: [], 
+            sizes: [], 
+            favorite: [], 
+            minQuantity: null, 
+            maxQuantity: null, 
+            minYear: null, 
+            maxYear: null,
+            optionsValue: '',
+        };
+        this.chosen = [];
     }
 
     renderWrapper(){
+        const linkToys = document.querySelector('.links:nth-child(2)');
+        const linkMain = document.querySelector('.links:nth-child(1)');
+        const linkGame = document.querySelector('.links:nth-child(3)');
+        linkMain.classList.remove('links-active');
+        linkGame.classList.remove('links-active');
+        linkToys.classList.add('links-active');
+
+        const inputSearch = document.querySelector('.input_search') as HTMLInputElement;
+        inputSearch.focus();
+
         const wrapperMain = document.createElement('div'); // обвертка main
         wrapperMain.classList.add('main_wrapper');
-        const filterDiv = document.createElement('div'); // блок фильтрации
+        this.renderPage(wrapperMain);
+        this.container.append(wrapperMain);
+        
+    }
+
+    clickFilter = (event: Event) => {
+        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+        const favoriteInput = document.querySelector('#check-favorite') as HTMLInputElement;
+        const minQuantity = Number((document.querySelector('.min-quantity') as HTMLInputElement).value);
+        this.searchParams.minQuantity = minQuantity;
+        const maxQuantity = Number((document.querySelector('.max-quantity') as HTMLInputElement).value);
+        this.searchParams.maxQuantity = maxQuantity;
+        const minYear = Number((document.querySelector('.min-year') as HTMLInputElement).value);
+        this.searchParams.minYear = minYear;
+        const maxYear = Number((document.querySelector('.max-year') as HTMLInputElement).value);
+        this.searchParams.maxYear = maxYear;
+        const select = (document.querySelector('.sort-select') as HTMLSelectElement).options.selectedIndex;
+        const optionsValue = (document.querySelector('.sort-select') as HTMLSelectElement).options[select].value;
+        this.searchParams.optionsValue = optionsValue;
+        
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const dataID = target.dataset.id;
+
+        if(this.searchParams.shapes.includes(dataID)){
+            target.classList.remove('active');
+            this.searchParams.shapes.splice(this.searchParams.shapes.indexOf(dataID), 1);
+        } else if(target.classList.contains('btn-shape')){
+            target.classList.add('active');
+            this.searchParams.shapes.push(dataID);
+        }
+        if(this.searchParams.colors.includes(dataID)){
+            target.classList.remove('active');
+            this.searchParams.colors.splice(this.searchParams.colors.indexOf(dataID), 1);
+        } else if(target.classList.contains('btn-color')){
+            target.classList.add('active');
+            this.searchParams.colors.push(dataID);
+        }
+        if(this.searchParams.sizes.includes(dataID)){
+            target.classList.remove('active');
+            this.searchParams.sizes.splice(this.searchParams.sizes.indexOf(dataID), 1);
+        } else if(target.classList.contains('btn-size')){
+            target.classList.add('active');
+            this.searchParams.sizes.push(dataID);
+        }
+
+        let result = data;
+        result = result.filter(item => { // фильтр по форме
+            if(this.searchParams.shapes.length > 0){
+                return this.searchParams.shapes.includes(item.shape)
+            } 
+            return true;
+        })
+
+        result = result.filter(item => { // фильтр по цвету
+            if(this.searchParams.colors.length > 0){
+                return this.searchParams.colors.includes(item.color)
+            }
+            return true;
+        })
+
+        result = result.filter(item =>{ // фильтр по размеру
+            if(this.searchParams.sizes.length > 0){
+                return this.searchParams.sizes.includes(item.size)
+            }
+            return true;
+        })
+
+        if(favoriteInput.checked){ // фильтр по любимым
+            this.searchParams.favorite.push(true)
+            result = result.filter(item =>{
+                if(this.searchParams.favorite.length > 0){
+                    return this.searchParams.favorite.includes(item.favorite);
+                }
+                return true;
+            })
+        }
+
+        result = result.filter(item => { // фильтр по количеству
+            return Number(item.count) >= this.searchParams.minQuantity && Number(item.count) <= this.searchParams.maxQuantity;
+        })
+
+        result = result.filter(item => { // фильтр по годам
+            return Number(item.year) >= this.searchParams.minYear && Number(item.year) <= this.searchParams.maxYear;
+        })
+        
+        result = result.filter(item => { // сортировка по количеству и году
+            if(this.searchParams.optionsValue === 'sort-name-max'){
+                return result.sort(function(x: { name: string; }, y: { name: string; }){
+                    if (x.name < y.name) {return -1;}
+                    if (x.name > y.name) {return 1;}
+                    return 0;
+                })
+            } else if(this.searchParams.optionsValue === 'sort-name-min'){
+                return result.sort(function(x: { name: string; }, y: { name: string; }){
+                    if (x.name > y.name) {return -1;}
+                    if (x.name < y.name) {return 1;}
+                    return 0;
+                })
+            } else if(this.searchParams.optionsValue === 'sort-count-max'){
+                return result.sort(function(x: {count: string}, y: {count: string}){
+                    if (Number(x.count) < Number(y.count)) {return -1;}
+                    if (Number(x.count) > Number(y.count)) {return 1;}
+                    return 0;
+                })
+            } else if(this.searchParams.optionsValue === 'sort-count-min'){
+                return result.sort(function(x: {count: string}, y: {count: string}){
+                    if (Number(x.count) > Number(y.count)) {return -1;}
+                    if (Number(x.count) < Number(y.count)) {return 1;}
+                    return 0;
+                })
+            }
+            return true;
+        })
+        // сортировка по поиску
+        const search = document.querySelector('#search') as HTMLInputElement;
+        const valueSearch = search.value.trim().toLowerCase();
+        if(valueSearch){
+            result = result.filter(item => {
+                return item.name.toLowerCase().includes(valueSearch);
+            })
+        }
+
+        this.removeCards(cards);
+        this.renderCards(result)
+
+    }
+
+    renderCards(cards: ToysDescription[]){
+        const cardsWrapper = document.querySelector('.cards');
+
+        let shapeArr = cards;
+        shapeArr = shapeArr.filter(item => {
+            if(item.shape === 'шар'){
+                return true
+            }            
+            return true;
+        })
+
+        shapeArr.forEach(card =>{
+            const toy = document.createElement('div');
+            const infoCard = document.createElement('h2'); // название шара
+            infoCard.classList.add('toys-title');
+            infoCard.innerHTML = card.name;
+
+            const imageCard = document.createElement('img'); // кратинка игрушки
+            imageCard.classList.add('toys-img');
+            imageCard.src = `assets/toys/${card.num}.webp`;
+            imageCard.alt = 'toy';
+
+            const cardDescCont = document.createElement('div');  // контейнер описания игрушки
+            cardDescCont.classList.add('toys-description');
+
+            const count = document.createElement('p');
+            count.classList.add('count');
+            count.dataset.count = card.count;
+            count.innerHTML = `Количество: <span>${card.count}</span>`;
+
+            const year = document.createElement('p');
+            year.classList.add('year');
+            year.dataset.year = card.year;
+            year.innerHTML = `Год: <span>${card.year}</span>`;
+
+            const shape = document.createElement('p');
+            shape.classList.add('shape');
+            shape.dataset.shape = card.shape;
+            shape.innerHTML = `Форма: <span>${card.shape}</span>`;
+
+            const color = document.createElement('p');
+            color.classList.add('color');
+            color.dataset.color = card.color;
+            color.innerHTML = `Цвет: <span>${card.color}</span>`;
+
+            const size = document.createElement('p');
+            size.classList.add('size');
+            size.dataset.size = card.size;
+            size.innerHTML = `Размер: <span>${card.size}</span>`;
+
+            const favorite = document.createElement('p');
+            favorite.classList.add('favorite');
+            if(card.favorite === true){
+                favorite.dataset.favorite = `${card.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Да</span>`;
+            } else {
+                favorite.dataset.favorite = `${card.favorite}`;
+                favorite.innerHTML = `Любимая: <span>Нет</span>`;
+            }
+            const tape = document.createElement('div');
+            tape.classList.add('tape');
+            
+            toy.append(infoCard);
+            toy.append(imageCard);
+            toy.append(cardDescCont);
+            toy.append(tape);
+            cardDescCont.append(count);
+            cardDescCont.append(year);
+            cardDescCont.append(shape);
+            cardDescCont.append(color);
+            cardDescCont.append(size);
+            cardDescCont.append(favorite);
+            toy.classList.add('toys');
+            toy.dataset.id = card.num;
+
+            cardsWrapper.append(toy);
+        })
+    }
+
+    removeCards(card: NodeListOf<HTMLDivElement>){
+        card.forEach(element =>{
+            element.remove();
+        })
+    }
+
+    renderPage(wrapper: Element){
+        const filterDiv = document.createElement('form'); // блок фильтрации
         filterDiv.classList.add('filter');
-        wrapperMain.append(filterDiv);
+        filterDiv.id = 'filter';
+        wrapper.append(filterDiv);
 
         const cards = document.createElement('div'); // блок карточек игрушек
         cards.classList.add('cards');
         
-        wrapperMain.append(cards);
+        wrapper.append(cards);
 
         const filterBox1 = document.createElement('div'); // див блок фильтрации 1
         filterBox1.className = 'box box-filters';
@@ -303,153 +544,61 @@ export class Toys extends Page {
             cards.append(toy);
         })
         
-        this.container.append(wrapperMain);
         
     }
 
-    filterShape(items: ToysDescription[], shape: string[]): ToysDescription[]{
-        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
-        
-        let shapeArr = items;
-        shapeArr = shapeArr.filter(item => {
-            if(shape.length > 0){
-                return shape.includes(item.shape)
-            }            
-            return true;
-        })
-        this.removeCards(cards);
-        this.renderCards(shapeArr);
-        return shapeArr;
+    removePage(page: Element){
+        page.remove()
     }
 
-    filterColor(items: ToysDescription[], color: string[]): ToysDescription[]{
-        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
-        
-        let shapeArr = items;
-        shapeArr = shapeArr.filter(item => {
-            if(color.length > 0){
-                return color.includes(item.color)
-            }            
-            return true;
-        })
-        this.removeCards(cards);
-        this.renderCards(shapeArr);
-        return shapeArr;
-    }
-
-    clickShape = (event: Event) => {
+    clickToysCards = (event: Event) => {
+        const chosenToys = document.querySelector('.favorites span');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
-        const shape = target.dataset.id;
-        if(this.filterShapes.includes(shape)){
+        const toyID = target.dataset.id;
+
+        if(target.classList.contains('active')){
             target.classList.remove('active');
-            this.filterShapes.splice(this.filterShapes.indexOf(shape), 1)
         } else {
             target.classList.add('active');
-            this.filterShapes.push(shape);
-            //console.log('array', this.filterShapes)
         }
-        this.filterShape(data, this.filterShapes);
-    }
-
-    clickColor = (event: Event) => {
-        const target = event.target as HTMLElement & {dataset: Record<string, string>};
-        const color = target.dataset.id;
-        if(this.filterColors.includes(color)){
-            target.classList.remove('active');
-            this.filterColors.splice(this.filterColors.indexOf(color), 1)
+        if(this.chosen.includes(toyID)){
+            this.chosen.splice(this.chosen.indexOf(toyID), 1)
         } else {
-            target.classList.add('active');
-            this.filterColors.push(color);
-            //console.log('array', this.filterColors)
+            this.chosen.push(toyID);
         }
-        this.filterColor(data, this.filterColors);
-    }
+        if(this.chosen.length > 20){
+            alert('Извините уже все слоты заняты');
+            this.chosen.splice(this.chosen.indexOf(toyID), 1)
+            target.classList.remove('active');
+        }
+        chosenToys.innerHTML = `${this.chosen.length}`;
 
-    allFilter(){
-        const cards: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+        const setLocalStorage = () =>{
+            localStorage.setItem('chosen', JSON.stringify(this.chosen))
+        }
 
-        this.allArray = this.filterShape(data, this.filterShapes);
-        //this.allArray = this.filterColor(this.allArray, this.filterColors);
-        console.log('allArray', this.allArray)
-        this.removeCards(cards);
-        this.renderCards(this.allArray);
-    }
-
-    renderCards(card: ToysDescription[]){
-        const cardsWrapper = document.querySelector('.cards');
-
-        card.forEach(cards =>{
-            const toy = document.createElement('div');
-            const infoCard = document.createElement('h2'); // название шара
-            infoCard.classList.add('toys-title');
-            infoCard.innerHTML = cards.name;
-
-            const imageCard = document.createElement('img'); // кратинка игрушки
-            imageCard.classList.add('toys-img');
-            imageCard.src = `assets/toys/${cards.num}.webp`;
-            imageCard.alt = 'toy';
-
-            const cardDescCont = document.createElement('div');  // контейнер описания игрушки
-            cardDescCont.classList.add('toys-description');
-
-            const count = document.createElement('p');
-            count.classList.add('count');
-            count.dataset.count = cards.count;
-            count.innerHTML = `Количество: <span>${cards.count}</span>`;
-
-            const year = document.createElement('p');
-            year.classList.add('year');
-            year.dataset.year = cards.year;
-            year.innerHTML = `Год: <span>${cards.year}</span>`;
-
-            const shape = document.createElement('p');
-            shape.classList.add('shape');
-            shape.dataset.shape = cards.shape;
-            shape.innerHTML = `Форма: <span>${cards.shape}</span>`;
-
-            const color = document.createElement('p');
-            color.classList.add('color');
-            color.dataset.color = cards.color;
-            color.innerHTML = `Цвет: <span>${cards.color}</span>`;
-
-            const size = document.createElement('p');
-            size.classList.add('size');
-            size.dataset.size = cards.size;
-            size.innerHTML = `Размер: <span>${cards.size}</span>`;
-
-            const favorite = document.createElement('p');
-            favorite.classList.add('favorite');
-            if(cards.favorite === true){
-                favorite.dataset.favorite = `${cards.favorite}`;
-                favorite.innerHTML = `Любимая: <span>Да</span>`;
-            } else {
-                favorite.dataset.favorite = `${cards.favorite}`;
-                favorite.innerHTML = `Любимая: <span>Нет</span>`;
+        window.addEventListener('beforeunload', setLocalStorage);
+        const getLocalStorage = () => {
+            if(localStorage.getItem('chosen')){
+                let chosenLS = JSON.parse(localStorage.getItem('chosen'));
+                chosenToys.innerHTML = `${chosenLS.length}`;
             }
-            const tape = document.createElement('div');
-            tape.classList.add('tape');
-            
-            toy.append(infoCard);
-            toy.append(imageCard);
-            toy.append(cardDescCont);
-            toy.append(tape);
-            cardDescCont.append(count);
-            cardDescCont.append(year);
-            cardDescCont.append(shape);
-            cardDescCont.append(color);
-            cardDescCont.append(size);
-            cardDescCont.append(favorite);
-            toy.classList.add('toys');
-            toy.dataset.id = cards.num;
+        }
+        window.addEventListener('load', getLocalStorage);
+        
+        
 
-            cardsWrapper.append(toy);
-        })
+        
+        
     }
 
-    removeCards(card: NodeListOf<HTMLDivElement>){
-        card.forEach(element =>{
-            element.remove();
-        })
+    resetButton = (event: Event) =>{
+        const wrapperMain = document.querySelector('.main_wrapper');
+        const chosenToys = document.querySelector('.favorites span');
+        chosenToys.innerHTML = '0';
+        this.removePage(wrapperMain);
+        this.renderWrapper();
+        this.afterRender();
     }
 
     render(){
@@ -460,9 +609,39 @@ export class Toys extends Page {
         quantitySlider();
         yearSlider();
         const shapeCont = document.querySelector('.shape-container');
-        shapeCont?.addEventListener('click', this.clickShape);
+        shapeCont?.addEventListener('click', this.clickFilter);
+
         const colorCont = document.querySelector('.color-container');
-        colorCont?.addEventListener('click', this.clickColor);
-        //this.allFilter();
+        colorCont?.addEventListener('click', this.clickFilter);
+
+        const sizeCont = document.querySelector('.size-container');
+        sizeCont?.addEventListener('click', this.clickFilter);
+
+        const favorite = document.querySelector('.favorite');
+        favorite?.addEventListener('click', this.clickFilter);
+
+        const minQuantity = document.querySelector('.min-quantity');
+        minQuantity?.addEventListener('change', this.clickFilter);
+
+        const maxQuantity = document.querySelector('.max-quantity');
+        maxQuantity?.addEventListener('change', this.clickFilter);
+
+        const minYear = document.querySelector('.min-year');
+        minYear?.addEventListener('change', this.clickFilter);
+
+        const maxYear = document.querySelector('.max-year');
+        maxYear?.addEventListener('change', this.clickFilter);
+
+        const sortSelect = document.querySelector('.sort-select');
+        sortSelect?.addEventListener('change', this.clickFilter);
+
+        const input = document.querySelector("#search");
+        input.addEventListener("keyup", this.clickFilter);
+
+        const btnReset = document.querySelector('.reset');
+        btnReset.addEventListener('click', this.resetButton);
+
+        const cards = document.querySelector('.cards');
+        cards?.addEventListener('click', this.clickToysCards);
     }
 }
