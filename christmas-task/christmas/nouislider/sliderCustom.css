@@ -1,0 +1,68 @@
+.noUi-target {
+  background: white;
+  box-shadow: none;
+  border: none;
+}
+.noUi-horizontal {
+  height: 6px;
+}
+
+.noUi-handle:before,
+.noUi-handle:after {
+  display: none;
+}
+.noUi-handle {
+  box-shadow: none;
+  border-radius: 100%;
+}
+.noUi-horizontal .noUi-handle {
+  width: 20px;
+  height: 20px;
+  top: -7px;
+  right: -8px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.filter-quantity,
+.filter-year {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+}
+
+.min-quantity,
+.max-quantity,
+.min-year,
+.max-year {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  font-size: 0.8rem;
+  width: 3rem;
+  height: 2rem;
+  border-radius: 30px;
+  margin: 0.2rem 0;
+  background-color: #278d7a;
+}
+
+.min-quantity:focus,
+.max-quantity:focus,
+.min-year:focus,
+.max-year:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
+.slider-quantity,
+.slider-year {
+  width: 50%;
+  margin: 0 1.5rem;
+}

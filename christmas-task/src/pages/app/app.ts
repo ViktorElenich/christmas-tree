@@ -15,10 +15,15 @@ export const enum PageIds {
 export class App {
 
     private static container: HTMLElement = document.body;
+
     private static defaultPageId: string = 'current-page';
+    
     private initialPage: MainPage;
+    
     private header: Header;
+    
     private main: Main;
+    
     private footer: Footer;
 
     constructor() {

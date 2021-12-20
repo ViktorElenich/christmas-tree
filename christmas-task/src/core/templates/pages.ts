@@ -1,6 +1,7 @@
 export abstract class Page {
     
     protected container: HTMLElement;
+
     static textObject = {};
 
     constructor(id: string) {
@@ -17,6 +18,7 @@ export abstract class Page {
     render() {
         return this.container;
     }
+    
     afterRender() {
     }
 }

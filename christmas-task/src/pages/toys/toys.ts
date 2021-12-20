@@ -68,6 +68,7 @@ const Options = [
     }
 ]
 export class Toys extends Page {
+
     searchParams: { 
         shapes: string[], 
         colors: string[], 
@@ -79,6 +80,7 @@ export class Toys extends Page {
         maxYear: number,
         optionsValue: string,
     };
+
     chosen: string[];
 
     constructor(id: string) {
@@ -605,6 +607,7 @@ export class Toys extends Page {
         this.renderWrapper();
         return this.container;
     }
+    
     afterRender(){
         quantitySlider();
         yearSlider();
