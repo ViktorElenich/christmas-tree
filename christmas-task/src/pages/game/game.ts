@@ -91,6 +91,12 @@ export class Game extends Page {
         const wrapperGame = document.createElement('div');
         wrapperGame.classList.add('wrapper-game');
 
+        const garlandMain = document.createElement('div');
+        garlandMain.classList.add('garland_4');
+        garlandMain.id = 'garland';
+        garlandMain.innerHTML = `<div id="nums_1">1</div>`;
+        wrapperGame.append(garlandMain);
+
         const canvasSnow = document.createElement('canvas');
         canvasSnow.id = 'canvas';
         wrapperGame.append(canvasSnow);
@@ -191,6 +197,54 @@ export class Game extends Page {
 
     }
 
+    choiceBackground = (event: Event) => {
+
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const bgID = target.dataset.id;
+
+        const treeContainer = document.querySelector('.tree-container') as HTMLDivElement;
+        treeContainer.style.backgroundImage = `url(./assets/bg/${bgID}.webp)`;
+    }
+
+    choiceTree = (event: Event) => {
+
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const treeID = target.dataset.id;
+
+        const treeContainer = document.querySelector('.tree-container') as HTMLDivElement;
+
+        treeContainer.innerHTML = `
+        <div class="tree-garland-container"></div>
+        <img src="./assets/tree/${treeID}.webp" class="tree-img" alt="tree">
+        `;
+    }
+
+    mainGarland(){
+        const nums = document.getElementById('nums_1').innerHTML
+        if (Number(nums) == 1) {
+            document.getElementById('garland').className = 'garland_1';
+            document.getElementById('nums_1').innerHTML = '2'
+        }
+        if (Number(nums) == 2) {
+            document.getElementById('garland').className = 'garland_2';
+            document.getElementById('nums_1').innerHTML = '3'
+        }
+        if (Number(nums) == 3) {
+            document.getElementById('garland').className = 'garland_3';
+            document.getElementById('nums_1').innerHTML = '4'
+        }
+        if (Number(nums) == 4) {
+            document.getElementById('garland').className = 'garland_4';
+            document.getElementById('nums_1').innerHTML = '1'
+        }
+    }
+
+    clickButtonGarland = (event: Event) => {
+
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const btnID = target.dataset.color;
+        console.log(btnID)
+    }
 
     render(){
         this.renderWrapper();
@@ -198,7 +252,17 @@ export class Game extends Page {
     }
     afterRender() {
         const snowStart = document.querySelector('#snow-item');
-        snowStart.addEventListener('click', renderSnow)
-        
+        snowStart.addEventListener('click', renderSnow);
+
+        const bgContainer = document.querySelector('.bg-container');
+        bgContainer?.addEventListener('click', this.choiceBackground);
+
+        const treeContainer = document.querySelector('.tree-choose-container');
+        treeContainer?.addEventListener('click', this.choiceTree);
+
+        setInterval(this.mainGarland, 800);
+
+        const garlandButtons = document.querySelector('.garland-btn-container');
+        garlandButtons?.addEventListener('click', this.clickButtonGarland);
     }
 }

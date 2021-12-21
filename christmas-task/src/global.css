@@ -417,7 +417,7 @@ body {
   align-items: flex-start;
   align-content: flex-start;
   padding: 0.5em;
-  margin: 0 auto;
+  margin: 20px auto 0 auto;
   height: 100%;
   min-height: calc(100vh - 140px);
   width: 90%;
@@ -721,10 +721,46 @@ input[type="checkbox"]:checked + label::after {
   z-index: 2;
 }
 
+.tree-img {
+  width: auto;
+  height: 800px;
+}
+
 #canvas {
   width: 100%;
   position: absolute;
   z-index: 1;
+}
+
+#garland {
+  position: absolute;
+  top: 85px;
+  left: 0;
+  background-image: url('http://imapo.ru/img/christmas.png');
+  height: 36px;
+  width: 100%;
+  overflow: hidden;
+  z-index: 3;
+}
+
+#nums_1 {
+  padding: 100px
+}
+
+.garland_1 {
+  background-position: 0 0
+}
+
+.garland_2 {
+  background-position: 0 -36px
+}
+
+.garland_3 {
+  background-position: 0 -72px
+}
+
+.garland_4 {
+  background-position: 0 -108px
 }
 
 @keyframes swing {
