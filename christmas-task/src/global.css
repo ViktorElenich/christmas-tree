@@ -306,6 +306,19 @@ body {
   height: 0;
   width: 0;
 }
+
+.no-toys {
+  margin: 0 auto;
+  padding: 15px;
+  width: 500px;
+  height: 184px;
+  text-align: center;
+  font-size: 36px;
+  line-height: 2;
+  border-radius: 25px;
+  background-color: rgb(24, 61, 66, 0.7);
+}
+
 .main-page {
   min-width: 100%;
   min-height: calc(100vh - 180px);
@@ -398,7 +411,7 @@ body {
   box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
 
-.wrapper-game {
+.wrapper-game-container {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -428,6 +441,7 @@ body {
   align-items: flex-start;
   align-content: flex-start;
   margin-bottom: 20px;
+  z-index: 2;
 }
 
 .tree-choose-container::before {
@@ -443,6 +457,9 @@ body {
 .audio-item {
   width: 40px;
   height: 40px;
+  border: none;
+  outline: none;
+  background: none;
   margin-right: 15px;
   background-image: url(./assets/svg/audio.svg);
   background-size: cover;
@@ -454,6 +471,9 @@ body {
 .snow-item {
   width: 40px;
   height: 40px;
+  border: none;
+  outline: none;
+  background: none;
   background-image: url(./assets/svg/snow.svg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -611,17 +631,17 @@ label {
   margin: 0.2em;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   display: none;
 }
 
-input[type='checkbox'] + label,
-input[type='checkbox'] + label::before,
-input[type='checkbox'] + label::after {
+input[type="checkbox"] + label,
+input[type="checkbox"] + label::before,
+input[type="checkbox"] + label::after {
   transition: all 0.2s;
 }
 
-input[type='checkbox'] + label {
+input[type="checkbox"] + label {
   display: inline-block;
   position: relative;
   width: 70px;
@@ -630,7 +650,7 @@ input[type='checkbox'] + label {
   cursor: pointer;
 }
 
-input[type='checkbox'] + label::before {
+input[type="checkbox"] + label::before {
   display: block;
   content: attr(data-off);
   position: absolute;
@@ -640,7 +660,7 @@ input[type='checkbox'] + label::before {
   font-size: 14px;
 }
 
-input[type='checkbox'] + label::after {
+input[type="checkbox"] + label::after {
   content: "";
   position: absolute;
   top: -2px;
@@ -651,14 +671,14 @@ input[type='checkbox'] + label::after {
   border-radius: 50%;
 }
 
-input[type='checkbox']:checked + label::before {
+input[type="checkbox"]:checked + label::before {
   content: attr(data-on);
   left: 15px;
   right: auto;
   color: #fff;
 }
 
-input[type='checkbox']:checked + label::after {
+input[type="checkbox"]:checked + label::after {
   left: 44px;
   background-color: #f7f7f7;
 }
@@ -677,6 +697,34 @@ input[type='checkbox']:checked + label::after {
 
 #input-switch:checked + label::before {
   color: #fff;
+}
+
+.tree-container {
+  background-image: url(./assets/bg/1.webp);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  height: calc(100vh - 140px);
+  min-height: 750px;
+  width: 800px;
+  padding-bottom: 20px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.menu-favorites {
+  height: calc(100vh - 140px);
+  min-height: 750px;
+  width: 400px;
+  z-index: 2;
+}
+
+#canvas {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
 }
 
 @keyframes swing {

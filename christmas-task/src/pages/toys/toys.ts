@@ -233,6 +233,15 @@ export class Toys extends Page {
                 return item.name.toLowerCase().includes(valueSearch);
             })
         }
+        
+        const cardsContainer = document.querySelector('.cards');
+
+        if(result.length === 0){
+            cardsContainer.innerHTML = `<p class="no-toys">Извените, совпадений не найдено</p>`
+            this.removeCards(cards);
+        } else {
+            cardsContainer.innerHTML = ''
+        }
 
         this.removeCards(cards);
         this.renderCards(result)

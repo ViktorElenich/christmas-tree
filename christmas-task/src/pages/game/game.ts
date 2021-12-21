@@ -1,4 +1,5 @@
 import { Page } from "../../core/templates/pages";
+import { renderSnow } from "../../snow/snow";
 
 const tree = [
     {
@@ -90,17 +91,25 @@ export class Game extends Page {
         const wrapperGame = document.createElement('div');
         wrapperGame.classList.add('wrapper-game');
 
+        const canvasSnow = document.createElement('canvas');
+        canvasSnow.id = 'canvas';
+        wrapperGame.append(canvasSnow);
+
+        const wrapperGameContainer = document.createElement('div');
+        wrapperGameContainer.classList.add('wrapper-game-container');
+        wrapperGame.append(wrapperGameContainer);
+
         const menuChoose = document.createElement('div');
         menuChoose.classList.add('menu-choose');
-        wrapperGame.append(menuChoose);
+        wrapperGameContainer.append(menuChoose);
 
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tree-container');
-        wrapperGame.append(treeContainer);
+        wrapperGameContainer.append(treeContainer);
 
         const menuFavorites = document.createElement('div');
         menuFavorites.classList.add('menu-favorites');
-        wrapperGame.append(menuFavorites);
+        wrapperGameContainer.append(menuFavorites);
 
         const audioAndSnowContainer = document.createElement('div');
         audioAndSnowContainer.classList.add('audio-snow-container', 'menu');
@@ -118,13 +127,15 @@ export class Game extends Page {
         garlandContainer.classList.add('garland-container', 'menu');
         menuChoose.append(garlandContainer);
 
-        const audioItem = document.createElement('div');
+        const audioItem = document.createElement('button');
         audioItem.classList.add('audio-item');
         audioAndSnowContainer.append(audioItem);
 
-        const snowItem = document.createElement('div');
+        const snowItem = document.createElement('button');
         snowItem.classList.add('snow-item');
+        snowItem.id = 'snow-item';
         audioAndSnowContainer.append(snowItem);
+        
 
         tree.forEach(item => {
             const treeItems = document.createElement('div');
@@ -168,12 +179,26 @@ export class Game extends Page {
         labelSwitch.dataset.off = 'Выкл.';
         switchOffOn.append(labelSwitch);
 
+        const favoriteToys = document.createElement('div');
+        favoriteToys.classList.add('favorite-toys-container');
+        menuFavorites.append(favoriteToys);
+
+        const decorateTrees = document.createElement('div');
+        decorateTrees.classList.add('decorate-trees');
+        menuFavorites.append(decorateTrees);
+
         this.container.append(wrapperGame);
 
     }
 
+
     render(){
         this.renderWrapper();
         return this.container;
+    }
+    afterRender() {
+        const snowStart = document.querySelector('#snow-item');
+        snowStart.addEventListener('click', renderSnow)
+        
     }
 }
