@@ -5,7 +5,6 @@ import '../../nouislider/sliderCustom.css';
 import { quantitySlider } from "../../nouislider/slider-quantity";
 import { yearSlider } from "../../nouislider/slider-year";
 import { LocalStorageUtil } from "../../local-storage/localStorage";
-import { idText } from "typescript";
 
 interface ToysDescription {
     num: string,

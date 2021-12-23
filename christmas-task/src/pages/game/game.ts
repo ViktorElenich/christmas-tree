@@ -243,9 +243,131 @@ export class Game extends Page {
 
     clickButtonGarland = (event: Event) => {
 
+        const treeContainer = document.querySelector('.tree-container');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const btnID = target.dataset.color;
         console.log(btnID)
+
+        if(btnID === 'multicolor'){
+            treeContainer.innerHTML += `
+            <ul class="light-rope">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope2">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope3">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope4">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope5">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope6">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope7">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            `
+        }
+        if(btnID === 'red'){
+            treeContainer.innerHTML += `
+            <ul class="light-rope-red">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red2">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red3">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red4">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red5">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red6">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <ul class="light-rope-red7">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            `
+        }
     }
 
     render(){
@@ -271,7 +393,16 @@ export class Game extends Page {
         const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
         const localStorage = new LocalStorageUtil();
         const firstTwentyToys = data.slice(0, 20);
-        console.log(firstTwentyToys)
+
+        firstTwentyToys.forEach(({num, count})=>{
+            toysFavoriteContainer.innerHTML += `
+                <div class="favorite-toys" data-id="${num}">
+                    <p class="favorite-count">${count}</p>
+                    <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
+                </div>
+            `;
+        })
+
         data.forEach(({num, count})=>{
             if(localStorage.getLocalStorage().indexOf(num) !== -1){
                 toysFavoriteContainer.innerHTML += `
@@ -280,15 +411,6 @@ export class Game extends Page {
                         <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
                     </div>
                 `;
-            } else {
-                /* data.slice(0, 20).forEach(({num, count})=>{
-                    toysFavoriteContainer.innerHTML += `
-                    <div class="favorite-toys" data-id="${num}">
-                        <p class="favorite-count">${count}</p>
-                        <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
-                    </div>
-                `;
-                }) */
             }
         })
     }

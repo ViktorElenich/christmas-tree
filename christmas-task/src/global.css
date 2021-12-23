@@ -712,6 +712,7 @@ input[type="checkbox"]:checked + label::after {
   width: 800px;
   padding-bottom: 20px;
   overflow: hidden;
+  position: relative;
   z-index: 2;
 }
 
@@ -766,8 +767,18 @@ input[type="checkbox"]:checked + label::after {
 
 .favorite-toys-container {
   display: flex;
-  flex: 1 1 15%;
+  flex-wrap: wrap;
   gap: 10px;
+  margin: 0 0 1.2rem 1rem;
+}
+
+.favorite-toys-container::before {
+  content: "Игрушки";
+  width: 100%;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 10px;
+  text-transform: uppercase;
 }
 
 .favorite-toys {
@@ -798,11 +809,307 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
+.decorate-trees {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 0 1rem;
+}
+
+.decorate-trees::before {
+  content: "Вы нарядили";
+  width: 100%;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+.light-rope, .light-rope-red {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 20rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope2, .light-rope-red2 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 25rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope3, .light-rope-red3 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 30rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope4, .light-rope-red4 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 35rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope5, .light-rope-red5 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 40rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope6, .light-rope-red6 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 47rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope7, .light-rope-red7 {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 52rem;
+  left: 2rem;
+  padding: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.light-rope li,
+.light-rope2 li,
+.light-rope3 li,
+.light-rope4 li,
+.light-rope5 li,
+.light-rope6 li, 
+.light-rope7 li {
+  position: relative;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 12px;
+  height: 28px;
+  border-radius: 50%;
+  margin: 20px;
+  display: inline-block;
+  background: rgba(0, 247, 165, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
+  animation-name: flash-1;
+  animation-duration: 2s;
+}
+
+.light-rope-red li,
+.light-rope-red2 li,
+.light-rope-red3 li,
+.light-rope-red4 li,
+.light-rope-red5 li,
+.light-rope-red6 li,
+.light-rope-red7 li {
+  position: relative;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 12px;
+  height: 28px;
+  border-radius: 50%;
+  margin: 20px;
+  display: inline-block;
+  background: rgb(247, 0, 12);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 12);
+  animation-name: flash-4;
+  animation-duration: 2s;
+}
+
+.light-rope li:nth-child(2n + 1),
+.light-rope2 li:nth-child(2n + 1),
+.light-rope3 li:nth-child(2n + 1),
+.light-rope4 li:nth-child(2n + 1), 
+.light-rope5 li:nth-child(2n + 1), 
+.light-rope6 li:nth-child(2n + 1),
+.light-rope7 li:nth-child(2n + 1) {
+  background: rgba(0, 255, 255, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 0.5);
+  animation-name: flash-2;
+  animation-duration: 0.4s;
+}
+
+.light-rope li:nth-child(4n + 2),
+.light-rope2 li:nth-child(4n + 2),
+.light-rope3 li:nth-child(4n + 2),
+.light-rope4 li:nth-child(4n + 2), 
+.light-rope5 li:nth-child(4n + 2), 
+.light-rope6 li:nth-child(4n + 2),
+.light-rope7 li:nth-child(4n + 2) {
+  background: rgba(247, 0, 148, 1);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 1);
+  animation-name: flash-3;
+  animation-duration: 1.1s;
+}
+
+.light-rope li:nth-child(odd),
+.light-rope2 li:nth-child(odd), 
+.light-rope3 li:nth-child(odd), 
+.light-rope4 li:nth-child(odd), 
+.light-rope5 li:nth-child(odd), 
+.light-rope6 li:nth-child(odd),
+.light-rope7 li:nth-child(odd) {
+  animation-duration: 1.8s;
+}
+
+.light-rope li:nth-child(3n + 1),
+.light-rope2 li:nth-child(3n + 1),
+.light-rope3 li:nth-child(3n + 1),
+.light-rope4 li:nth-child(3n + 1),
+.light-rope5 li:nth-child(3n + 1),
+.light-rope6 li:nth-child(3n + 1),
+.light-rope7 li:nth-child(3n + 1) {
+  animation-duration: 1.4s;
+}
+
+.light-rope li:before,
+.light-rope2 li:before,
+.light-rope3 li:before,
+.light-rope4 li:before,
+.light-rope5 li:before,
+.light-rope6 li:before,
+.light-rope7 li:before {
+  content: "";
+  position: absolute;
+  background: #222;
+  width: 10px;
+  height: 9.3333333333px;
+  border-radius: 3px;
+  top: -4.6666666667px;
+  left: 1px;
+}
+
+.light-rope li:after,
+.light-rope2 li:after,
+.light-rope3 li:after,
+.light-rope4 li:after,
+.light-rope5 li:after,
+.light-rope6 li:after,
+.light-rope7 li:after {
+  content: "";
+  top: -14px;
+  left: 9px;
+  position: absolute;
+  width: 52px;
+  height: 18.6666666667px;
+  border-bottom: solid #222 2px;
+  border-radius: 50%;
+}
+
+.light-rope li:last-child:after,
+.light-rope2 li:last-child:after,
+.light-rope3 li:last-child:after,
+.light-rope4 li:last-child:after,
+.light-rope5 li:last-child:after,
+.light-rope6 li:last-child:after,
+.light-rope7 li:last-child:after {
+  content: none;
+}
+
+.light-rope li:first-child,
+.light-rope2 li:first-child,
+.light-rope3 li:first-child,
+.light-rope4 li:first-child,
+.light-rope5 li:first-child,
+.light-rope6 li:first-child,
+.light-rope7 li:first-child {
+  margin-left: -40px;
+}
+
 @keyframes swing {
   0% {
     transform: rotate(5deg);
   }
   100% {
     transform: rotate(-5deg);
+  }
+}
+
+@keyframes flash-1 {
+  0%,
+  100% {
+    background: rgba(0, 247, 165, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
+  }
+  50% {
+    background: rgba(0, 247, 165, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 0.2);
+  }
+}
+
+@keyframes flash-2 {
+  0%,
+  100% {
+    background: rgba(0, 255, 255, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 1);
+  }
+  50% {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 0.2);
+  }
+}
+
+@keyframes flash-3 {
+  0%,
+  100% {
+    background: rgba(247, 0, 148, 1);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 1);
+  }
+  50% {
+    background: rgba(247, 0, 148, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 148, 0.2);
+  }
+}
+@keyframes flash-4 {
+  0%,
+  100% {
+    background: rgba(247, 0, 12);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 12);
+  }
+  50% {
+    background: rgba(247, 0, 12, 0.4);
+    box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 12, 0.2);
   }
 }
