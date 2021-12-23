@@ -1,18 +1,18 @@
 export function renderSnow(){
     //canvas init
-    var canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    var ctx = canvas.getContext("2d");
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+    const ctx = canvas.getContext("2d");
 
     //canvas dimensions
-    var W = window.innerWidth;
-    var H = window.innerHeight;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
     canvas.width = W;
     canvas.height = H;
 
     //snowflake particles
-    var mp = 150; //max particles
-    var particles: { x: number; y: number; r: number; d: number; }[] = [];
-    for (var i = 0; i < mp; i++) {
+    const mp = 150; //max particles
+    const particles: { x: number; y: number; r: number; d: number; }[] = [];
+    for (let i = 0; i < mp; i++) {
         particles.push({
             x: Math.random() * W, //x-coordinate
             y: Math.random() * H, //y-coordinate
@@ -21,6 +21,10 @@ export function renderSnow(){
         })
     }
 
+    //controls
+    let count = 0,
+    noStopMotion = 1;
+
     //Lets draw the flakes
     function draw() {
         count++;
@@ -28,8 +32,8 @@ export function renderSnow(){
 
         ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
         ctx.beginPath();
-        for (var i = 0; i < mp; i++) {
-            var p = particles[i];
+        for (let i = 0; i < mp; i++) {
+            const p = particles[i];
             ctx.moveTo(p.x, p.y);
             ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
         }
@@ -39,12 +43,12 @@ export function renderSnow(){
 
     //Function to move the snowflakes
     //angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
-    var angle = 0;
+    let angle = 0;
 
     function update() {
         angle += 0.01;
-        for (var i = 0; i < mp; i++) {
-            var p = particles[i];
+        for (let i = 0; i < mp; i++) {
+            const p = particles[i];
             //Updating X and Y coordinates
             //We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
             //Every particle has its own density which can be used to make the downward movement different for each flake
@@ -89,9 +93,7 @@ export function renderSnow(){
     noStopMotion && setTimeout(draw, 33);
     }
 
-    //controls
-    var count = 0,
-    noStopMotion = 1;
+    
     draw();
 
     setTimeout(function() {

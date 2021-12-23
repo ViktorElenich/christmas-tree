@@ -2,7 +2,7 @@ import { Page } from "../../core/templates/pages";
 
 export class MainPage extends Page {
 
-    constructor(id: string) {
+    public constructor(id: string) {
         super(id)
     }
 

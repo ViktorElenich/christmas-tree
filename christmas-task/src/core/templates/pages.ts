@@ -2,9 +2,7 @@ export abstract class Page {
     
     protected container: HTMLElement;
 
-    static textObject = {};
-
-    constructor(id: string) {
+    public constructor(id: string) {
         this.container = document.createElement('div');
         this.container.id = id;
     }

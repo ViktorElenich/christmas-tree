@@ -1,4 +1,6 @@
 import { Page } from "../../core/templates/pages";
+import data from "../../data";
+import { LocalStorageUtil } from "../../local-storage/localStorage";
 import { renderSnow } from "../../snow/snow";
 
 const tree = [
@@ -75,7 +77,7 @@ const garlandButtons = [
 
 export class Game extends Page {
 
-    constructor(id: string) {
+    public constructor(id: string) {
         super(id)
     }
 
@@ -250,6 +252,7 @@ export class Game extends Page {
         this.renderWrapper();
         return this.container;
     }
+
     afterRender() {
         const snowStart = document.querySelector('#snow-item');
         snowStart.addEventListener('click', renderSnow);
@@ -262,7 +265,31 @@ export class Game extends Page {
 
         setInterval(this.mainGarland, 800);
 
-        const garlandButtons = document.querySelector('.garland-btn-container');
-        garlandButtons?.addEventListener('click', this.clickButtonGarland);
+        const garlandButton = document.querySelector('.garland-btn-container');
+        garlandButton?.addEventListener('click', this.clickButtonGarland);
+
+        const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
+        const localStorage = new LocalStorageUtil();
+        const firstTwentyToys = data.slice(0, 20);
+        console.log(firstTwentyToys)
+        data.forEach(({num, count})=>{
+            if(localStorage.getLocalStorage().indexOf(num) !== -1){
+                toysFavoriteContainer.innerHTML += `
+                    <div class="favorite-toys" data-id="${num}">
+                        <p class="favorite-count">${count}</p>
+                        <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
+                    </div>
+                `;
+            } else {
+                /* data.slice(0, 20).forEach(({num, count})=>{
+                    toysFavoriteContainer.innerHTML += `
+                    <div class="favorite-toys" data-id="${num}">
+                        <p class="favorite-count">${count}</p>
+                        <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
+                    </div>
+                `;
+                }) */
+            }
+        })
     }
 }

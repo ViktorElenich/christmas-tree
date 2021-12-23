@@ -4,6 +4,8 @@ import '../../nouislider/slider.css';
 import '../../nouislider/sliderCustom.css';
 import { quantitySlider } from "../../nouislider/slider-quantity";
 import { yearSlider } from "../../nouislider/slider-year";
+import { LocalStorageUtil } from "../../local-storage/localStorage";
+import { idText } from "typescript";
 
 interface ToysDescription {
     num: string,
@@ -59,12 +61,12 @@ const Options = [
         text: 'По названию от «Я» до «А»'
     },
     {
-        value: 'sort-count-max',
-        text: 'По количеству по возрастанию'
+        value: 'sort-year-max',
+        text: 'По году по возрастанию'
     },
     {
-        value: 'sort-count-min',
-        text: 'По количеству по убыванию'
+        value: 'sort-year-min',
+        text: 'По году по убыванию'
     }
 ]
 export class Toys extends Page {
@@ -196,35 +198,34 @@ export class Toys extends Page {
         result = result.filter(item => { // фильтр по годам
             return Number(item.year) >= this.searchParams.minYear && Number(item.year) <= this.searchParams.maxYear;
         })
-        
-        result = result.filter(item => { // сортировка по количеству и году
-            if(this.searchParams.optionsValue === 'sort-name-max'){
-                return result.sort(function(x: { name: string; }, y: { name: string; }){
-                    if (x.name < y.name) {return -1;}
-                    if (x.name > y.name) {return 1;}
-                    return 0;
-                })
-            } else if(this.searchParams.optionsValue === 'sort-name-min'){
-                return result.sort(function(x: { name: string; }, y: { name: string; }){
-                    if (x.name > y.name) {return -1;}
-                    if (x.name < y.name) {return 1;}
-                    return 0;
-                })
-            } else if(this.searchParams.optionsValue === 'sort-count-max'){
-                return result.sort(function(x: {count: string}, y: {count: string}){
-                    if (Number(x.count) < Number(y.count)) {return -1;}
-                    if (Number(x.count) > Number(y.count)) {return 1;}
-                    return 0;
-                })
-            } else if(this.searchParams.optionsValue === 'sort-count-min'){
-                return result.sort(function(x: {count: string}, y: {count: string}){
-                    if (Number(x.count) > Number(y.count)) {return -1;}
-                    if (Number(x.count) < Number(y.count)) {return 1;}
-                    return 0;
-                })
-            }
-            return true;
-        })
+
+        // сортировка по названию и году
+        if(this.searchParams.optionsValue === 'sort-name-max'){
+            result.sort(function(x: { name: string; }, y: { name: string; }){
+                if (x.name < y.name) {return -1;}
+                if (x.name > y.name) {return 1;}
+                return 0;
+            })
+        } else if(this.searchParams.optionsValue === 'sort-name-min'){
+            result.sort(function(x: { name: string; }, y: { name: string; }){
+                if (x.name > y.name) {return -1;}
+                if (x.name < y.name) {return 1;}
+                return 0;
+            })
+        } else if(this.searchParams.optionsValue === 'sort-year-max'){
+            result.sort(function(x: {year: string}, y: {year: string}){
+                if (Number(x.year) < Number(y.year)) {return -1;}
+                if (Number(x.year) > Number(y.year)) {return 1;}
+                return 0;
+            })
+        } else if(this.searchParams.optionsValue === 'sort-year-min'){
+            result.sort(function(x: {year: string}, y: {year: string}){
+                if (Number(x.year) > Number(y.year)) {return -1;}
+                if (Number(x.year) < Number(y.year)) {return 1;}
+                return 0;
+            })
+        }
+
         // сортировка по поиску
         const search = document.querySelector('#search') as HTMLInputElement;
         const valueSearch = search.value.trim().toLowerCase();
@@ -567,40 +568,24 @@ export class Toys extends Page {
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const toyID = target.dataset.id;
 
-        if(target.classList.contains('active')){
+        const localStorage = new LocalStorageUtil();
+        const getLocalStore = localStorage.getLocalStorage();
+        const setLocalStore = localStorage.setLocalStorage(toyID);
+        console.log('get', getLocalStore)
+
+        if(getLocalStore.includes(toyID)){
             target.classList.remove('active');
+            getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
         } else {
             target.classList.add('active');
+            setLocalStore;
+            chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
         }
-        if(this.chosen.includes(toyID)){
-            this.chosen.splice(this.chosen.indexOf(toyID), 1)
-        } else {
-            this.chosen.push(toyID);
-        }
-        if(this.chosen.length > 20){
+        if(getLocalStore.length > 20){
             alert('Извините уже все слоты заняты');
-            this.chosen.splice(this.chosen.indexOf(toyID), 1)
+            getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
             target.classList.remove('active');
         }
-        chosenToys.innerHTML = `${this.chosen.length}`;
-
-        const setLocalStorage = () =>{
-            localStorage.setItem('chosen', JSON.stringify(this.chosen))
-        }
-
-        window.addEventListener('beforeunload', setLocalStorage);
-        const getLocalStorage = () => {
-            if(localStorage.getItem('chosen')){
-                let chosenLS = JSON.parse(localStorage.getItem('chosen'));
-                chosenToys.innerHTML = `${chosenLS.length}`;
-            }
-        }
-        window.addEventListener('load', getLocalStorage);
-        
-        
-
-        
-        
     }
 
     resetButton = (event: Event) =>{
@@ -614,6 +599,11 @@ export class Toys extends Page {
 
     render(){
         this.renderWrapper();
+        const chosenToys = document.querySelector('.favorites span');
+        const localStorage = new LocalStorageUtil();
+        const getLocalStore = localStorage.getLocalStorage();
+        chosenToys.innerHTML = `${getLocalStore.length}`;
+
         return this.container;
     }
     

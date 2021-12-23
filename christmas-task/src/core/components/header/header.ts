@@ -4,23 +4,23 @@ import { Components } from "../../templates/components";
 
 const Buttons = [
     {
-        id: PageIds.MainPage,
+        id: PageIds.MainPageID,
         text: '',
 
     },
     {
-        id: PageIds.ToysPage,
+        id: PageIds.ToysPageID,
         text: 'игрушки',
     },
     {
-        id: PageIds.GamePage,
+        id: PageIds.GamePageID,
         text: 'ёлка',
     }
 ]
 
 export class Header extends Components {
 
-    constructor(tagName: string, className: string, id: string) {
+    public constructor(tagName: string, className: string, id: string) {
         super(tagName, className, id)
     }
 
@@ -42,7 +42,7 @@ export class Header extends Components {
 
         const favorites = document.createElement('div');
         favorites.classList.add('favorites');
-        favorites.innerHTML = `<span>0</span>`;
+        favorites.innerHTML = `<span></span>`;
         searchAndFavorites.classList.add('search_favorites');
         wrapperHeader.classList.add('wrapper');
         wrapperHeader.append(pageButtons);

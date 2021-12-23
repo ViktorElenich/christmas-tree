@@ -7,16 +7,16 @@ import { Footer } from "../../core/components/footer/footer";
 import { Main } from "../../core/components/main/main";
 
 export const enum PageIds {
-    MainPage = 'main-page',
-    ToysPage = 'toys-page',
-    GamePage = 'game-page',
+    MainPageID = 'main-page',
+    ToysPageID = 'toys-page',
+    GamePageID = 'game-page',
 }
 
 export class App {
 
     private static container: HTMLElement = document.body;
 
-    private static defaultPageId: string = 'current-page';
+    private static defaultPageId = 'current-page';
     
     private initialPage: MainPage;
     
@@ -41,11 +41,11 @@ export class App {
         }
         let page: Page | null = null;
 
-        if(idPage === PageIds.MainPage){
+        if(idPage === PageIds.MainPageID){
             page = new MainPage(idPage);
-        } else if (idPage === PageIds.ToysPage){
+        } else if (idPage === PageIds.ToysPageID){
             page = new Toys(idPage);
-        } else if(idPage === PageIds.GamePage){
+        } else if(idPage === PageIds.GamePageID){
             page = new Game(idPage);
         }
 

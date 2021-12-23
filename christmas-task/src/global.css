@@ -421,6 +421,7 @@ body {
   height: 100%;
   min-height: calc(100vh - 140px);
   width: 90%;
+  gap: 0.6rem;
 }
 
 .menu-choose {
@@ -736,7 +737,7 @@ input[type="checkbox"]:checked + label::after {
   position: absolute;
   top: 85px;
   left: 0;
-  background-image: url('http://imapo.ru/img/christmas.png');
+  background-image: url("http://imapo.ru/img/christmas.png");
   height: 36px;
   width: 100%;
   overflow: hidden;
@@ -744,23 +745,57 @@ input[type="checkbox"]:checked + label::after {
 }
 
 #nums_1 {
-  padding: 100px
+  padding: 100px;
 }
 
 .garland_1 {
-  background-position: 0 0
+  background-position: 0 0;
 }
 
 .garland_2 {
-  background-position: 0 -36px
+  background-position: 0 -36px;
 }
 
 .garland_3 {
-  background-position: 0 -72px
+  background-position: 0 -72px;
 }
 
 .garland_4 {
-  background-position: 0 -108px
+  background-position: 0 -108px;
+}
+
+.favorite-toys-container {
+  display: flex;
+  flex: 1 1 15%;
+  gap: 10px;
+}
+
+.favorite-toys {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 5rem;
+  height: 5.5rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1.1rem;
+}
+
+.favorite-count {
+  position: absolute;
+  text-align: center;
+  line-height: 1.5;
+  width: 1.5rem;
+  height: 1.5rem;
+  bottom: 0.3rem;
+  right: 0.4rem;
+  background-color: red;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.favorite-img {
+  width: 100%;
 }
 
 @keyframes swing {
