@@ -77,8 +77,23 @@ const garlandButtons = [
 
 export class Game extends Page {
 
+    saveBtnID: {
+        multicolor: string[],
+        red: string[],
+        green: string[],
+        blue: string[],
+        yellow: string[]
+    }
+
     public constructor(id: string) {
         super(id)
+        this.saveBtnID = {
+            multicolor: [],
+            red: [],
+            green: [],
+            blue: [],
+            yellow: []
+        }
     }
 
     renderWrapper(){
@@ -114,6 +129,9 @@ export class Game extends Page {
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tree-container');
         wrapperGameContainer.append(treeContainer);
+        const treeGarland = document.createElement('div');
+        treeGarland.classList.add('tree-garland-container');
+        treeContainer.append(treeGarland);
 
         const menuFavorites = document.createElement('div');
         menuFavorites.classList.add('menu-favorites');
@@ -215,8 +233,7 @@ export class Game extends Page {
 
         const treeContainer = document.querySelector('.tree-container') as HTMLDivElement;
 
-        treeContainer.innerHTML = `
-        <div class="tree-garland-container"></div>
+        treeContainer.innerHTML += `
         <img src="./assets/tree/${treeID}.webp" class="tree-img" alt="tree">
         `;
     }
@@ -243,130 +260,215 @@ export class Game extends Page {
 
     clickButtonGarland = (event: Event) => {
 
-        const treeContainer = document.querySelector('.tree-container');
+        const multicolorGarland = `
+        <ul class="light-rope">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope3">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope4">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope5">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope6">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope7">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `;
+        const redColorGarland = `
+        <ul class="light-rope-red">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red3">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red4">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red5">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red6">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-red7">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `;
+        const greenColorGarland = `
+        <ul class="light-rope-green">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green3">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green4">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green5">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green6">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-green7">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `;
+
+        const treeContainer = document.querySelector('.tree-garland-container');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const btnID = target.dataset.color;
-        console.log(btnID)
 
-        if(btnID === 'multicolor'){
-            treeContainer.innerHTML += `
-            <ul class="light-rope">
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope2">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope3">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope4">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope5">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope6">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope7">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            `
+        if(this.saveBtnID.multicolor.includes(btnID)){
+            target.classList.remove('btn-active');
+            this.saveBtnID.multicolor.splice(this.saveBtnID.multicolor.indexOf(btnID), 1)
+            treeContainer.innerHTML = '';
+        } else if(target.classList.contains('multicolor')){
+            treeContainer.innerHTML = '';
+            target.classList.add('btn-active');
+            this.saveBtnID.multicolor.push(btnID);
+            treeContainer.innerHTML += multicolorGarland;
         }
-        if(btnID === 'red'){
-            treeContainer.innerHTML += `
-            <ul class="light-rope-red">
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red2">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red3">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red4">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red5">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red6">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <ul class="light-rope-red7">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            `
+        if(this.saveBtnID.red.includes(btnID)){
+            target.classList.remove('btn-active');
+            this.saveBtnID.red.splice(this.saveBtnID.red.indexOf(btnID), 1)
+            treeContainer.innerHTML = '';
+        } else if(target.classList.contains('red')){
+            treeContainer.innerHTML = '';
+            target.classList.add('btn-active');
+            this.saveBtnID.red.push(btnID);
+            treeContainer.innerHTML += redColorGarland;
+        }
+        if(this.saveBtnID.green.includes(btnID)){
+            target.classList.remove('btn-active');
+            this.saveBtnID.green.splice(this.saveBtnID.green.indexOf(btnID), 1)
+            treeContainer.innerHTML = '';
+        } else if(target.classList.contains('green')){
+            treeContainer.innerHTML = '';
+            target.classList.add('btn-active');
+            this.saveBtnID.green.push(btnID);
+            treeContainer.innerHTML += greenColorGarland;
         }
     }
 

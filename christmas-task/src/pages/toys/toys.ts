@@ -82,8 +82,6 @@ export class Toys extends Page {
         optionsValue: string,
     };
 
-    chosen: string[];
-
     constructor(id: string) {
         super(id)
         this.searchParams = { 
@@ -97,7 +95,6 @@ export class Toys extends Page {
             maxYear: null,
             optionsValue: '',
         };
-        this.chosen = [];
     }
 
     renderWrapper(){
@@ -565,7 +562,7 @@ export class Toys extends Page {
     clickToysCards = (event: Event) => {
         const chosenToys = document.querySelector('.favorites span');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
-        const toyID = target.dataset.id;
+        const toyID = (target.closest('.toys') as HTMLDivElement).dataset.id;
 
         const localStorage = new LocalStorageUtil();
         const getLocalStore = localStorage.getLocalStorage();
@@ -573,26 +570,24 @@ export class Toys extends Page {
         console.log('get', getLocalStore)
 
         if(getLocalStore.includes(toyID)){
-            target.classList.remove('active');
+            target.closest('.toys').classList.remove('active');
             getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
         } else {
-            target.classList.add('active');
+            target.closest('.toys').classList.add('active');
             setLocalStore;
             chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
         }
         if(getLocalStore.length > 20){
             alert('Извините уже все слоты заняты');
             getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
-            target.classList.remove('active');
+            target.closest('.toys').classList.remove('active');
         }
     }
 
-    resetButton = (event: Event) =>{
+    resetButton = () =>{
         const wrapperMain = document.querySelector('.main_wrapper');
-        const chosenToys = document.querySelector('.favorites span');
-        chosenToys.innerHTML = '0';
         this.removePage(wrapperMain);
-        this.renderWrapper();
+        this.render();
         this.afterRender();
     }
 

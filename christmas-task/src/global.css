@@ -589,6 +589,10 @@ body {
   cursor: pointer;
 }
 
+.btn-active {
+  animation: blink 2s infinite;
+}
+
 .multicolor {
   background: linear-gradient(
     124deg,
@@ -824,7 +828,7 @@ input[type="checkbox"]:checked + label::after {
   text-transform: uppercase;
 }
 
-.light-rope, .light-rope-red {
+.light-rope, .light-rope-red, .light-rope-green {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -836,7 +840,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope2, .light-rope-red2 {
+.light-rope2, .light-rope-red2, .light-rope-green2 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -848,7 +852,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope3, .light-rope-red3 {
+.light-rope3, .light-rope-red3, .light-rope-green3 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -860,7 +864,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope4, .light-rope-red4 {
+.light-rope4, .light-rope-red4, .light-rope-green4 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -872,7 +876,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope5, .light-rope-red5 {
+.light-rope5, .light-rope-red5, .light-rope-green5 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -884,7 +888,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope6, .light-rope-red6 {
+.light-rope6, .light-rope-red6, .light-rope-green6 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -896,7 +900,7 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope7, .light-rope-red7 {
+.light-rope7, .light-rope-red7, .light-rope-green7 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -909,12 +913,19 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .light-rope li,
+.light-rope-green li,
 .light-rope2 li,
+.light-rope-green2 li,
 .light-rope3 li,
+.light-rope-green3 li,
 .light-rope4 li,
+.light-rope-green4 li,
 .light-rope5 li,
-.light-rope6 li, 
-.light-rope7 li {
+.light-rope-green5 li,
+.light-rope6 li,
+.light-rope-green6 li, 
+.light-rope7 li,
+.light-rope-green7 li {
   position: relative;
   animation-fill-mode: both;
   animation-iteration-count: infinite;
@@ -959,12 +970,19 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .light-rope li:nth-child(2n + 1),
+.light-rope-green li:nth-child(2n + 1),
 .light-rope2 li:nth-child(2n + 1),
+.light-rope-green2 li:nth-child(2n + 1),
 .light-rope3 li:nth-child(2n + 1),
+.light-rope-green3 li:nth-child(2n + 1),
 .light-rope4 li:nth-child(2n + 1), 
+.light-rope-green4 li:nth-child(2n + 1),
 .light-rope5 li:nth-child(2n + 1), 
+.light-rope-green5 li:nth-child(2n + 1),
 .light-rope6 li:nth-child(2n + 1),
-.light-rope7 li:nth-child(2n + 1) {
+.light-rope-green6 li:nth-child(2n + 1),
+.light-rope7 li:nth-child(2n + 1),
+.light-rope-green7 li:nth-child(2n + 1) {
   background: rgba(0, 255, 255, 1);
   box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 255, 255, 0.5);
   animation-name: flash-2;
@@ -985,32 +1003,74 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .light-rope li:nth-child(odd),
+.light-rope-red li:nth-child(odd),
+.light-rope-green li:nth-child(odd),
 .light-rope2 li:nth-child(odd), 
+.light-rope-red2 li:nth-child(odd),
+.light-rope-green2 li:nth-child(odd),
 .light-rope3 li:nth-child(odd), 
+.light-rope-red3 li:nth-child(odd),
+.light-rope-green3 li:nth-child(odd),
 .light-rope4 li:nth-child(odd), 
+.light-rope-red4 li:nth-child(odd),
+.light-rope-green4 li:nth-child(odd),
 .light-rope5 li:nth-child(odd), 
+.light-rope-red5 li:nth-child(odd),
+.light-rope-green5 li:nth-child(odd),
 .light-rope6 li:nth-child(odd),
-.light-rope7 li:nth-child(odd) {
+.light-rope-red6 li:nth-child(odd),
+.light-rope-green6 li:nth-child(odd),
+.light-rope7 li:nth-child(odd),
+.light-rope-red7 li:nth-child(odd),
+.light-rope-green7 li:nth-child(odd) {
   animation-duration: 1.8s;
 }
 
 .light-rope li:nth-child(3n + 1),
+.light-rope-red li:nth-child(3n + 1),
+.light-rope-green li:nth-child(3n + 1),
 .light-rope2 li:nth-child(3n + 1),
+.light-rope-red2 li:nth-child(3n + 1),
+.light-rope-green2 li:nth-child(3n + 1),
 .light-rope3 li:nth-child(3n + 1),
+.light-rope-red3 li:nth-child(3n + 1),
+.light-rope-green3 li:nth-child(3n + 1),
 .light-rope4 li:nth-child(3n + 1),
+.light-rope-red4 li:nth-child(3n + 1),
+.light-rope-green4 li:nth-child(3n + 1),
 .light-rope5 li:nth-child(3n + 1),
+.light-rope-red5 li:nth-child(3n + 1),
+.light-rope-green5 li:nth-child(3n + 1),
 .light-rope6 li:nth-child(3n + 1),
-.light-rope7 li:nth-child(3n + 1) {
+.light-rope-red6 li:nth-child(3n + 1),
+.light-rope-green6 li:nth-child(3n + 1),
+.light-rope7 li:nth-child(3n + 1),
+.light-rope-red7 li:nth-child(3n + 1),
+.light-rope-green7 li:nth-child(3n + 1) {
   animation-duration: 1.4s;
 }
 
 .light-rope li:before,
+.light-rope-red li::before,
+.light-rope-green li::before,
 .light-rope2 li:before,
+.light-rope-red2 li::before,
+.light-rope-green2 li::before,
 .light-rope3 li:before,
+.light-rope-red3 li::before,
+.light-rope-green3 li::before,
 .light-rope4 li:before,
+.light-rope-red4 li::before,
+.light-rope-green4 li::before,
 .light-rope5 li:before,
+.light-rope-red5 li::before,
+.light-rope-green5 li::before,
 .light-rope6 li:before,
-.light-rope7 li:before {
+.light-rope-red6 li::before,
+.light-rope-green6 li::before,
+.light-rope7 li:before,
+.light-rope-red7 li::before,
+.light-rope-green7 li::before {
   content: "";
   position: absolute;
   background: #222;
@@ -1022,12 +1082,26 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .light-rope li:after,
+.light-rope-red li::after,
+.light-rope-green li::after,
 .light-rope2 li:after,
+.light-rope-red2 li::after,
+.light-rope-green2 li::after,
 .light-rope3 li:after,
+.light-rope-red3 li::after,
+.light-rope-green3 li::after,
 .light-rope4 li:after,
+.light-rope-red4 li::after,
+.light-rope-green4 li::after,
 .light-rope5 li:after,
+.light-rope-red5 li::after,
+.light-rope-green5 li::after,
 .light-rope6 li:after,
-.light-rope7 li:after {
+.light-rope-red6 li::after,
+.light-rope-green6 li::after,
+.light-rope7 li:after,
+.light-rope-red7 li::after,
+.light-rope-green7 li::after {
   content: "";
   top: -14px;
   left: 9px;
@@ -1039,22 +1113,50 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .light-rope li:last-child:after,
+.light-rope-red li:last-child:after,
+.light-rope-green li:last-child:after,
 .light-rope2 li:last-child:after,
+.light-rope-red2 li:last-child:after,
+.light-rope-green2 li:last-child:after,
 .light-rope3 li:last-child:after,
+.light-rope-red3 li:last-child:after,
+.light-rope-green3 li:last-child:after,
 .light-rope4 li:last-child:after,
+.light-rope-red4 li:last-child:after,
+.light-rope-green4 li:last-child:after,
 .light-rope5 li:last-child:after,
+.light-rope-red5 li:last-child:after,
+.light-rope-green5 li:last-child:after,
 .light-rope6 li:last-child:after,
-.light-rope7 li:last-child:after {
+.light-rope-red6 li:last-child:after,
+.light-rope-green6 li:last-child:after,
+.light-rope7 li:last-child:after,
+.light-rope-red7 li:last-child:after,
+.light-rope-green7 li:last-child:after {
   content: none;
 }
 
 .light-rope li:first-child,
+.light-rope-red li:first-child,
+.light-rope-green li:first-child,
 .light-rope2 li:first-child,
+.light-rope-red2 li:first-child,
+.light-rope-green2 li:first-child,
 .light-rope3 li:first-child,
+.light-rope-red3 li:first-child,
+.light-rope-green3 li:first-child,
 .light-rope4 li:first-child,
+.light-rope-red4 li:first-child,
+.light-rope-green4 li:first-child,
 .light-rope5 li:first-child,
+.light-rope-red5 li:first-child,
+.light-rope-green5 li:first-child,
 .light-rope6 li:first-child,
-.light-rope7 li:first-child {
+.light-rope-red6 li:first-child,
+.light-rope-green6 li:first-child,
+.light-rope7 li:first-child,
+.light-rope-red7 li:first-child,
+.light-rope-green7 li:first-child {
   margin-left: -40px;
 }
 
@@ -1064,6 +1166,18 @@ input[type="checkbox"]:checked + label::after {
   }
   100% {
     transform: rotate(-5deg);
+  }
+}
+
+@keyframes blink {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
