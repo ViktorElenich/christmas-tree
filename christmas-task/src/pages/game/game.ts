@@ -156,6 +156,11 @@ export class Game extends Page {
         const audioItem = document.createElement('button');
         audioItem.classList.add('audio-item');
         audioAndSnowContainer.append(audioItem);
+        const audio = document.createElement('audio');
+        audio.id = 'player';
+        audio.src = './assets/audio/audio.mp3';
+        audio.loop = true;
+        audioItem.append(audio);
 
         const snowItem = document.createElement('button');
         snowItem.classList.add('snow-item');
@@ -608,6 +613,20 @@ export class Game extends Page {
         }
     }
 
+    playAndStopAudio(){
+        const audio = document.getElementById("player") as HTMLAudioElement;
+        const audioControl = document.querySelector(".audio-item");
+
+        if(audio.paused){
+            audio.play();
+            audioControl.classList.add('play');
+        } else {
+            audio.pause();
+            audioControl.classList.remove('play');
+            audio.currentTime = 0.0;
+        }
+    }
+
     render(){
         this.renderWrapper();
         return this.container;
@@ -627,6 +646,9 @@ export class Game extends Page {
 
         const garlandButton = document.querySelector('.garland-btn-container');
         garlandButton?.addEventListener('click', this.clickButtonGarland);
+
+        const playAudio = document.querySelector('.audio-item');
+        playAudio.addEventListener('click', this.playAndStopAudio);
 
         const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
         const localStorage = new LocalStorageUtil();
