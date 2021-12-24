@@ -493,6 +493,64 @@ export class Game extends Page {
             <li></li>
         </ul>
         `
+        const yellowColorGarland = `
+        <ul class="light-rope-yellow">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow3">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow4">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow5">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow6">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-yellow7">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `
 
         const treeContainer = document.querySelector('.tree-garland-container');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
@@ -537,6 +595,16 @@ export class Game extends Page {
             target.classList.add('btn-active');
             this.saveBtnID.blue.push(btnID);
             treeContainer.innerHTML += blueColorGarland;
+        }
+        if(this.saveBtnID.yellow.includes(btnID)){
+            target.classList.remove('btn-active');
+            this.saveBtnID.yellow.splice(this.saveBtnID.yellow.indexOf(btnID), 1)
+            treeContainer.innerHTML = '';
+        } else if(target.classList.contains('yellow')){
+            treeContainer.innerHTML = '';
+            target.classList.add('btn-active');
+            this.saveBtnID.yellow.push(btnID);
+            treeContainer.innerHTML += yellowColorGarland;
         }
     }
 
