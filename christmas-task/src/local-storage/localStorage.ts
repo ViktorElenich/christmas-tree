@@ -17,7 +17,7 @@ export class LocalStorageUtil {
 
     setLocalStorage(id: string) {
         
-        let toyFavorites = this.getLocalStorage();
+        const toyFavorites = this.getLocalStorage();
         let pushFavorites = false;
         const index = toyFavorites.indexOf(id);
 

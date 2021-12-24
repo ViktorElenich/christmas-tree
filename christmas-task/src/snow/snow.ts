@@ -1,5 +1,4 @@
 export function renderSnow(){
-    //canvas init
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d");
 
@@ -68,7 +67,7 @@ export function renderSnow(){
                 d: p.d
                 };
             } else {
-                //If the flake is exitting from the right
+                //If the flake is exiting from the right
                 if (Math.sin(angle) > 0) {
                 //Enter from the left
                 particles[i] = {

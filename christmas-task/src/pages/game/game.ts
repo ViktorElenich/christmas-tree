@@ -129,9 +129,16 @@ export class Game extends Page {
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tree-container');
         wrapperGameContainer.append(treeContainer);
+
         const treeGarland = document.createElement('div');
         treeGarland.classList.add('tree-garland-container');
         treeContainer.append(treeGarland);
+
+        const treeImg = document.createElement('img');
+        treeImg.classList.add('tree-img');
+        treeImg.src = './assets/tree/1.webp';
+        treeImg.alt = 'tree';
+        treeContainer.append(treeImg);
 
         const menuFavorites = document.createElement('div');
         menuFavorites.classList.add('menu-favorites');
@@ -236,11 +243,8 @@ export class Game extends Page {
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const treeID = target.dataset.id;
 
-        const treeContainer = document.querySelector('.tree-container') as HTMLDivElement;
-
-        treeContainer.innerHTML += `
-        <img src="./assets/tree/${treeID}.webp" class="tree-img" alt="tree">
-        `;
+        const treeImg: HTMLImageElement = document.querySelector('.tree-img');
+        treeImg.src = `./assets/tree/${treeID}.webp`;
     }
 
     mainGarland(){
@@ -627,6 +631,38 @@ export class Game extends Page {
         }
     }
 
+    dragAndDrop(){
+        //let coordX: number, coordY: number;
+
+        const dragElement: NodeListOf<HTMLDivElement> = document.querySelectorAll('.favorite-toys');
+        const dropZones = document.querySelectorAll('.tree-img')
+        dragElement.forEach(element => {
+            element.draggable = true;
+
+            /* element.addEventListener('dragstart', (e)=>{
+                e.dataTransfer.setData('text/html', 'dragstart');
+                coordX = e.offsetX;
+                coordY = e.offsetY;
+                console.log('start')
+            }) */
+
+            /* element.addEventListener('dragend', (e)=>{
+                element.style.position = 'absolute';
+            }) */ 
+
+            dropZones.forEach(dropZone => {
+                dropZone.addEventListener('dragover', (e)=>{
+                    e.preventDefault()
+                    console.log('dragover')
+                })
+                dropZone.addEventListener('drop', ()=>{
+                    element.style.position = 'absolute';
+                    //element.style.top = (e.pageY - coordY) + 'px';
+                })
+            });
+        })
+    }
+
     render(){
         this.renderWrapper();
         return this.container;
@@ -634,7 +670,9 @@ export class Game extends Page {
 
     afterRender() {
         const snowStart = document.querySelector('#snow-item');
-        snowStart.addEventListener('click', renderSnow);
+        snowStart.addEventListener('click', ()=>{
+            renderSnow()
+        });
 
         const bgContainer = document.querySelector('.bg-container');
         bgContainer?.addEventListener('click', this.choiceBackground);
@@ -675,5 +713,7 @@ export class Game extends Page {
                 `;
             })
         }
+
+        this.dragAndDrop();
     }
 }
