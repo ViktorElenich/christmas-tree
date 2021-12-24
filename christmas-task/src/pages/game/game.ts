@@ -435,6 +435,64 @@ export class Game extends Page {
             <li></li>
         </ul>
         `;
+        const blueColorGarland = `
+        <ul class="light-rope-blue">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue2">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue3">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue4">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue5">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue6">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <ul class="light-rope-blue7">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        `
 
         const treeContainer = document.querySelector('.tree-garland-container');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
@@ -470,6 +528,16 @@ export class Game extends Page {
             this.saveBtnID.green.push(btnID);
             treeContainer.innerHTML += greenColorGarland;
         }
+        if(this.saveBtnID.blue.includes(btnID)){
+            target.classList.remove('btn-active');
+            this.saveBtnID.blue.splice(this.saveBtnID.blue.indexOf(btnID), 1)
+            treeContainer.innerHTML = '';
+        } else if(target.classList.contains('blue')){
+            treeContainer.innerHTML = '';
+            target.classList.add('btn-active');
+            this.saveBtnID.blue.push(btnID);
+            treeContainer.innerHTML += blueColorGarland;
+        }
     }
 
     render(){
@@ -496,24 +564,26 @@ export class Game extends Page {
         const localStorage = new LocalStorageUtil();
         const firstTwentyToys = data.slice(0, 20);
 
-        firstTwentyToys.forEach(({num, count})=>{
-            toysFavoriteContainer.innerHTML += `
-                <div class="favorite-toys" data-id="${num}">
-                    <p class="favorite-count">${count}</p>
-                    <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
-                </div>
-            `;
-        })
-
-        data.forEach(({num, count})=>{
-            if(localStorage.getLocalStorage().indexOf(num) !== -1){
+        if(localStorage.getLocalStorage().length !== 0){
+            data.forEach((card)=>{
+                if(localStorage.getLocalStorage().includes(card.num)){
+                    toysFavoriteContainer.innerHTML += `
+                        <div class="favorite-toys" data-id="${card.num}">
+                            <p class="favorite-count">${card.count}</p>
+                            <img src="./assets/toys/${card.num}.webp" class="favorite-img" alt="toy">
+                        </div>
+                    `;
+                }
+            })
+        } else {
+            firstTwentyToys.forEach((card)=>{
                 toysFavoriteContainer.innerHTML += `
-                    <div class="favorite-toys" data-id="${num}">
-                        <p class="favorite-count">${count}</p>
-                        <img src="./assets/toys/${num}.webp" class="favorite-img" alt="toy">
+                    <div class="favorite-toys" data-id="${card.num}">
+                        <p class="favorite-count">${card.count}</p>
+                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" alt="toy">
                     </div>
                 `;
-            }
-        })
+            })
+        }
     }
 }

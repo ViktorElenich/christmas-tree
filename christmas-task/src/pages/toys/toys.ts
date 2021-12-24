@@ -560,6 +560,7 @@ export class Toys extends Page {
     }
 
     clickToysCards = (event: Event) => {
+        
         const chosenToys = document.querySelector('.favorites span');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const toyID = (target.closest('.toys') as HTMLDivElement).dataset.id;
@@ -567,14 +568,13 @@ export class Toys extends Page {
         const localStorage = new LocalStorageUtil();
         const getLocalStore = localStorage.getLocalStorage();
         const setLocalStore = localStorage.setLocalStorage(toyID);
-        console.log('get', getLocalStore)
 
         if(getLocalStore.includes(toyID)){
             target.closest('.toys').classList.remove('active');
-            getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
+            getLocalStore.splice(getLocalStore.indexOf(toyID), 1);
+            chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
         } else {
             target.closest('.toys').classList.add('active');
-            setLocalStore;
             chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
         }
         if(getLocalStore.length > 20){
@@ -602,6 +602,18 @@ export class Toys extends Page {
     }
     
     afterRender(){
+        const localStorage = new LocalStorageUtil();
+        const getLocalStore = localStorage.getLocalStorage();
+
+        const toysID: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
+        toysID.forEach((toy) => {
+            if(getLocalStore.includes(toy.dataset.id)){
+                toy.className = 'toys active';
+            } else {
+                toy.className = 'toys';
+            }
+        });
+
         quantitySlider();
         yearSlider();
         const shapeCont = document.querySelector('.shape-container');

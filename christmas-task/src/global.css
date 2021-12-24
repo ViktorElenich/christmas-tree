@@ -734,6 +734,7 @@ input[type="checkbox"]:checked + label::after {
 
 #canvas {
   width: 100%;
+  height: 85%;
   position: absolute;
   z-index: 1;
 }
@@ -828,7 +829,10 @@ input[type="checkbox"]:checked + label::after {
   text-transform: uppercase;
 }
 
-.light-rope, .light-rope-red, .light-rope-green {
+.light-rope, 
+.light-rope-red, 
+.light-rope-green,
+.light-rope-blue {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -840,7 +844,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope2, .light-rope-red2, .light-rope-green2 {
+.light-rope2, 
+.light-rope-red2, 
+.light-rope-green2,
+.light-rope-blue2 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -852,7 +859,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope3, .light-rope-red3, .light-rope-green3 {
+.light-rope3, 
+.light-rope-red3, 
+.light-rope-green3,
+.light-rope-blue3 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -864,7 +874,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope4, .light-rope-red4, .light-rope-green4 {
+.light-rope4, 
+.light-rope-red4, 
+.light-rope-green4,
+.light-rope-blue4 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -876,7 +889,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope5, .light-rope-red5, .light-rope-green5 {
+.light-rope5, 
+.light-rope-red5, 
+.light-rope-green5,
+.light-rope-blue5 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -888,7 +904,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope6, .light-rope-red6, .light-rope-green6 {
+.light-rope6, 
+.light-rope-red6, 
+.light-rope-green6,
+.light-rope-blue6 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -900,7 +919,10 @@ input[type="checkbox"]:checked + label::after {
   width: 100%;
 }
 
-.light-rope7, .light-rope-red7, .light-rope-green7 {
+.light-rope7, 
+.light-rope-red7, 
+.light-rope-green7,
+.light-rope-blue7 {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -967,6 +989,44 @@ input[type="checkbox"]:checked + label::after {
   box-shadow: 0px 4.6666666667px 24px 3px rgba(247, 0, 12);
   animation-name: flash-4;
   animation-duration: 2s;
+}
+
+.light-rope-blue li,
+.light-rope-blue2 li,
+.light-rope-blue3 li,
+.light-rope-blue4 li,
+.light-rope-blue5 li,
+.light-rope-blue6 li,
+.light-rope-blue7 li {
+  position: relative;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 12px;
+  height: 28px;
+  border-radius: 50%;
+  margin: 20px;
+  display: inline-block;
+  background: rgb(86, 0, 247);
+  box-shadow: 0px 4.6666666667px 24px 3px rgb(74, 0, 247);
+  animation-name: flash-4;
+  animation-duration: 2s;
+}
+
+.light-rope-blue li:nth-child(2n + 1),
+.light-rope-blue2 li:nth-child(2n + 1),
+.light-rope-blue3 li:nth-child(2n + 1),
+.light-rope-blue4 li:nth-child(2n + 1),
+.light-rope-blue5 li:nth-child(2n + 1),
+.light-rope-blue6 li:nth-child(2n + 1),
+.light-rope-blue7 li:nth-child(2n + 1) {
+  background: rgb(55, 0, 255);
+  box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 174, 255, 0.5);
+  animation-name: flash-2;
+  animation-duration: 0.4s;
 }
 
 .light-rope li:nth-child(2n + 1),
