@@ -134,10 +134,8 @@ export class Game extends Page {
         treeGarland.classList.add('tree-garland-container');
         treeContainer.append(treeGarland);
 
-        const treeImg = document.createElement('img');
+        const treeImg = document.createElement('div');
         treeImg.classList.add('tree-img');
-        treeImg.src = './assets/tree/1.webp';
-        treeImg.alt = 'tree';
         treeContainer.append(treeImg);
 
         const menuFavorites = document.createElement('div');
@@ -244,7 +242,7 @@ export class Game extends Page {
         const treeID = target.dataset.id;
 
         const treeImg: HTMLImageElement = document.querySelector('.tree-img');
-        treeImg.src = `./assets/tree/${treeID}.webp`;
+        treeImg.style.backgroundImage = `url(./assets/tree/${treeID}.webp)`;
     }
 
     mainGarland(){
@@ -632,35 +630,70 @@ export class Game extends Page {
     }
 
     dragAndDrop(){
-        //let coordX: number, coordY: number;
 
-        const dragElement: NodeListOf<HTMLDivElement> = document.querySelectorAll('.favorite-toys');
-        const dropZones = document.querySelectorAll('.tree-img')
-        dragElement.forEach(element => {
-            element.draggable = true;
+        let coordX: number;
+        let coordY: number;
 
-            /* element.addEventListener('dragstart', (e)=>{
-                e.dataTransfer.setData('text/html', 'dragstart');
+        const draggable: NodeListOf<HTMLImageElement> = document.querySelectorAll("[draggable]");
+        const targets = document.querySelector(".tree-img");
+
+        for (let i = 0; i < draggable.length; i++) {
+            draggable[i].addEventListener("dragstart", (e) => {
+                e.dataTransfer.setData("text", draggable[i].id);
                 coordX = e.offsetX;
                 coordY = e.offsetY;
-                console.log('start')
-            }) */
-
-            /* element.addEventListener('dragend', (e)=>{
-                element.style.position = 'absolute';
-            }) */ 
-
-            dropZones.forEach(dropZone => {
-                dropZone.addEventListener('dragover', (e)=>{
-                    e.preventDefault()
-                    console.log('dragover')
-                })
-                dropZone.addEventListener('drop', ()=>{
-                    element.style.position = 'absolute';
-                    //element.style.top = (e.pageY - coordY) + 'px';
-                })
             });
-        })
+            targets.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                if (e.type != "drop") {
+                    return;
+                }
+                const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                const draggedEl = document.getElementById(draggedId);
+                if (draggedEl.parentNode == targets) {
+                    return;
+                }
+                draggedEl.parentNode.removeChild(draggedEl);
+                targets.appendChild(draggedEl);
+            });
+            targets.addEventListener("drop", (e) => {
+                (e as DragEvent).dataTransfer.setData("text", draggable[i].id);
+
+                const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                const draggedEl = document.getElementById(draggedId);
+
+                draggedEl.style.top = (e as DragEvent).pageY - coordY + "px";
+                draggedEl.style.left = (e as DragEvent).pageX - coordX + "px";
+            });
+            targets.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                if (e.type != "drop") {
+                    return;
+                }
+                const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                const draggedEl = document.getElementById(draggedId);
+                if (draggedEl.parentNode == targets) {
+                    return;
+                }
+                draggedEl.parentNode.removeChild(draggedEl);
+                targets.appendChild(draggedEl);
+            });
+            targets.addEventListener("dragenter", (e) => {
+                if (e.type == "dragenter") {
+                    targets.classList.add("drag-enter");
+                } else {
+                    targets.classList.remove("drag-enter");
+                }
+            });
+            targets.addEventListener("dragleave", (e) => {
+                if (e.type == "dragenter") {
+                    targets.classList.add("drag-enter");
+                } else {
+                    targets.classList.remove("drag-enter");
+                }
+            });
+        }
+
     }
 
     render(){
@@ -695,10 +728,13 @@ export class Game extends Page {
         if(localStorage.getLocalStorage().length !== 0){
             data.forEach((card)=>{
                 if(localStorage.getLocalStorage().includes(card.num)){
+                    for(let i = 0; i < card.count.length; i++){
+
+                    }
                     toysFavoriteContainer.innerHTML += `
                         <div class="favorite-toys" data-id="${card.num}">
                             <p class="favorite-count">${card.count}</p>
-                            <img src="./assets/toys/${card.num}.webp" class="favorite-img" alt="toy">
+                            <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}" draggable="true" data-img-num="${card.num}" alt="toy">
                         </div>
                     `;
                 }
@@ -708,7 +744,7 @@ export class Game extends Page {
                 toysFavoriteContainer.innerHTML += `
                     <div class="favorite-toys" data-id="${card.num}">
                         <p class="favorite-count">${card.count}</p>
-                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" alt="toy">
+                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}" draggable="true" data-img-num="${card.num}" alt="toy">
                     </div>
                 `;
             })
