@@ -52,6 +52,9 @@ const SizeButtons = [
 ]
 const Options = [
     {
+        text: 'Выбрать'
+    },
+    {
         value: 'sort-name-max',
         text: 'По названию от «А» до «Я»'
     },
@@ -74,7 +77,7 @@ export class Toys extends Page {
         shapes: string[], 
         colors: string[], 
         sizes: string[], 
-        favorite: boolean[],
+        favorite: boolean,
         minQuantity: number,
         maxQuantity: number,
         minYear: number,
@@ -88,7 +91,7 @@ export class Toys extends Page {
             shapes: [],
             colors: [], 
             sizes: [], 
-            favorite: [], 
+            favorite: false, 
             minQuantity: null, 
             maxQuantity: null, 
             minYear: null, 
@@ -178,12 +181,11 @@ export class Toys extends Page {
         })
 
         if(favoriteInput.checked){ // фильтр по любимым
-            this.searchParams.favorite.push(true)
+            this.searchParams.favorite = true;
             result = result.filter(item =>{
-                if(this.searchParams.favorite.length > 0){
-                    return this.searchParams.favorite.includes(item.favorite);
+                if(this.searchParams.favorite === item.favorite){
+                    return true;
                 }
-                return true;
             })
         }
 
@@ -235,7 +237,6 @@ export class Toys extends Page {
 
         if(result.length === 0){
             cardsContainer.innerHTML = `<p class="no-toys">Извените, совпадений не найдено</p>`
-            this.removeCards(cards);
         } else {
             cardsContainer.innerHTML = ''
         }
@@ -249,13 +250,7 @@ export class Toys extends Page {
         const cardsWrapper = document.querySelector('.cards');
 
         let shapeArr = cards;
-        shapeArr = shapeArr.filter(item => {
-            if(item.shape === 'шар'){
-                return true
-            }            
-            return true;
-        })
-
+        
         shapeArr.forEach(card =>{
             const toy = document.createElement('div');
             const infoCard = document.createElement('h2'); // название шара
@@ -569,18 +564,15 @@ export class Toys extends Page {
         const getLocalStore = localStorage.getLocalStorage();
         const setLocalStore = localStorage.setLocalStorage(toyID);
 
-        if(getLocalStore.includes(toyID)){
+        if(getLocalStore.length > 19){
+            alert('Извините уже все слоты заняты');
             target.closest('.toys').classList.remove('active');
-            getLocalStore.splice(getLocalStore.indexOf(toyID), 1);
+        } else if(getLocalStore.includes(toyID)){
+            target.closest('.toys').classList.remove('active');
             chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
         } else {
             target.closest('.toys').classList.add('active');
             chosenToys.innerHTML = `${setLocalStore.toyFavorites.length}`;
-        }
-        if(getLocalStore.length > 20){
-            alert('Извините уже все слоты заняты');
-            getLocalStore.splice(getLocalStore.indexOf(toyID), 1)
-            target.closest('.toys').classList.remove('active');
         }
     }
 
@@ -649,7 +641,9 @@ export class Toys extends Page {
         const btnReset = document.querySelector('.reset');
         btnReset.addEventListener('click', this.resetButton);
 
-        const cards = document.querySelector('.cards');
-        cards?.addEventListener('click', this.clickToysCards);
+        const cards = document.querySelectorAll('.toys');
+        cards.forEach(card => {
+            card.addEventListener('click', this.clickToysCards);
+        })
     }
 }

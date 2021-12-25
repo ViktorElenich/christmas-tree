@@ -5,8 +5,8 @@
     ],
     "extends": [
         "airbnb-typescript/base",
-        "plugin:@typescript-eslint/recommended",
         "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -26,8 +26,7 @@
         "no-console": 0,
         "class-methods-use-this": "off",
         "@typescript-eslint/no-explicit-any": "error",
-        "@typescript-eslint/no-use-before-define" : "off",
-        "no-undef": "off"
+        "@typescript-eslint/no-use-before-define" : "off"
     },
     "ignorePatterns": ["*config.js"]
 }
