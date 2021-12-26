@@ -136,6 +136,7 @@ export class Game extends Page {
 
         const treeImg = document.createElement('div');
         treeImg.classList.add('tree-img');
+        treeImg.setAttribute('data-drop-target', 'true');
         treeContainer.append(treeImg);
 
         const menuFavorites = document.createElement('div');
@@ -266,6 +267,14 @@ export class Game extends Page {
     }
 
     clickButtonGarland = (event: Event) => {
+        
+        const btnMulticolor = document.querySelector('.multicolor');
+        const btnRed = document.querySelector('.red');
+        const btnGreen = document.querySelector('.green');
+        const btnBlue = document.querySelector('.blue');
+        const btnYellow = document.querySelector('.yellow');
+        const allBtnGarland: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.garland-btn');
+        const inputSwitch: HTMLInputElement = document.querySelector('.input-switch');
 
         const multicolorGarland = `
         <ul class="light-rope">
@@ -559,7 +568,7 @@ export class Game extends Page {
         </ul>
         `
 
-        const treeContainer = document.querySelector('.tree-garland-container');
+        const treeContainer = document.querySelector('.tree-img');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const btnID = target.dataset.color;
 
@@ -570,6 +579,10 @@ export class Game extends Page {
         } else if(target.classList.contains('multicolor')){
             treeContainer.innerHTML = '';
             target.classList.add('btn-active');
+            btnRed.classList.remove('btn-active');
+            btnBlue.classList.remove('btn-active');
+            btnGreen.classList.remove('btn-active');
+            btnYellow.classList.remove('btn-active');
             this.saveBtnID.multicolor.push(btnID);
             treeContainer.innerHTML += multicolorGarland;
         }
@@ -580,6 +593,10 @@ export class Game extends Page {
         } else if(target.classList.contains('red')){
             treeContainer.innerHTML = '';
             target.classList.add('btn-active');
+            btnBlue.classList.remove('btn-active');
+            btnGreen.classList.remove('btn-active');
+            btnYellow.classList.remove('btn-active');
+            btnMulticolor.classList.remove('btn-active');
             this.saveBtnID.red.push(btnID);
             treeContainer.innerHTML += redColorGarland;
         }
@@ -590,6 +607,10 @@ export class Game extends Page {
         } else if(target.classList.contains('green')){
             treeContainer.innerHTML = '';
             target.classList.add('btn-active');
+            btnBlue.classList.remove('btn-active');
+            btnYellow.classList.remove('btn-active');
+            btnMulticolor.classList.remove('btn-active');
+            btnRed.classList.remove('btn-active');
             this.saveBtnID.green.push(btnID);
             treeContainer.innerHTML += greenColorGarland;
         }
@@ -600,6 +621,10 @@ export class Game extends Page {
         } else if(target.classList.contains('blue')){
             treeContainer.innerHTML = '';
             target.classList.add('btn-active');
+            btnYellow.classList.remove('btn-active');
+            btnMulticolor.classList.remove('btn-active');
+            btnRed.classList.remove('btn-active');
+            btnGreen.classList.remove('btn-active');
             this.saveBtnID.blue.push(btnID);
             treeContainer.innerHTML += blueColorGarland;
         }
@@ -610,8 +635,20 @@ export class Game extends Page {
         } else if(target.classList.contains('yellow')){
             treeContainer.innerHTML = '';
             target.classList.add('btn-active');
+            btnMulticolor.classList.remove('btn-active');
+            btnRed.classList.remove('btn-active');
+            btnGreen.classList.remove('btn-active');
+            btnBlue.classList.remove('btn-active');
             this.saveBtnID.yellow.push(btnID);
             treeContainer.innerHTML += yellowColorGarland;
+        }
+        if(inputSwitch.checked){
+            
+        } else {
+            allBtnGarland.forEach(btn => {
+                btn.classList.remove('btn-active')
+                treeContainer.innerHTML = ''
+            });
         }
     }
 
@@ -635,7 +672,7 @@ export class Game extends Page {
         let coordY: number;
 
         const draggable: NodeListOf<HTMLImageElement> = document.querySelectorAll("[draggable]");
-        const targets = document.querySelector(".tree-img");
+        const targets: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-drop-target]');
 
         for (let i = 0; i < draggable.length; i++) {
             draggable[i].addEventListener("dragstart", (e) => {
@@ -643,55 +680,58 @@ export class Game extends Page {
                 coordX = e.offsetX;
                 coordY = e.offsetY;
             });
-            targets.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                if (e.type != "drop") {
-                    return;
-                }
-                const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                const draggedEl = document.getElementById(draggedId);
-                if (draggedEl.parentNode == targets) {
-                    return;
-                }
-                draggedEl.parentNode.removeChild(draggedEl);
-                targets.appendChild(draggedEl);
-            });
-            targets.addEventListener("drop", (e) => {
-                (e as DragEvent).dataTransfer.setData("text", draggable[i].id);
-
-                const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                const draggedEl = document.getElementById(draggedId);
-
-                draggedEl.style.top = (e as DragEvent).pageY - coordY + "px";
-                draggedEl.style.left = (e as DragEvent).pageX - coordX + "px";
-            });
-            targets.addEventListener("dragover", (e) => {
-                e.preventDefault();
-                if (e.type != "drop") {
-                    return;
-                }
-                const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                const draggedEl = document.getElementById(draggedId);
-                if (draggedEl.parentNode == targets) {
-                    return;
-                }
-                draggedEl.parentNode.removeChild(draggedEl);
-                targets.appendChild(draggedEl);
-            });
-            targets.addEventListener("dragenter", (e) => {
-                if (e.type == "dragenter") {
-                    targets.classList.add("drag-enter");
-                } else {
-                    targets.classList.remove("drag-enter");
-                }
-            });
-            targets.addEventListener("dragleave", (e) => {
-                if (e.type == "dragenter") {
-                    targets.classList.add("drag-enter");
-                } else {
-                    targets.classList.remove("drag-enter");
-                }
-            });
+            for(let i = 0; i < targets.length; i++){
+                targets[i].addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    if (e.type != "drop") {
+                        return;
+                    }
+                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                    const draggedEl = document.getElementById(draggedId);
+                    if (draggedEl.parentNode == targets[i]) {
+                        return;
+                    }
+                    draggedEl.parentNode.removeChild(draggedEl);
+                    console.log(draggedEl)
+                    targets[i].appendChild(draggedEl);
+                });
+                targets[i].addEventListener("drop", (e) => {
+                    (e as DragEvent).dataTransfer.setData("text", draggable[i].id);
+    
+                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                    const draggedEl = document.getElementById(draggedId);
+    
+                    draggedEl.style.top = (e as DragEvent).pageY - coordY + "px";
+                    draggedEl.style.left = (e as DragEvent).pageX - coordX + "px";
+                });
+                targets[i].addEventListener("dragover", (e) => {
+                    e.preventDefault();
+                    if (e.type != "drop") {
+                        return;
+                    }
+                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
+                    const draggedEl = document.getElementById(draggedId);
+                    if (draggedEl.parentNode == targets[i]) {
+                        return;
+                    }
+                    draggedEl.parentNode.removeChild(draggedEl);
+                    targets[i].appendChild(draggedEl);
+                });
+                targets[i].addEventListener("dragenter", (e) => {
+                    if (e.type == "dragenter") {
+                        targets[i].classList.add("drag-enter");
+                    } else {
+                        targets[i].classList.remove("drag-enter");
+                    }
+                });
+                targets[i].addEventListener("dragleave", (e) => {
+                    if (e.type == "dragenter") {
+                        targets[i].classList.add("drag-enter");
+                    } else {
+                        targets[i].classList.remove("drag-enter");
+                    }
+                });
+            }
         }
 
     }
@@ -718,6 +758,9 @@ export class Game extends Page {
         const garlandButton = document.querySelector('.garland-btn-container');
         garlandButton?.addEventListener('click', this.clickButtonGarland);
 
+        const inputSwitch: HTMLInputElement = document.querySelector('.input-switch');
+        inputSwitch.addEventListener('click', this.clickButtonGarland)
+
         const playAudio = document.querySelector('.audio-item');
         playAudio.addEventListener('click', this.playAndStopAudio);
 
@@ -727,26 +770,41 @@ export class Game extends Page {
 
         if(localStorage.getLocalStorage().length !== 0){
             data.forEach((card)=>{
+                const favoriteToysItem = document.createElement('div');
+                favoriteToysItem.classList.add('favorite-toys');
+                favoriteToysItem.dataset.id = card.num;
+                favoriteToysItem.setAttribute('data-drop-target', 'true');
+                const favoriteCount = document.createElement('p');
+                favoriteCount.classList.add('favorite-count');
+                favoriteCount.innerHTML = card.count;
+                favoriteToysItem.append(favoriteCount);
                 if(localStorage.getLocalStorage().includes(card.num)){
-                    for(let i = 0; i < card.count.length; i++){
-
+                    for(let i = 1; i <= Number(card.count); i++){
+                        favoriteToysItem.innerHTML += `
+                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}-${i}"
+                        draggable="true" data-img-num="${card.num}" alt="toy">
+                        `
                     }
-                    toysFavoriteContainer.innerHTML += `
-                        <div class="favorite-toys" data-id="${card.num}">
-                            <p class="favorite-count">${card.count}</p>
-                            <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}" draggable="true" data-img-num="${card.num}" alt="toy">
-                        </div>
-                    `;
                 }
+                toysFavoriteContainer.append(favoriteToysItem);
             })
         } else {
             firstTwentyToys.forEach((card)=>{
-                toysFavoriteContainer.innerHTML += `
-                    <div class="favorite-toys" data-id="${card.num}">
-                        <p class="favorite-count">${card.count}</p>
-                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}" draggable="true" data-img-num="${card.num}" alt="toy">
-                    </div>
-                `;
+                const favoriteToysItem = document.createElement('div');
+                favoriteToysItem.classList.add('favorite-toys');
+                favoriteToysItem.dataset.id = card.num;
+                favoriteToysItem.setAttribute('data-drop-target', 'true');
+                const favoriteCount = document.createElement('p');
+                favoriteCount.classList.add('favorite-count');
+                favoriteCount.innerHTML = card.count;
+                favoriteToysItem.append(favoriteCount);
+                for(let i = 1; i <= Number(card.count); i++){
+                    favoriteToysItem.innerHTML += `
+                    <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}-${i}"
+                    draggable="true" data-img-num="${card.num}" alt="toy">
+                    `
+                }                
+                toysFavoriteContainer.append(favoriteToysItem);
             })
         }
 

@@ -592,6 +592,8 @@ body {
   height: 24px;
   border-radius: 50%;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .btn-active {
@@ -734,10 +736,11 @@ input[type="checkbox"]:checked + label::after {
 
 .tree-img {
   background-image: url(./assets/tree/1.webp);
-  width: 100%;
+  width: 31.75rem;
   background-repeat: no-repeat;
   background-position: center;
-  height: 100%;
+  height: 48rem;
+  position: relative;
 }
 
 #canvas {
@@ -798,9 +801,8 @@ input[type="checkbox"]:checked + label::after {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
-  max-width: 5rem;
-  min-height: 5.5rem;
+  width: 5rem;
+  height: 5.5rem;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 1.1rem;
 }
@@ -820,8 +822,8 @@ input[type="checkbox"]:checked + label::after {
 
 .favorite-img {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 4rem;
+  height: 4rem;
 }
 
 .decorate-trees {
@@ -848,7 +850,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 20rem;
+  top: 5rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -864,7 +866,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 25rem;
+  top: 10rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -880,7 +882,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 30rem;
+  top: 15rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -896,7 +898,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 35rem;
+  top: 20rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -912,7 +914,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 40rem;
+  top: 25rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -928,7 +930,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 47rem;
+  top: 30rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -944,7 +946,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 52rem;
+  top: 35rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -975,7 +977,7 @@ input[type="checkbox"]:checked + label::after {
   width: 12px;
   height: 28px;
   border-radius: 50%;
-  margin: 20px;
+  margin: 18px;
   display: inline-block;
   background: rgba(0, 247, 165, 1);
   box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
