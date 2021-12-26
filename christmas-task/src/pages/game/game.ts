@@ -1,7 +1,8 @@
 import { Page } from "../../core/templates/pages";
 import data from "../../data";
 import { LocalStorageUtil } from "../../local-storage/localStorage";
-import { renderSnow } from "../../snow/snow";
+import { SnowScene } from "../../snow/snow";
+
 
 const tree = [
     {
@@ -107,16 +108,6 @@ export class Game extends Page {
 
         const wrapperGame = document.createElement('div');
         wrapperGame.classList.add('wrapper-game');
-
-        const garlandMain = document.createElement('div');
-        garlandMain.classList.add('garland_4');
-        garlandMain.id = 'garland';
-        garlandMain.innerHTML = `<div id="nums_1">1</div>`;
-        wrapperGame.append(garlandMain);
-
-        const canvasSnow = document.createElement('canvas');
-        canvasSnow.id = 'canvas';
-        wrapperGame.append(canvasSnow);
 
         const wrapperGameContainer = document.createElement('div');
         wrapperGameContainer.classList.add('wrapper-game-container');
@@ -244,26 +235,6 @@ export class Game extends Page {
 
         const treeImg: HTMLImageElement = document.querySelector('.tree-img');
         treeImg.style.backgroundImage = `url(./assets/tree/${treeID}.webp)`;
-    }
-
-    mainGarland(){
-        const nums = document.getElementById('nums_1').innerHTML
-        if (Number(nums) == 1) {
-            document.getElementById('garland').className = 'garland_1';
-            document.getElementById('nums_1').innerHTML = '2'
-        }
-        if (Number(nums) == 2) {
-            document.getElementById('garland').className = 'garland_2';
-            document.getElementById('nums_1').innerHTML = '3'
-        }
-        if (Number(nums) == 3) {
-            document.getElementById('garland').className = 'garland_3';
-            document.getElementById('nums_1').innerHTML = '4'
-        }
-        if (Number(nums) == 4) {
-            document.getElementById('garland').className = 'garland_4';
-            document.getElementById('nums_1').innerHTML = '1'
-        }
     }
 
     clickButtonGarland = (event: Event) => {
@@ -643,7 +614,7 @@ export class Game extends Page {
             treeContainer.innerHTML += yellowColorGarland;
         }
         if(inputSwitch.checked){
-            
+
         } else {
             allBtnGarland.forEach(btn => {
                 btn.classList.remove('btn-active')
@@ -743,17 +714,30 @@ export class Game extends Page {
 
     afterRender() {
         const snowStart = document.querySelector('#snow-item');
+        const snowScene = new SnowScene();
         snowStart.addEventListener('click', ()=>{
-            renderSnow()
-        });
+            const canvas = document.querySelectorAll("canvas");
+
+            if(snowStart.className === 'snow-item'){
+                snowScene.play();
+                for(let i = 0; i < canvas.length; i++){
+                    canvas[i].style.display = 'block';
+                }
+                snowStart.classList.add('play')
+            } else {
+                snowScene.pause();
+                for (let i = 0; i < canvas.length; i++){
+                    canvas[i].style.display = 'none';
+                }
+                snowStart.classList.remove('play');
+            }
+        })
 
         const bgContainer = document.querySelector('.bg-container');
         bgContainer?.addEventListener('click', this.choiceBackground);
 
         const treeContainer = document.querySelector('.tree-choose-container');
         treeContainer?.addEventListener('click', this.choiceTree);
-
-        setInterval(this.mainGarland, 800);
 
         const garlandButton = document.querySelector('.garland-btn-container');
         garlandButton?.addEventListener('click', this.clickButtonGarland);

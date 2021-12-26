@@ -1,106 +1,125 @@
-export function renderSnow(){
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const ctx = canvas.getContext("2d");
+import { Snowflake, SnowflakePosition } from "./snow-flake";
 
-    //canvas dimensions
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    canvas.width = W;
-    canvas.height = H;
+export interface SnowSceneConfig {
+    color: string;
+    volumn: number;
+}
 
-    //snowflake particles
-    const mp = 150; //max particles
-    const particles: { x: number; y: number; r: number; d: number; }[] = [];
-    for (let i = 0; i < mp; i++) {
-        particles.push({
-            x: Math.random() * W, //x-coordinate
-            y: Math.random() * H, //y-coordinate
-            r: Math.random() * 4 + 1, //radius
-            d: Math.random() * mp //density
-        })
-    }
+const defaultSnowSceneConfig: SnowSceneConfig = {
+    color: "#ffffff",
+    volumn: 300,
+};
 
-    //controls
-    let count = 0,
-    noStopMotion = 1;
+export class SnowScene {
+    config: SnowSceneConfig;
 
-    //Lets draw the flakes
-    function draw() {
-        count++;
-        ctx.clearRect(0, 0, W, H);
+    private container: HTMLElement;
 
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.beginPath();
-        for (let i = 0; i < mp; i++) {
-            const p = particles[i];
-            ctx.moveTo(p.x, p.y);
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+    private canvas: HTMLCanvasElement | undefined;
+
+    private ctx: CanvasRenderingContext2D | undefined;
+
+    private snowflakes!: Snowflake[];
+
+    private active = false;
+
+    private initialised = false;
+
+    private animationId = 0;
+
+    constructor(container: string | HTMLElement = "body", config?: SnowSceneConfig) {
+        const containerElement = typeof container === "string" ? document.querySelector<HTMLElement>(container) : container;
+
+        if (containerElement) {
+            this.container = containerElement;
+        } else {
+            throw new Error("can not find container by specified selector");
         }
-        ctx.fill();
-        update();
+
+        this.config = { ...defaultSnowSceneConfig, ...config };
+
+        this.buildScene();
     }
 
-    //Function to move the snowflakes
-    //angle will be an ongoing incremental flag. Sin and Cos functions will be applied to it to create vertical and horizontal movements of the flakes
-    let angle = 0;
+    play(): void {
+        if (!this.initialised) {
+            this.buildScene();
+        }
 
-    function update() {
-        angle += 0.01;
-        for (let i = 0; i < mp; i++) {
-            const p = particles[i];
-            //Updating X and Y coordinates
-            //We will add 1 to the cos function to prevent negative values which will lead flakes to move upwards
-            //Every particle has its own density which can be used to make the downward movement different for each flake
-            //Lets make it more random by adding in the radius
-            p.y += Math.cos(angle + p.d) + 1 + p.r / 2;
-            p.x += Math.sin(angle) * 2;
+        this.active = true;
+        this.snowflakes.forEach((s) => (s.active = true));
 
-            //Sending flakes back from the top when it exits
-            //Lets make it a bit more organic and let flakes enter from the left and right also.
-            if (p.x > W + 5 || p.x < -5 || p.y > H) {
-            if (i % 3 > 0) //66.67% of the flakes
-            {
-                particles[i] = {
-                x: Math.random() * W,
-                y: -10,
-                r: p.r,
-                d: p.d
-                };
-            } else {
-                //If the flake is exiting from the right
-                if (Math.sin(angle) > 0) {
-                //Enter from the left
-                particles[i] = {
-                    x: -5,
-                    y: Math.random() * H,
-                    r: p.r,
-                    d: p.d
-                };
-                } else {
-                //Enter from the right
-                particles[i] = {
-                    x: W + 5,
-                    y: Math.random() * H,
-                    r: p.r,
-                    d: p.d
-                };
-                }
-            }
-            }
-    }
-    //animation loop
-    noStopMotion && setTimeout(draw, 33);
+        if (!this.animationId) {
+            this.animationId = requestAnimationFrame(() => this.updateFrame());
+        }
     }
 
-    
-    draw();
+    pause(): void {
+        this.active = false;
+        this.snowflakes.forEach((s) => (s.active = false));
+    }
 
-    setTimeout(function() {
-    console.log('count', count / 10);
-    }, 10000);
-    canvas.style.height = window.innerHeight - 100 + 'px';
-    
-    document.querySelector('.snow-item').addEventListener('click', function() {
-        if (noStopMotion = noStopMotion ? 0 : 1) draw()
-    }, !1);
+    private buildScene(): void {
+        const canvas = document.createElement("canvas");
+
+        canvas.style.position = "absolute";
+        canvas.style.left = "0";
+        canvas.style.top = "0";
+        canvas.style.pointerEvents = "none";
+        canvas.width = this.container.clientWidth;
+        canvas.height = this.container.clientHeight;
+
+        this.container.appendChild(canvas);
+
+        this.canvas = canvas;
+
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+            this.ctx = ctx;
+        } 
+
+        this.snowflakes = [];
+        for (let i = 0; i < this.config.volumn; i++) {
+            const flake = new Snowflake(this.canvas);
+
+            flake.color = this.config.color;
+
+            this.snowflakes.push(flake);
+        }
+
+            this.initialised = true;
+        }
+
+    private destroyScene(): void {
+        this.canvas?.remove();
+        this.initialised = false;
+    }
+
+    private updateFrame(): void {
+        if (!this.canvas || !this.ctx) {
+            return;
+        }
+
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.snowflakes.forEach((flake) => {
+            flake.draw();
+        });
+
+        if (!this.active && this.snowflakes.every((flake) => flake.pos !== SnowflakePosition.ONSTAGE)) {
+            this.animationId = 0;
+            this.destroyScene();
+        } else {
+            this.animationId = requestAnimationFrame(() => this.updateFrame());
+        }
+    }
+
+    private onResize(): void {
+        if (!this.canvas || !this.ctx) {
+            return;
+        }
+
+        this.canvas.width = this.container.clientWidth;
+        this.canvas.height = this.container.clientHeight;
+    }
 }

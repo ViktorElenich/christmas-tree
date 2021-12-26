@@ -57,12 +57,40 @@ export class Header extends Components {
             buttonHTML.classList.add('links');
             pageButtons.append(buttonHTML);
         });
+
+        const garlandMain = document.createElement('div');
+        garlandMain.classList.add('garland_4');
+        garlandMain.id = 'garland';
+        garlandMain.innerHTML = `<div id="nums_1">1</div>`;
+        wrapperHeader.append(garlandMain);
+
         this.container.append(wrapperHeader)
 
     }
 
+    mainGarland(){
+        const nums = document.getElementById('nums_1').innerHTML
+        if (Number(nums) == 1) {
+            document.getElementById('garland').className = 'garland_1';
+            document.getElementById('nums_1').innerHTML = '2'
+        }
+        if (Number(nums) == 2) {
+            document.getElementById('garland').className = 'garland_2';
+            document.getElementById('nums_1').innerHTML = '3'
+        }
+        if (Number(nums) == 3) {
+            document.getElementById('garland').className = 'garland_3';
+            document.getElementById('nums_1').innerHTML = '4'
+        }
+        if (Number(nums) == 4) {
+            document.getElementById('garland').className = 'garland_4';
+            document.getElementById('nums_1').innerHTML = '1'
+        }
+    }
+
     render(){
         this.renderPageButtons()
+        setInterval(this.mainGarland, 800);
         return this.container;
     }
 }
