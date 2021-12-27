@@ -87,8 +87,9 @@ export class SnowScene {
             this.snowflakes.push(flake);
         }
 
-            this.initialised = true;
-        }
+        
+        this.initialised = true;
+    }
 
     private destroyScene(): void {
         this.canvas?.remove();
@@ -112,14 +113,5 @@ export class SnowScene {
         } else {
             this.animationId = requestAnimationFrame(() => this.updateFrame());
         }
-    }
-
-    private onResize(): void {
-        if (!this.canvas || !this.ctx) {
-            return;
-        }
-
-        this.canvas.width = this.container.clientWidth;
-        this.canvas.height = this.container.clientHeight;
     }
 }

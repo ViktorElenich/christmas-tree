@@ -76,6 +76,7 @@ const garlandButtons = [
     }
 ]
 
+const coordinates = '365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664';
 export class Game extends Page {
 
     saveBtnID: {
@@ -120,14 +121,25 @@ export class Game extends Page {
         const treeContainer = document.createElement('div');
         treeContainer.classList.add('tree-container');
         wrapperGameContainer.append(treeContainer);
+        treeContainer.ondragover = allowDrop;
 
         const treeGarland = document.createElement('div');
         treeGarland.classList.add('tree-garland-container');
         treeContainer.append(treeGarland);
 
-        const treeImg = document.createElement('div');
+        const map = document.createElement('map');
+        map.name = 'tree-map';
+        const area = document.createElement('area');
+        area.classList.add('area-tree');
+        area.coords = coordinates;
+        area.shape = 'poly'
+        map.append(area);
+        treeContainer.append(map);
+
+        const treeImg = document.createElement('img');
         treeImg.classList.add('tree-img');
-        treeImg.setAttribute('data-drop-target', 'true');
+        treeImg.setAttribute('usemap', '#tree-map');
+        treeImg.src = './assets/tree/1.webp';
         treeContainer.append(treeImg);
 
         const menuFavorites = document.createElement('div');
@@ -215,6 +227,10 @@ export class Game extends Page {
         decorateTrees.classList.add('decorate-trees');
         menuFavorites.append(decorateTrees);
 
+        function allowDrop(event: MouseEvent){
+            event.preventDefault()
+        }
+
         this.container.append(wrapperGame);
 
     }
@@ -234,7 +250,7 @@ export class Game extends Page {
         const treeID = target.dataset.id;
 
         const treeImg: HTMLImageElement = document.querySelector('.tree-img');
-        treeImg.style.backgroundImage = `url(./assets/tree/${treeID}.webp)`;
+        treeImg.src = `./assets/tree/${treeID}.webp`;
     }
 
     clickButtonGarland = (event: Event) => {
@@ -637,74 +653,56 @@ export class Game extends Page {
         }
     }
 
-    dragAndDrop(){
+    static drag(event: DragEvent){
+        console.log('drag')
+        const target = event.target as HTMLElement & {dataset: Record<string, string>}
+        event.dataTransfer?.setData('id', target.id);
+        const shiftX = event.pageX - target.getBoundingClientRect().left - 65;
+        const shiftY = event.pageY - target.getBoundingClientRect().top + 225;
 
-        let coordX: number;
-        let coordY: number;
+        event.dataTransfer?.setData('shiftX', shiftX.toString());
+        event.dataTransfer?.setData('shiftY', shiftY.toString());
+        event.dataTransfer?.setData('dataset', target.dataset.img);
+        document.body.ondrop = Game.drop;
+    }
 
-        const draggable: NodeListOf<HTMLImageElement> = document.querySelectorAll("[draggable]");
-        const targets: NodeListOf<HTMLDivElement> = document.querySelectorAll('[data-drop-target]');
+    static drop(event: Event){
+        const targetEvent = event as MouseEvent & {dataTransfer: DataTransfer};
+        const itemID = targetEvent.dataTransfer.getData('id');
+        const shiftX = Number(targetEvent.dataTransfer.getData('shiftX'));
+        const shiftY = Number(targetEvent.dataTransfer.getData('shiftY'));
+        const dataSet = targetEvent.dataTransfer.getData('dataset');
+        const treeImg = document.querySelector('.tree-container') as HTMLDivElement;
+        const areaTree = document.querySelector('.area-tree') as HTMLAreaElement;
 
-        for (let i = 0; i < draggable.length; i++) {
-            draggable[i].addEventListener("dragstart", (e) => {
-                e.dataTransfer.setData("text", draggable[i].id);
-                coordX = e.offsetX;
-                coordY = e.offsetY;
-            });
-            for(let i = 0; i < targets.length; i++){
-                targets[i].addEventListener("dragover", (e) => {
-                    e.preventDefault();
-                    if (e.type != "drop") {
-                        return;
-                    }
-                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                    const draggedEl = document.getElementById(draggedId);
-                    if (draggedEl.parentNode == targets[i]) {
-                        return;
-                    }
-                    draggedEl.parentNode.removeChild(draggedEl);
-                    console.log(draggedEl)
-                    targets[i].appendChild(draggedEl);
-                });
-                targets[i].addEventListener("drop", (e) => {
-                    (e as DragEvent).dataTransfer.setData("text", draggable[i].id);
-    
-                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                    const draggedEl = document.getElementById(draggedId);
-    
-                    draggedEl.style.top = (e as DragEvent).pageY - coordY + "px";
-                    draggedEl.style.left = (e as DragEvent).pageX - coordX + "px";
-                });
-                targets[i].addEventListener("dragover", (e) => {
-                    e.preventDefault();
-                    if (e.type != "drop") {
-                        return;
-                    }
-                    const draggedId = (e as DragEvent).dataTransfer.getData("text");
-                    const draggedEl = document.getElementById(draggedId);
-                    if (draggedEl.parentNode == targets[i]) {
-                        return;
-                    }
-                    draggedEl.parentNode.removeChild(draggedEl);
-                    targets[i].appendChild(draggedEl);
-                });
-                targets[i].addEventListener("dragenter", (e) => {
-                    if (e.type == "dragenter") {
-                        targets[i].classList.add("drag-enter");
-                    } else {
-                        targets[i].classList.remove("drag-enter");
-                    }
-                });
-                targets[i].addEventListener("dragleave", (e) => {
-                    if (e.type == "dragenter") {
-                        targets[i].classList.add("drag-enter");
-                    } else {
-                        targets[i].classList.remove("drag-enter");
-                    }
-                });
+        const rightItem = treeImg?.getBoundingClientRect().x + treeImg?.getBoundingClientRect().width - targetEvent.clientX;
+        const bottomItem = treeImg?.getBoundingClientRect().y + treeImg?.getBoundingClientRect().width - targetEvent.clientY;
+        const right = rightItem + shiftX;
+        const bottom = bottomItem + shiftY;
+
+        const parentForElement = document.getElementById(`slot${dataSet}`) as HTMLDivElement;
+        const countToys = parentForElement?.querySelector('.favorite-count');
+        const count = Number(countToys.textContent);
+        console.log(parentForElement)
+
+        const element = document.getElementById(itemID) as HTMLImageElement;
+        console.log(element)
+
+        if(event.target === areaTree){
+            if(!element.parentElement?.classList.contains('tree-container')){
+                countToys.textContent = (count - 1).toString();
             }
+            element.style.right = `${right}px`;
+            element.style.bottom = `${bottom}px`;
+            areaTree.append(element);
+        } else if(event.target !== areaTree){
+            if(element.parentElement?.classList.contains('tree-container')){
+                countToys.textContent = (count + 1).toString();
+            }
+            element.style.right = '10px';
+            element.style.bottom = '10px';
+            parentForElement?.append(element);
         }
-
     }
 
     render(){
@@ -713,6 +711,7 @@ export class Game extends Page {
     }
 
     afterRender() {
+
         const snowStart = document.querySelector('#snow-item');
         const snowScene = new SnowScene();
         snowStart.addEventListener('click', ()=>{
@@ -752,22 +751,31 @@ export class Game extends Page {
         const localStorage = new LocalStorageUtil();
         const firstTwentyToys = data.slice(0, 20);
 
+        function allowDrop(event: MouseEvent){
+            event.preventDefault()
+        }
+
         if(localStorage.getLocalStorage().length !== 0){
             data.forEach((card)=>{
                 const favoriteToysItem = document.createElement('div');
                 favoriteToysItem.classList.add('favorite-toys');
-                favoriteToysItem.dataset.id = card.num;
-                favoriteToysItem.setAttribute('data-drop-target', 'true');
+                favoriteToysItem.id = `slot${card.num}`;
+                favoriteToysItem.ondragover = allowDrop;
                 const favoriteCount = document.createElement('p');
                 favoriteCount.classList.add('favorite-count');
                 favoriteCount.innerHTML = card.count;
                 favoriteToysItem.append(favoriteCount);
                 if(localStorage.getLocalStorage().includes(card.num)){
                     for(let i = 1; i <= Number(card.count); i++){
-                        favoriteToysItem.innerHTML += `
-                        <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}-${i}"
-                        draggable="true" data-img-num="${card.num}" alt="toy">
-                        `
+                        const toysImg = document.createElement('img');
+                        toysImg.src = `./assets/toys/${card.num}.webp`;
+                        toysImg.classList.add('favorite-img');
+                        toysImg.id = `toy${card.num}-${i}`;
+                        toysImg.draggable = true;
+                        toysImg.setAttribute('data-img', `${card.num}`);
+                        toysImg.alt = 'toy';
+                        toysImg.addEventListener('dragstart', Game.drag);
+                        favoriteToysItem.appendChild(toysImg)
                     }
                 }
                 toysFavoriteContainer.append(favoriteToysItem);
@@ -776,22 +784,27 @@ export class Game extends Page {
             firstTwentyToys.forEach((card)=>{
                 const favoriteToysItem = document.createElement('div');
                 favoriteToysItem.classList.add('favorite-toys');
-                favoriteToysItem.dataset.id = card.num;
-                favoriteToysItem.setAttribute('data-drop-target', 'true');
+                favoriteToysItem.id = `slot${card.num}`;
+                favoriteToysItem.ondragover = allowDrop;
                 const favoriteCount = document.createElement('p');
                 favoriteCount.classList.add('favorite-count');
                 favoriteCount.innerHTML = card.count;
                 favoriteToysItem.append(favoriteCount);
                 for(let i = 1; i <= Number(card.count); i++){
-                    favoriteToysItem.innerHTML += `
-                    <img src="./assets/toys/${card.num}.webp" class="favorite-img" id="${card.num}-${i}"
-                    draggable="true" data-img-num="${card.num}" alt="toy">
-                    `
+                    const toysImg = document.createElement('img');
+                    toysImg.src = `./assets/toys/${card.num}.webp`;
+                    toysImg.classList.add('favorite-img');
+                    toysImg.id = `toy${card.num}-${i}`;
+                    toysImg.draggable = true;
+                    toysImg.setAttribute('data-img', `${card.num}`);
+                    toysImg.alt = 'toy';
+                    toysImg.addEventListener('dragstart', Game.drag);
+                    favoriteToysItem.appendChild(toysImg)
                 }                
                 toysFavoriteContainer.append(favoriteToysItem);
             })
         }
-
-        this.dragAndDrop();
+        
+        //this.dragAndDrop();        
     }
 }
