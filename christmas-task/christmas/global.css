@@ -12,7 +12,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
-canvas{
+canvas {
   width: 100% !important;
   height: 100% !important;
 }
@@ -35,6 +35,8 @@ canvas{
 @media (max-width: 768px) {
   .filter {
     flex-wrap: wrap;
+    justify-content: normal;
+    gap: 0.2rem;
   }
 }
 
@@ -44,6 +46,13 @@ canvas{
   width: 19rem;
   border-radius: 0.5em;
 }
+
+@media (max-width: 768px) {
+  .box {
+    width: 12rem;
+  }
+}
+
 .box:last-child {
   margin-right: 0;
 }
@@ -53,6 +62,13 @@ canvas{
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+@media (max-width: 768px) {
+  .filter-title {
+    height: 1.5rem;
+  }
+}
+
 .shape-container,
 .color-container,
 .size-container {
@@ -61,8 +77,8 @@ canvas{
   margin: 0.8em 0;
 }
 .shape-container button {
-  width: 40px;
-  height: 40px;
+  width: 2.2rem;
+  height: 2.2rem;
   border: none;
   outline: none;
   background-color: transparent;
@@ -97,8 +113,8 @@ canvas{
     brightness(83%) contrast(88%);
 }
 .color-container button {
-  width: 30px;
-  height: 30px;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 1px solid #278d9f;
   border-radius: 5px;
   outline: 0;
@@ -106,6 +122,13 @@ canvas{
   cursor: pointer;
   position: relative;
 }
+
+@media (max-width: 768px) {
+  .color-container button {
+    height: 1.2rem;
+  }
+}
+
 .color-container button:nth-child(1) {
   background-color: white;
   margin-left: 15px;
@@ -142,8 +165,8 @@ canvas{
   border-color: #666;
 }
 .size-container button {
-  width: 50px;
-  height: 50px;
+  width: 2.7rem;
+  height: 2.7rem;
   margin-left: 15px;
   background-image: url(./assets/svg/ball.svg);
   background-color: transparent;
@@ -161,28 +184,35 @@ canvas{
   bottom: 1px;
 }
 .size-container button:nth-child(2) {
-  background-size: 38px 38px;
+  background-size: 2rem 2rem;
 }
 .size-container button:nth-child(3) {
-  background-size: 32px 32px;
+  background-size: 1.8rem 1.8rem;
 }
 .size-container button.active {
   filter: invert(9%) sepia(63%) saturate(461%) hue-rotate(322deg)
     brightness(83%) contrast(88%);
 }
 .favorite {
-  height: 50px;
+  height: 3rem;
   display: flex;
   align-items: center;
 }
+
+@media (max-width: 768px) {
+  .favorite {
+    height: 1.5rem;
+  }
+}
+
 .input-favorite {
   display: none;
 }
 .label-favorite {
   position: relative;
   display: flex;
-  width: 30px;
-  height: 30px;
+  width: 1.8rem;
+  height: 1.8rem;
   border: 1px solid #278d9f;
   border-radius: 5px;
   cursor: pointer;
@@ -243,7 +273,7 @@ canvas{
   gap: 1em;
   width: 100%;
   height: auto;
-  margin-top: 1.5em;
+  margin: 1.5em 0;
 }
 .toys {
   position: relative;
@@ -251,13 +281,14 @@ canvas{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 304px;
-  height: 280px;
+  width: 18.5rem;
+  height: 16.5rem;
   border-radius: 0.5em;
   border: 1px solid #278d9f;
   padding-left: 10px;
   cursor: pointer;
 }
+
 .toys.active .tape {
   background: #cbb77a;
 }
@@ -266,17 +297,17 @@ canvas{
 }
 .toys-title {
   width: 100%;
-  font-size: 20px;
+  font-size: 1.2rem;
   letter-spacing: 2px;
   margin: 0.8em 0;
 }
 .toys-img {
-  width: 90px;
-  height: 115px;
+  width: 5.5rem;
+  height: 6.3rem;
   object-fit: contain;
 }
 .toys-description {
-  width: 195px;
+  width: 10.8rem;
   margin-top: -20px;
   padding-left: 10px;
   line-height: 1;
@@ -287,14 +318,14 @@ canvas{
 .color,
 .size,
 .favorite {
-  font-size: 18px;
+  font-size: 1.1rem;
   margin: 0.6em 0;
 }
 .tape {
   position: absolute;
-  top: 210px;
-  width: 80px;
-  height: 40px;
+  top: 12.6rem;
+  width: 5.4rem;
+  height: 2.48rem;
   background: #24c5db;
   left: -8px;
 }
@@ -307,7 +338,7 @@ canvas{
   border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
   border-left: 15px solid #24c5db;
-  right: -15px;
+  right: -0.93rem;
 }
 .tape::before,
 .tape::after {
@@ -315,6 +346,45 @@ canvas{
   position: absolute;
   height: 0;
   width: 0;
+}
+
+@media (max-width: 768px) {
+  .cards {
+    gap: 0.6rem;
+  }
+
+  .toys {
+    width: 12rem;
+    height: 10rem;
+  }
+
+  .toys-title {
+    font-size: 0.7rem;
+  }
+  .toys-img {
+    width: 3.2rem;
+    height: 4rem;
+  }
+  .toys-description {
+    width: 5.5rem;
+  }
+  .count,
+  .year,
+  .shape,
+  .color,
+  .size,
+  .favorite {
+    font-size: 0.65rem;
+  }
+  .tape {
+    top: 7.6rem;
+    width: 3.4rem;
+    height: 1.4rem;
+  }
+  .tape::after {
+    border-top: 12px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
 }
 
 .no-toys {
@@ -394,6 +464,15 @@ canvas{
   font-weight: bold;
   flex-wrap: wrap;
 }
+
+@media (max-width: 768px) {
+  .main-page-title {
+    width: 17rem;
+    height: 10rem;
+    font-size: 1.5rem;
+  }
+}
+
 .btn-main-page {
   margin-top: 50px;
   position: relative;
@@ -403,13 +482,13 @@ canvas{
   align-content: center;
   text-align: center;
   color: white;
-  width: 320px;
-  height: 60px;
+  width: 20rem;
+  height: 3.75rem;
   border: 3px solid #278d9f;
   background-color: rgba(31, 112, 127, 0.3);
   backdrop-filter: blur(6px);
   border-radius: 15px;
-  font-size: 26px;
+  font-size: 1.6rem;
   text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
@@ -417,6 +496,15 @@ canvas{
   transition: 0.5s;
   box-shadow: 0 0 40px 40px #1f707f4d inset, 0 0 0 0 #1f707f4d;
 }
+
+@media (max-width: 768px) {
+  .btn-main-page {
+    width: 11rem;
+    height: 2.75rem;
+    font-size: 1.1rem;
+  }
+}
+
 .btn-main-page:hover {
   box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
@@ -434,6 +522,15 @@ canvas{
   gap: 0.6rem;
 }
 
+@media (max-width: 768px) {
+  .wrapper-game-container {
+    flex-direction: column;
+    justify-content: normal;
+    align-items: normal;
+    align-content: normal;
+  }
+}
+
 .menu-choose {
   display: flex;
   flex-wrap: wrap;
@@ -441,6 +538,12 @@ canvas{
   align-content: flex-start;
   height: 100%;
   width: 400px;
+}
+
+@media (max-width: 768px) {
+  .menu-choose {
+    width: 100%;
+  }
 }
 
 .menu {
@@ -458,7 +561,7 @@ canvas{
 .tree-choose-container::before {
   content: "Выберите ёлку";
   width: 100%;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 400;
   padding: 10px;
   padding-left: 0;
@@ -466,8 +569,8 @@ canvas{
 }
 
 .audio-item {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border: none;
   outline: none;
   background: none;
@@ -485,8 +588,8 @@ canvas{
 }
 
 .snow-item {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   border: none;
   outline: none;
   background: none;
@@ -502,7 +605,7 @@ canvas{
   height: 6.3rem;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
-  background-size: auto 110px;
+  background-size: auto 6.8rem;
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
@@ -530,7 +633,7 @@ canvas{
 .bg-container::before {
   content: "Выберите фон";
   width: 100%;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 400;
   padding: 10px;
   padding-left: 0;
@@ -582,7 +685,7 @@ canvas{
 .garland-container::before {
   content: "Гирлянда";
   width: 100%;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 400;
   padding: 10px;
   padding-left: 0;
@@ -649,21 +752,21 @@ canvas{
     #ff0 0 2px 12px;
 }
 
-label {
+.label-switch {
   margin: 0.2em;
 }
 
-input[type="checkbox"] {
+.switch-input {
   display: none;
 }
 
-input[type="checkbox"] + label,
-input[type="checkbox"] + label::before,
-input[type="checkbox"] + label::after {
+.switch-input + .label-switch,
+.switch-input + .label-switch::before,
+.switch-input + .label-switch::after {
   transition: all 0.2s;
 }
 
-input[type="checkbox"] + label {
+.switch-input + .label-switch {
   display: inline-block;
   position: relative;
   width: 70px;
@@ -672,7 +775,7 @@ input[type="checkbox"] + label {
   cursor: pointer;
 }
 
-input[type="checkbox"] + label::before {
+.switch-input + .label-switch::before {
   display: block;
   content: attr(data-off);
   position: absolute;
@@ -682,7 +785,7 @@ input[type="checkbox"] + label::before {
   font-size: 14px;
 }
 
-input[type="checkbox"] + label::after {
+.switch-input + .label-switch::after {
   content: "";
   position: absolute;
   top: -2px;
@@ -693,32 +796,52 @@ input[type="checkbox"] + label::after {
   border-radius: 50%;
 }
 
-input[type="checkbox"]:checked + label::before {
+.switch-input + .label-switch::before {
   content: attr(data-on);
   left: 15px;
   right: auto;
   color: #fff;
 }
 
-input[type="checkbox"]:checked + label::after {
+.switch-input + .label-switch::after {
   left: 44px;
   background-color: #f7f7f7;
 }
 
-#input-switch + label {
+.switch-input + .label-switch {
   background-color: #ccc;
 }
 
-#input-switch + label::before {
+.switch-input + .label-switch::before {
   color: #999;
 }
 
-#input-switch:checked + label {
+.switch-input:checked + .label-switch {
   background-color: #3498db;
 }
 
-#input-switch:checked + label::before {
+.switch-input:checked + .label-switch::before {
   color: #fff;
+}
+
+@media (max-width: 768px) {
+  .audio-item,
+  .snow-item {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .tree-choose-container::before,
+  .bg-container::before,
+  .garland-container::before {
+    font-size: 0.8rem;
+  }
+
+  .tree-item {
+    width: 4.8rem;
+    height: 4.8em;
+    background-size: auto 4.8rem;
+  }
 }
 
 .tree-container {
@@ -728,9 +851,8 @@ input[type="checkbox"]:checked + label::after {
   align-items: flex-end;
   background-size: cover;
   background-position: center;
-  height: calc(100vh - 140px);
-  min-height: 750px;
-  width: 800px;
+  min-height: 41.6rem;
+  width: 44.4rem;
   padding-bottom: 20px;
   overflow: hidden;
   position: relative;
@@ -738,7 +860,6 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .menu-favorites {
-  height: calc(100vh - 140px);
   min-height: 750px;
   width: 400px;
   z-index: 2;
@@ -769,7 +890,7 @@ input[type="checkbox"]:checked + label::after {
 .favorite-toys-container::before {
   content: "Игрушки";
   width: 100%;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 400;
   padding: 10px;
   text-transform: uppercase;
@@ -814,11 +935,50 @@ input[type="checkbox"]:checked + label::after {
 .decorate-trees::before {
   content: "Вы нарядили";
   width: 100%;
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 400;
   padding: 10px;
   text-transform: uppercase;
 }
+
+.tree-garland-container {
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .menu-favorites {
+    width: auto;
+    min-height: auto;
+  }
+  .tree-container {
+    min-height: 10rem;
+    width: 43rem;
+  }
+  .tree-img {
+    width: 20rem;
+    height: 26rem;
+  }
+  .favorite-toys-container::before,
+  .decorate-trees::before {
+    font-size: 0.8rem;
+  }
+  .favorite-toys {
+    width: 2.5rem;
+    height: 2.7rem;
+    border-radius: 0.8rem;
+  }
+  .favorite-img {
+    width: 2rem;
+    height: 2rem;
+  }
+  .favorite-count {
+    width: 0.9rem;
+    height: 0.8rem;
+    margin-left: 1.8rem;
+    font-size: 0.55rem;
+  }
+}
+
 
 .light-rope,
 .light-rope-red,
@@ -909,7 +1069,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 30rem;
+  top: 31rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -925,7 +1085,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 35rem;
+  top: 36.5rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
