@@ -207,7 +207,7 @@ export class Game extends Page {
         garlandContainer.append(switchOffOn);
 
         const inputSwitch = document.createElement('input');
-        inputSwitch.classList.add('input-switch');
+        inputSwitch.classList.add('switch-input');
         inputSwitch.type = 'checkbox';
         inputSwitch.id = 'input-switch';
         inputSwitch.checked = true;
@@ -217,6 +217,7 @@ export class Game extends Page {
         labelSwitch.setAttribute('for', 'input-switch');
         labelSwitch.dataset.on = 'Вкл.';
         labelSwitch.dataset.off = 'Выкл.';
+        labelSwitch.classList.add('label-switch');
         switchOffOn.append(labelSwitch);
 
         const favoriteToys = document.createElement('div');
@@ -261,7 +262,7 @@ export class Game extends Page {
         const btnBlue = document.querySelector('.blue');
         const btnYellow = document.querySelector('.yellow');
         const allBtnGarland: NodeListOf<HTMLButtonElement> = document.querySelectorAll('.garland-btn');
-        const inputSwitch: HTMLInputElement = document.querySelector('.input-switch');
+        const inputSwitch: HTMLInputElement = document.querySelector('.switch-input');
 
         const multicolorGarland = `
         <ul class="light-rope">
@@ -555,7 +556,7 @@ export class Game extends Page {
         </ul>
         `
 
-        const treeContainer = document.querySelector('.tree-img');
+        const treeContainer = document.querySelector('.tree-garland-container');
         const target = event.target as HTMLElement & {dataset: Record<string, string>};
         const btnID = target.dataset.color;
 
@@ -699,8 +700,8 @@ export class Game extends Page {
             if(element.parentElement?.classList.contains('tree-container')){
                 countToys.textContent = (count + 1).toString();
             }
-            element.style.right = '10px';
-            element.style.bottom = '10px';
+            element.style.right = element.parentElement?.style.right;
+            element.style.bottom = element.parentElement?.style.bottom;
             parentForElement?.append(element);
         }
     }
@@ -741,7 +742,7 @@ export class Game extends Page {
         const garlandButton = document.querySelector('.garland-btn-container');
         garlandButton?.addEventListener('click', this.clickButtonGarland);
 
-        const inputSwitch: HTMLInputElement = document.querySelector('.input-switch');
+        const inputSwitch: HTMLInputElement = document.querySelector('.switch-input');
         inputSwitch.addEventListener('click', this.clickButtonGarland)
 
         const playAudio = document.querySelector('.audio-item');

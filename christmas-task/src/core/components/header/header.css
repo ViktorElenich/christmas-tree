@@ -62,6 +62,13 @@
   );
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .input_search {
+    width: 14rem;
+  }
+}
+
 .input_search:active,
 .input_search:focus {
   outline: 0;
