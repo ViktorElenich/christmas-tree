@@ -658,7 +658,7 @@ export class Game extends Page {
         const target = event.target as HTMLElement & {dataset: Record<string, string>}
         event.dataTransfer?.setData('id', target.id);
         const shiftX = event.pageX - target.getBoundingClientRect().left - 65;
-        const shiftY = event.pageY - target.getBoundingClientRect().top + 225;
+        const shiftY = event.pageY - target.getBoundingClientRect().top + 15;
 
         event.dataTransfer?.setData('shiftX', shiftX.toString());
         event.dataTransfer?.setData('shiftY', shiftY.toString());
@@ -694,7 +694,7 @@ export class Game extends Page {
             }
             element.style.right = `${right}px`;
             element.style.bottom = `${bottom}px`;
-            areaTree.append(element);
+            treeImg.append(element);
         } else if(event.target !== areaTree){
             if(element.parentElement?.classList.contains('tree-container')){
                 countToys.textContent = (count + 1).toString();
@@ -757,15 +757,17 @@ export class Game extends Page {
 
         if(localStorage.getLocalStorage().length !== 0){
             data.forEach((card)=>{
-                const favoriteToysItem = document.createElement('div');
-                favoriteToysItem.classList.add('favorite-toys');
-                favoriteToysItem.id = `slot${card.num}`;
-                favoriteToysItem.ondragover = allowDrop;
-                const favoriteCount = document.createElement('p');
-                favoriteCount.classList.add('favorite-count');
-                favoriteCount.innerHTML = card.count;
-                favoriteToysItem.append(favoriteCount);
+                
                 if(localStorage.getLocalStorage().includes(card.num)){
+                    const favoriteToysItem = document.createElement('div');
+                    favoriteToysItem.classList.add('favorite-toys');
+                    favoriteToysItem.id = `slot${card.num}`;
+                    favoriteToysItem.dataset.id = card.num;
+                    favoriteToysItem.ondragover = allowDrop;
+                    const favoriteCount = document.createElement('p');
+                    favoriteCount.classList.add('favorite-count');
+                    favoriteCount.innerHTML = card.count;
+                    favoriteToysItem.append(favoriteCount);
                     for(let i = 1; i <= Number(card.count); i++){
                         const toysImg = document.createElement('img');
                         toysImg.src = `./assets/toys/${card.num}.webp`;
@@ -777,14 +779,16 @@ export class Game extends Page {
                         toysImg.addEventListener('dragstart', Game.drag);
                         favoriteToysItem.appendChild(toysImg)
                     }
+                    toysFavoriteContainer.append(favoriteToysItem);
                 }
-                toysFavoriteContainer.append(favoriteToysItem);
+                
             })
         } else {
             firstTwentyToys.forEach((card)=>{
                 const favoriteToysItem = document.createElement('div');
                 favoriteToysItem.classList.add('favorite-toys');
                 favoriteToysItem.id = `slot${card.num}`;
+                favoriteToysItem.dataset.id = card.num;
                 favoriteToysItem.ondragover = allowDrop;
                 const favoriteCount = document.createElement('p');
                 favoriteCount.classList.add('favorite-count');
