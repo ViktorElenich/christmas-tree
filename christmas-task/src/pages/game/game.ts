@@ -180,6 +180,7 @@ export class Game extends Page {
 
         const audioItem = document.createElement('button');
         audioItem.classList.add('audio-item');
+        audioItem.id = 'audio-button';
         audioAndSnowContainer.append(audioItem);
         const audio = document.createElement('audio');
         audio.id = 'player';
@@ -738,6 +739,15 @@ export class Game extends Page {
         localStorage.setItem('bgItem', JSON.stringify(bgID))
     }
 
+    savePlayAudio(event: Event){
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const audio = target.id;
+
+        const localStorages = new LocalStorageUtil();
+        const getLocalStore = localStorages.getLocalStorage();
+        const setLocalStore = localStorages.setLocalStorage(audio);
+    }
+
     render(){
         this.renderWrapper();
         return this.container;
@@ -864,5 +874,16 @@ export class Game extends Page {
                 bgContainer.style.backgroundImage = `url(./assets/bg/${bgItem.dataset.id}.webp)`
             }
         })
+
+        const audioItem: HTMLDivElement = document.querySelector('.audio-item');
+        const audio = document.getElementById('player') as HTMLAudioElement;
+        audioItem.addEventListener('click', this.savePlayAudio);
+        if(!localStorages.getLocalStorage().includes(audioItem.id)){
+            //empty
+        } else if(localStorages.getLocalStorage().includes(audioItem.id)){
+            audio.play()
+            audioItem.classList.add('play')
+        }
+        
     }
 }
