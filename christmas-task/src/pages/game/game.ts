@@ -6,55 +6,71 @@ import { SnowScene } from "../../snow/snow";
 
 const tree = [
     {
-        id: '1'
+        id: '1',
+        img: 'tree1'
     },
     {
-        id: '2'
+        id: '2',
+        img: 'tree2'
     },
     {
-        id: '3'
+        id: '3',
+        img: 'tree3'
     },
     {
-        id: '4'
+        id: '4',
+        img: 'tree4'
     },
     {
-        id: '5'
+        id: '5',
+        img: 'tree5'
     },
     {
-        id: '6'
+        id: '6',
+        img: 'tree6'
     }
 ];
 
 const backgroundImage = [
     {
-        id: '1'
+        id: '1',
+        img: 'bg1'
     },
     {
-        id: '2'
+        id: '2',
+        img: 'bg2'
     },
     {
-        id: '3'
+        id: '3',
+        img: 'bg3'
     },
     {
-        id: '4'
+        id: '4',
+        img: 'bg4'
     },
     {
-        id: '5'
+        id: '5',
+        img: 'bg5'
     },
     {
-        id: '6'
+        id: '6',
+        img: 'bg6'
     },
     {
-        id: '7'
+        id: '7',
+        img: 'bg7'
     },
     {
-        id: '8'
+        id: '8',
+        img: 'bg8'
     },
     {
-        id: '9'
+        id: '9',
+        img: 'bg9'
     },
     {
-        id: '10'
+        id: '10',
+        img: 'bg10'
     }
 ];
 
@@ -181,6 +197,7 @@ export class Game extends Page {
             const treeItems = document.createElement('div');
             treeItems.classList.add('tree-item');
             treeItems.dataset.id = item.id;
+            treeItems.dataset.img = item.img;
             treeChooseContainer.append(treeItems);
         })
 
@@ -188,6 +205,7 @@ export class Game extends Page {
             const bgItems = document.createElement('div');
             bgItems.classList.add('bg-item');
             bgItems.dataset.id = item.id;
+            bgItems.dataset.img = item.img;
             bgContainer.append(bgItems);
         })
 
@@ -706,6 +724,20 @@ export class Game extends Page {
         }
     }
 
+    saveTreeLocalStorage(event: Event){
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const treeID = target.dataset.img;
+
+        localStorage.setItem('treeImg', JSON.stringify(treeID));
+    }
+
+    saveBgLocalStorage(event: Event){
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const bgID = target.dataset.img;
+
+        localStorage.setItem('bgItem', JSON.stringify(bgID))
+    }
+
     render(){
         this.renderWrapper();
         return this.container;
@@ -749,17 +781,16 @@ export class Game extends Page {
         playAudio.addEventListener('click', this.playAndStopAudio);
 
         const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
-        const localStorage = new LocalStorageUtil();
+        const localStorages = new LocalStorageUtil();
         const firstTwentyToys = data.slice(0, 20);
 
         function allowDrop(event: MouseEvent){
             event.preventDefault()
         }
 
-        if(localStorage.getLocalStorage().length !== 0){
+        if(localStorages.getLocalStorage().length !== 0){
             data.forEach((card)=>{
-                
-                if(localStorage.getLocalStorage().includes(card.num)){
+                if(localStorages.getLocalStorage().includes(card.num)){
                     const favoriteToysItem = document.createElement('div');
                     favoriteToysItem.classList.add('favorite-toys');
                     favoriteToysItem.id = `slot${card.num}`;
@@ -809,7 +840,29 @@ export class Game extends Page {
                 toysFavoriteContainer.append(favoriteToysItem);
             })
         }
-        
-        //this.dragAndDrop();        
+
+        const treeItems: NodeListOf<HTMLDivElement> = document.querySelectorAll('.tree-item');
+        treeItems.forEach(treeItem => {
+            treeItem.addEventListener('click', this.saveTreeLocalStorage);
+            const treeImg: HTMLImageElement = document.querySelector('.tree-img');
+
+            if(!JSON.parse(localStorage.getItem('treeImg'))){
+                treeImg.src = `./assets/tree/1.webp`;
+            } else if(JSON.parse(localStorage.getItem('treeImg')) === treeItem.dataset.img){
+                treeImg.src = `./assets/tree/${treeItem.dataset.id}.webp`;
+            }
+        })
+
+        const bgItems: NodeListOf<HTMLDivElement> = document.querySelectorAll('.bg-item');
+        bgItems.forEach(bgItem => {
+            bgItem.addEventListener('click', this.saveBgLocalStorage);
+            const bgContainer: HTMLDivElement = document.querySelector('.tree-container');
+
+            if(!JSON.parse(localStorage.getItem('bgItem'))){
+                bgContainer.style.backgroundImage = `url(./assets/bg/1.webp)`
+            } else if (JSON.parse(localStorage.getItem('bgItem')) === bgItem.dataset.img){
+                bgContainer.style.backgroundImage = `url(./assets/bg/${bgItem.dataset.id}.webp)`
+            }
+        })
     }
 }
