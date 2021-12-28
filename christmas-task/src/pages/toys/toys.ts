@@ -249,7 +249,7 @@ export class Toys extends Page {
     renderCards(cards: ToysDescription[]){
         const cardsWrapper = document.querySelector('.cards');
 
-        let shapeArr = cards;
+        const shapeArr = cards;
         
         shapeArr.forEach(card =>{
             const toy = document.createElement('div');

@@ -630,7 +630,7 @@ export class Game extends Page {
             treeContainer.innerHTML += yellowColorGarland;
         }
         if(inputSwitch.checked){
-
+            // empty
         } else {
             allBtnGarland.forEach(btn => {
                 btn.classList.remove('btn-active')

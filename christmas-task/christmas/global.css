@@ -12,11 +12,15 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
 .links-active {
   border-bottom: 2px solid cyan;
 }
 .main_wrapper {
-  padding: 0.5em;
+  padding: 2em 0 0 0;
   margin: 0 auto;
   height: 100%;
   min-height: calc(100vh - 140px);
@@ -25,21 +29,27 @@ body {
 .filter {
   display: flex;
   justify-content: space-between;
-  height: 300px;
+  gap: 1rem;
 }
+
+@media (max-width: 768px) {
+  .filter {
+    flex-wrap: wrap;
+  }
+}
+
 .box {
   padding: 15px;
   background-color: rgb(24, 61, 66, 0.7);
-  margin-right: 2.5em;
-  width: calc(33.33333333% - 2em);
+  width: 19rem;
   border-radius: 0.5em;
 }
 .box:last-child {
   margin-right: 0;
 }
 .filter-title {
-  height: 50px;
-  font-size: 17px;
+  height: 3rem;
+  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -218,8 +228,8 @@ body {
   cursor: pointer;
 }
 .reset {
-  width: 250px;
-  height: 35px;
+  width: 12rem;
+  height: 2rem;
   margin-top: 130px;
   border-radius: 15px;
   background-color: #278d7a;
@@ -336,8 +346,8 @@ body {
   transform-origin: center -140px;
 }
 .ball1 {
-  width: 300px;
-  height: 325px;
+  width: 12rem;
+  height: 18rem;
   top: 150px;
   left: 15%;
   background-image: url(./assets/ball/1.webp);
@@ -346,8 +356,8 @@ body {
   content: "";
   position: absolute;
   background-color: #aaa;
-  top: -213px;
-  left: calc(50% - 20px);
+  top: -215px;
+  left: calc(50% - 0px);
   width: 4px;
   height: 220px;
 }
@@ -372,14 +382,14 @@ body {
   justify-content: center;
   align-items: center;
   align-content: center;
-  width: 500px;
-  height: 250px;
+  width: 25rem;
+  height: 13.8rem;
   border: 3px solid #278d9f;
   border-radius: 15px;
   background-color: rgba(31, 112, 127, 0.3);
   backdrop-filter: blur(6px);
   text-align: center;
-  font-size: 46px;
+  font-size: 2.8rem;
   font-family: "Pacifico", cursive;
   font-weight: bold;
   flex-wrap: wrap;
@@ -488,8 +498,8 @@ body {
 }
 
 .tree-item {
-  width: 115px;
-  height: 115px;
+  width: 6.3rem;
+  height: 6.3rem;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
   background-size: auto 110px;
@@ -528,8 +538,8 @@ body {
 }
 
 .bg-item {
-  width: 65px;
-  height: 65px;
+  width: 3.6rem;
+  height: 3.6rem;
   border: 1px solid #cccc;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -583,15 +593,17 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 250px;
+  width: 12rem;
   padding: 10px;
 }
 
 .garland-btn {
-  width: 24px;
-  height: 24px;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .btn-active {
@@ -733,8 +745,11 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .tree-img {
-  width: auto;
-  height: 100%;
+  width: 31.75rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 48rem;
+  position: relative;
 }
 
 #canvas {
@@ -742,37 +757,6 @@ input[type="checkbox"]:checked + label::after {
   height: 85%;
   position: absolute;
   z-index: 1;
-}
-
-#garland {
-  position: absolute;
-  top: 85px;
-  left: 0;
-  background-image: url("http://imapo.ru/img/christmas.png");
-  height: 36px;
-  width: 100%;
-  overflow: hidden;
-  z-index: 3;
-}
-
-#nums_1 {
-  padding: 100px;
-}
-
-.garland_1 {
-  background-position: 0 0;
-}
-
-.garland_2 {
-  background-position: 0 -36px;
-}
-
-.garland_3 {
-  background-position: 0 -72px;
-}
-
-.garland_4 {
-  background-position: 0 -108px;
 }
 
 .favorite-toys-container {
@@ -792,31 +776,33 @@ input[type="checkbox"]:checked + label::after {
 }
 
 .favorite-toys {
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 5rem;
+  width: 5rem;
   height: 5.5rem;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 1.1rem;
 }
 
 .favorite-count {
-  position: absolute;
   text-align: center;
-  line-height: 1.5;
+  align-self: flex-end;
+  line-height: 1.6;
   width: 1.5rem;
   height: 1.5rem;
-  bottom: 0.3rem;
-  right: 0.4rem;
   background-color: red;
   border-radius: 50%;
   font-weight: bold;
+  margin-left: 3.5rem;
+  z-index: 5;
 }
 
 .favorite-img {
-  width: 100%;
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  z-index: 1;
 }
 
 .decorate-trees {
@@ -843,7 +829,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 20rem;
+  top: 5rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -859,7 +845,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 25rem;
+  top: 10rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -875,7 +861,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 30rem;
+  top: 15rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -891,7 +877,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 35rem;
+  top: 20rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -907,7 +893,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 40rem;
+  top: 25rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -923,7 +909,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 47rem;
+  top: 30rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -939,7 +925,7 @@ input[type="checkbox"]:checked + label::after {
   white-space: nowrap;
   overflow: hidden;
   position: absolute;
-  top: 52rem;
+  top: 35rem;
   left: 2rem;
   padding: 0;
   pointer-events: none;
@@ -970,7 +956,7 @@ input[type="checkbox"]:checked + label::after {
   width: 12px;
   height: 28px;
   border-radius: 50%;
-  margin: 20px;
+  margin: 18px;
   display: inline-block;
   background: rgba(0, 247, 165, 1);
   box-shadow: 0px 4.6666666667px 24px 3px rgba(0, 247, 165, 1);
