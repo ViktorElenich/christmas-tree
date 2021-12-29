@@ -1,23 +1,17 @@
 export class LocalStorageUtil {
 
-    keyName: string;
+    getLocalStorage(keyName: string) {
 
-    constructor() {
-        this.keyName = 'toys';
-    }
-
-    getLocalStorage() {
-
-        const favoritesLocalStorage = localStorage.getItem(this.keyName);
+        const favoritesLocalStorage = localStorage.getItem(keyName);
         if (favoritesLocalStorage !== null) {
             return JSON.parse(favoritesLocalStorage);
         }
         return [];
     }
 
-    setLocalStorage(id: string) {
+    setLocalStorage(id: string, keyName: string) {
         
-        const toyFavorites = this.getLocalStorage();
+        const toyFavorites = this.getLocalStorage(keyName);
         let pushFavorites = false;
         const index = toyFavorites.indexOf(id);
 
@@ -28,7 +22,7 @@ export class LocalStorageUtil {
             toyFavorites.splice(index, 1);
         }
 
-        localStorage.setItem(this.keyName, JSON.stringify(toyFavorites));
+        localStorage.setItem(keyName, JSON.stringify(toyFavorites));
 
         return { pushFavorites, toyFavorites }
     }

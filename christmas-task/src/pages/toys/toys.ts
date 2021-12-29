@@ -561,8 +561,8 @@ export class Toys extends Page {
         const toyID = (target.closest('.toys') as HTMLDivElement).dataset.id;
 
         const localStorage = new LocalStorageUtil();
-        const getLocalStore = localStorage.getLocalStorage();
-        const setLocalStore = localStorage.setLocalStorage(toyID);
+        const getLocalStore = localStorage.getLocalStorage('toys');
+        const setLocalStore = localStorage.setLocalStorage(toyID, 'toys');
 
         if(getLocalStore.length > 19){
             alert('Извините уже все слоты заняты');
@@ -587,7 +587,7 @@ export class Toys extends Page {
         this.renderWrapper();
         const chosenToys = document.querySelector('.favorites span');
         const localStorage = new LocalStorageUtil();
-        const getLocalStore = localStorage.getLocalStorage();
+        const getLocalStore = localStorage.getLocalStorage('toys');
         chosenToys.innerHTML = `${getLocalStore.length}`;
 
         return this.container;
@@ -595,10 +595,10 @@ export class Toys extends Page {
     
     afterRender(){
         const localStorage = new LocalStorageUtil();
-        const getLocalStore = localStorage.getLocalStorage();
 
         const toysID: NodeListOf<HTMLDivElement> = document.querySelectorAll('.toys');
         toysID.forEach((toy) => {
+            const getLocalStore = localStorage.getLocalStorage(toy.dataset.id);
             if(getLocalStore.includes(toy.dataset.id)){
                 toy.className = 'toys active';
             } else {

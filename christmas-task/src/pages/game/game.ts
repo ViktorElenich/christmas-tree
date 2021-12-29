@@ -657,6 +657,8 @@ export class Game extends Page {
                 treeContainer.innerHTML = ''
             });
         }
+
+
     }
 
     playAndStopAudio(){
@@ -744,8 +746,15 @@ export class Game extends Page {
         const audio = target.id;
 
         const localStorages = new LocalStorageUtil();
-        const getLocalStore = localStorages.getLocalStorage();
-        const setLocalStore = localStorages.setLocalStorage(audio);
+        localStorages.setLocalStorage(audio, 'audio');
+    }
+
+    saveSnowFlake(event: Event){
+        const target = event.target as HTMLElement & {dataset: Record<string, string>};
+        const snow = target.id;
+
+        const localStorages = new LocalStorageUtil();
+        localStorages.setLocalStorage(snow, 'snow');
     }
 
     render(){
@@ -755,6 +764,7 @@ export class Game extends Page {
 
     afterRender() {
 
+        const localStorages = new LocalStorageUtil();
         const snowStart = document.querySelector('#snow-item');
         const snowScene = new SnowScene();
         snowStart.addEventListener('click', ()=>{
@@ -774,6 +784,14 @@ export class Game extends Page {
                 snowStart.classList.remove('play');
             }
         })
+        snowStart.addEventListener('click', this.saveSnowFlake);
+
+        if(!localStorages.getLocalStorage('snow').includes(snowStart.id)){
+            //empty
+        } else if(localStorages.getLocalStorage('snow').includes(snowStart.id)){
+            snowScene.play();
+            snowStart.classList.add('play');
+        }
 
         const bgContainer = document.querySelector('.bg-container');
         bgContainer?.addEventListener('click', this.choiceBackground);
@@ -791,16 +809,16 @@ export class Game extends Page {
         playAudio.addEventListener('click', this.playAndStopAudio);
 
         const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
-        const localStorages = new LocalStorageUtil();
+        
         const firstTwentyToys = data.slice(0, 20);
 
         function allowDrop(event: MouseEvent){
             event.preventDefault()
         }
 
-        if(localStorages.getLocalStorage().length !== 0){
+        if(localStorages.getLocalStorage('toys').length !== 0){
             data.forEach((card)=>{
-                if(localStorages.getLocalStorage().includes(card.num)){
+                if(localStorages.getLocalStorage('toys').includes(card.num)){
                     const favoriteToysItem = document.createElement('div');
                     favoriteToysItem.classList.add('favorite-toys');
                     favoriteToysItem.id = `slot${card.num}`;
@@ -866,24 +884,23 @@ export class Game extends Page {
         const bgItems: NodeListOf<HTMLDivElement> = document.querySelectorAll('.bg-item');
         bgItems.forEach(bgItem => {
             bgItem.addEventListener('click', this.saveBgLocalStorage);
-            const bgContainer: HTMLDivElement = document.querySelector('.tree-container');
+            const bgContainers: HTMLDivElement = document.querySelector('.tree-container');
 
             if(!JSON.parse(localStorage.getItem('bgItem'))){
-                bgContainer.style.backgroundImage = `url(./assets/bg/1.webp)`
+                bgContainers.style.backgroundImage = `url(./assets/bg/1.webp)`
             } else if (JSON.parse(localStorage.getItem('bgItem')) === bgItem.dataset.img){
-                bgContainer.style.backgroundImage = `url(./assets/bg/${bgItem.dataset.id}.webp)`
+                bgContainers.style.backgroundImage = `url(./assets/bg/${bgItem.dataset.id}.webp)`
             }
         })
 
         const audioItem: HTMLDivElement = document.querySelector('.audio-item');
         const audio = document.getElementById('player') as HTMLAudioElement;
         audioItem.addEventListener('click', this.savePlayAudio);
-        if(!localStorages.getLocalStorage().includes(audioItem.id)){
+        if(!localStorages.getLocalStorage('audio').includes(audioItem.id)){
             //empty
-        } else if(localStorages.getLocalStorage().includes(audioItem.id)){
-            audio.play()
-            audioItem.classList.add('play')
+        } else if(localStorages.getLocalStorage('audio').includes(audioItem.id)){
+            audio.play();
+            audioItem.classList.add('play');
         }
-        
     }
 }
