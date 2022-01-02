@@ -2,9 +2,10 @@ import { Page } from "../../core/templates/pages";
 import data from "../../data";
 import { LocalStorageUtil } from "../../local-storage/localStorage";
 import { SnowScene } from "../../snow/snow";
+import { Toys, ToysDescription } from "../toys/toys";
 
 
-const tree = [
+const trees = [
     {
         id: '1',
         img: 'tree1'
@@ -31,7 +32,7 @@ const tree = [
     }
 ];
 
-const backgroundImage = [
+const backgroundImages = [
     {
         id: '1',
         img: 'bg1'
@@ -91,6 +92,7 @@ const garlandButtons = [
         color: 'yellow'
     }
 ]
+
 
 const coordinates = '365,699,189,706,113,683,31,608,2,555,2,539,18,437,73,351,106,224,161,134,243,-1,306,75,353,144,399,221,424,359,452,459,496,550,444,664';
 export class Game extends Page {
@@ -194,7 +196,7 @@ export class Game extends Page {
         audioAndSnowContainer.append(snowItem);
         
 
-        tree.forEach(item => {
+        trees.forEach(item => {
             const treeItems = document.createElement('div');
             treeItems.classList.add('tree-item');
             treeItems.dataset.id = item.id;
@@ -202,7 +204,7 @@ export class Game extends Page {
             treeChooseContainer.append(treeItems);
         })
 
-        backgroundImage.forEach(item => {
+        backgroundImages.forEach(item => {
             const bgItems = document.createElement('div');
             bgItems.classList.add('bg-item');
             bgItems.dataset.id = item.id;
@@ -649,16 +651,12 @@ export class Game extends Page {
             this.saveBtnID.yellow.push(btnID);
             treeContainer.innerHTML += yellowColorGarland;
         }
-        if(inputSwitch.checked){
-            // empty
-        } else {
+        if(!inputSwitch.checked){
             allBtnGarland.forEach(btn => {
                 btn.classList.remove('btn-active')
                 treeContainer.innerHTML = ''
             });
         }
-
-
     }
 
     playAndStopAudio(){
@@ -676,7 +674,6 @@ export class Game extends Page {
     }
 
     static drag(event: DragEvent){
-        console.log('drag')
         const target = event.target as HTMLElement & {dataset: Record<string, string>}
         event.dataTransfer?.setData('id', target.id);
         const shiftX = event.pageX - target.getBoundingClientRect().left - 65;
@@ -705,10 +702,8 @@ export class Game extends Page {
         const parentForElement = document.getElementById(`slot${dataSet}`) as HTMLDivElement;
         const countToys = parentForElement?.querySelector('.favorite-count');
         const count = Number(countToys.textContent);
-        console.log(parentForElement)
 
         const element = document.getElementById(itemID) as HTMLImageElement;
-        console.log(element)
 
         if(event.target === areaTree){
             if(!element.parentElement?.classList.contains('tree-container')){
@@ -757,6 +752,34 @@ export class Game extends Page {
         localStorages.setLocalStorage(snow, 'snow');
     }
 
+    allowDrop(event: MouseEvent){
+        event.preventDefault()
+    }
+
+    renderFavoriteToy(card: ToysDescription, toysFavoriteContainer: HTMLDivElement){
+        const favoriteToysItem = document.createElement('div');
+        favoriteToysItem.classList.add('favorite-toys');
+        favoriteToysItem.id = `slot${card.num}`;
+        favoriteToysItem.dataset.id = card.num;
+        favoriteToysItem.ondragover = this.allowDrop;
+        const favoriteCount = document.createElement('p');
+        favoriteCount.classList.add('favorite-count');
+        favoriteCount.innerHTML = card.count;
+        favoriteToysItem.append(favoriteCount);
+        for(let i = 1; i <= Number(card.count); i++){
+            const toysImg = document.createElement('img');
+            toysImg.src = `./assets/toys/${card.num}.webp`;
+            toysImg.classList.add('favorite-img');
+            toysImg.id = `toy${card.num}-${i}`;
+            toysImg.draggable = true;
+            toysImg.setAttribute('data-img', `${card.num}`);
+            toysImg.alt = 'toy';
+            toysImg.addEventListener('dragstart', Game.drag);
+            favoriteToysItem.appendChild(toysImg)
+        }
+        toysFavoriteContainer.append(favoriteToysItem);
+    }
+
     render(){
         this.renderWrapper();
         return this.container;
@@ -786,9 +809,7 @@ export class Game extends Page {
         })
         snowStart.addEventListener('click', this.saveSnowFlake);
 
-        if(!localStorages.getLocalStorage('snow').includes(snowStart.id)){
-            //empty
-        } else if(localStorages.getLocalStorage('snow').includes(snowStart.id)){
+        if(localStorages.getLocalStorage('snow').includes(snowStart.id)){
             snowScene.play();
             snowStart.classList.add('play');
         }
@@ -808,64 +829,20 @@ export class Game extends Page {
         const playAudio = document.querySelector('.audio-item');
         playAudio.addEventListener('click', this.playAndStopAudio);
 
-        const toysFavoriteContainer = document.querySelector('.favorite-toys-container');
+        const toysFavoriteContainer: HTMLDivElement = document.querySelector('.favorite-toys-container');
         
         const firstTwentyToys = data.slice(0, 20);
-
-        function allowDrop(event: MouseEvent){
-            event.preventDefault()
-        }
 
         if(localStorages.getLocalStorage('toys').length !== 0){
             data.forEach((card)=>{
                 if(localStorages.getLocalStorage('toys').includes(card.num)){
-                    const favoriteToysItem = document.createElement('div');
-                    favoriteToysItem.classList.add('favorite-toys');
-                    favoriteToysItem.id = `slot${card.num}`;
-                    favoriteToysItem.dataset.id = card.num;
-                    favoriteToysItem.ondragover = allowDrop;
-                    const favoriteCount = document.createElement('p');
-                    favoriteCount.classList.add('favorite-count');
-                    favoriteCount.innerHTML = card.count;
-                    favoriteToysItem.append(favoriteCount);
-                    for(let i = 1; i <= Number(card.count); i++){
-                        const toysImg = document.createElement('img');
-                        toysImg.src = `./assets/toys/${card.num}.webp`;
-                        toysImg.classList.add('favorite-img');
-                        toysImg.id = `toy${card.num}-${i}`;
-                        toysImg.draggable = true;
-                        toysImg.setAttribute('data-img', `${card.num}`);
-                        toysImg.alt = 'toy';
-                        toysImg.addEventListener('dragstart', Game.drag);
-                        favoriteToysItem.appendChild(toysImg)
-                    }
-                    toysFavoriteContainer.append(favoriteToysItem);
+                    this.renderFavoriteToy(card, toysFavoriteContainer);
                 }
                 
             })
         } else {
             firstTwentyToys.forEach((card)=>{
-                const favoriteToysItem = document.createElement('div');
-                favoriteToysItem.classList.add('favorite-toys');
-                favoriteToysItem.id = `slot${card.num}`;
-                favoriteToysItem.dataset.id = card.num;
-                favoriteToysItem.ondragover = allowDrop;
-                const favoriteCount = document.createElement('p');
-                favoriteCount.classList.add('favorite-count');
-                favoriteCount.innerHTML = card.count;
-                favoriteToysItem.append(favoriteCount);
-                for(let i = 1; i <= Number(card.count); i++){
-                    const toysImg = document.createElement('img');
-                    toysImg.src = `./assets/toys/${card.num}.webp`;
-                    toysImg.classList.add('favorite-img');
-                    toysImg.id = `toy${card.num}-${i}`;
-                    toysImg.draggable = true;
-                    toysImg.setAttribute('data-img', `${card.num}`);
-                    toysImg.alt = 'toy';
-                    toysImg.addEventListener('dragstart', Game.drag);
-                    favoriteToysItem.appendChild(toysImg)
-                }                
-                toysFavoriteContainer.append(favoriteToysItem);
+                this.renderFavoriteToy(card, toysFavoriteContainer);
             })
         }
 
@@ -896,9 +873,7 @@ export class Game extends Page {
         const audioItem: HTMLDivElement = document.querySelector('.audio-item');
         const audio = document.getElementById('player') as HTMLAudioElement;
         audioItem.addEventListener('click', this.savePlayAudio);
-        if(!localStorages.getLocalStorage('audio').includes(audioItem.id)){
-            //empty
-        } else if(localStorages.getLocalStorage('audio').includes(audioItem.id)){
+        if(localStorages.getLocalStorage('audio').includes(audioItem.id)){
             audio.play();
             audioItem.classList.add('play');
         }

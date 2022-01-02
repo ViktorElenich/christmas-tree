@@ -6,7 +6,7 @@ import { quantitySlider } from "../../nouislider/slider-quantity";
 import { yearSlider } from "../../nouislider/slider-year";
 import { LocalStorageUtil } from "../../local-storage/localStorage";
 
-interface ToysDescription {
+export interface ToysDescription {
     num: string,
     count: string,
     year: string,
